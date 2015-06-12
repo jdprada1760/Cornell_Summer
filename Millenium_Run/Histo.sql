@@ -37,12 +37,12 @@ DECLARE @interv FLOAT
 SET @interv = ( @maxM - @minM ) / @nbins
 
 --Selects the histogram
-SELECT @interv*(FLOOR(D.np/@interv)) AS mag,
+SELECT @interv*(FLOOR((D.np-@minM)/@interv))+@minM AS mag,
        COUNT(*) AS NUM
 FROM MPAHalo D
 WHERE D.x > @posx AND D.x < @posx + @bsize  
   AND D.y > @posx AND D.y < @posy + @bsize  
   AND D.z > @posx AND D.z < @posz + @bsize
   AND D.snapnum = @snapnum
-GROUP BY @interv*(FLOOR(D.np/@interv))
+GROUP BY @interv*(FLOOR((D.np-@minM)/@interv))+@minM
 ORDER BY mag
