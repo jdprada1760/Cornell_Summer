@@ -15,7 +15,7 @@ DECLARE @minL FLOAT
 DECLARE @maxL FLOAT
 --Number of bins in the histogram
 DECLARE @nbins INT
---Mass (in solar masses) per particle
+--Mass (in solar masses) unit of virial mass
 DECLARE @mp FLOAT
 --Solar luminosity (erg/s)
 DECLARE @lsun FLOAT
@@ -23,9 +23,9 @@ DECLARE @lsun FLOAT
 DECLARE @sunvm FLOAT
 
 --Assignment of values
-SET @sunvm = 
+SET @sunvm = 0
 SET @lsun = 3.846E+33
-SET @mp = 8.61E+8
+SET @mp = E+10
 SET @snapnum = 63
 SET @nbins = 10
 SET @l = 0  
@@ -35,11 +35,11 @@ SELECT @posy = @l*RAND()
 SELECT @posz = @l*RAND()  
 
 --Selects the minimum and maximum masses
-SELECT @minM = MIN(LOG(@mp*D.np)),
-       @maxM = MAX(LOG(@mp*D.np)),
+SELECT @minM = MIN(LOG(@mp*D.mvir)),
+       @maxM = MAX(LOG(@mp*D.mvir)),
        @minL = MIN((@sunmv - D.mag_v)/2.5)
        @maxL = MAX((@sunmv - D.mag_v)/2.5)
-FROM MPAHalo D
+FROM DeLucia2006a D
 WHERE D.x > @posx AND D.x < @posx + @bsize  
   AND D.y > @posx AND D.y < @posy + @bsize  
   AND D.z > @posx AND D.z < @posz + @bsize
@@ -52,21 +52,21 @@ SET @intervm = ( @maxM - @minM ) / @nbins
 SET @intervL = ( @maxL - @minL ) / @nbins
 
 --Selects the histogram logarithmic scale for masses
-SELECT @intervm*(FLOOR((LOG(D.np*@mp)-@minM)/@intervm))+@minM AS logM,
+SELECT @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM AS logM,
        COUNT(*) AS NUM
-FROM MPAHalo D
+FROM DeLucia2006a D
 WHERE D.x > @posx AND D.x < @posx + @bsize  
   AND D.y > @posx AND D.y < @posy + @bsize  
   AND D.z > @posx AND D.z < @posz + @bsize
   AND D.snapnum = @snapnum
-GROUP BY @intervm*(FLOOR((LOG(D.np*@mp)-@minM)/@intervm))+@minM
+GROUP BY @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM
 ORDER BY logM
 
 --Selects the histogram logarithmic scale for luminosities
 
 SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL AS logL,
        COUNT(*) AS NUM
-FROM MPAHalo D
+FROM DeLucia2006a D
 WHERE D.x > @posx AND D.x < @posx + @bsize  
   AND D.y > @posx AND D.y < @posy + @bsize  
   AND D.z > @posx AND D.z < @posz + @bsize
