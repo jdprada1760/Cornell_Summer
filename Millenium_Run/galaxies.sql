@@ -1,4 +1,4 @@
- --Position of a corner of the box  
+--Position of a corner of the box  
 DECLARE @posx FLOAT  
 DECLARE @posy FLOAT  
 DECLARE @posz FLOAT
@@ -23,7 +23,7 @@ DECLARE @lsun FLOAT
 DECLARE @sunvm FLOAT
 
 --Assignment of values
-SET @sunvm = 0
+SET @sunvm = 4.80
 SET @lsun = 3.846E+33
 SET @mp = E+10
 SET @snapnum = 63
@@ -51,25 +51,28 @@ DECLARE @intervL FLOAT
 SET @intervm = ( @maxM - @minM ) / @nbins
 SET @intervL = ( @maxL - @minL ) / @nbins
 
---Selects the histogram logarithmic scale for masses
-SELECT @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM AS logM,
-       COUNT(*) AS NUM
-FROM DeLucia2006a D
-WHERE D.x > @posx AND D.x < @posx + @bsize  
-  AND D.y > @posx AND D.y < @posy + @bsize  
-  AND D.z > @posx AND D.z < @posz + @bsize
-  AND D.snapnum = @snapnum
-GROUP BY @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM
-ORDER BY logM
+SELECT a.logM, a.NUM_M, b.logL, b.NUM_L
+FROM   --Selects the histogram logarithmic scale for masses
+       (SELECT @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM AS logM,
+       	       COUNT(*) AS NUM_M
+	       FROM DeLucia2006a D
+	       WHERE D.x > @posx AND D.x < @posx + @bsize  
+	         AND D.y > @posx AND D.y < @posy + @bsize  
+		 AND D.z > @posx AND D.z < @posz + @bsize
+		 AND D.snapnum = @snapnum
+	       GROUP BY @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM
+	       ORDER BY logM
+	) a,
 
---Selects the histogram logarithmic scale for luminosities
 
-SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL AS logL,
-       COUNT(*) AS NUM
-FROM DeLucia2006a D
-WHERE D.x > @posx AND D.x < @posx + @bsize  
-  AND D.y > @posx AND D.y < @posy + @bsize  
-  AND D.z > @posx AND D.z < @posz + @bsize
-  AND D.snapnum = @snapnum
-GROUP BY @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL
-ORDER BY logL
+	--Selects the histogram logarithmic scale for luminosities
+	(SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL AS logL,
+	        COUNT(*) AS NUM_L
+	       FROM DeLucia2006a D
+	       WHERE D.x > @posx AND D.x < @posx + @bsize  
+	         AND D.y > @posx AND D.y < @posy + @bsize  
+		 AND D.z > @posx AND D.z < @posz + @bsize
+		 AND D.snapnum = @snapnum
+	       GROUP BY @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL
+	       ORDER BY logL
+	) b
