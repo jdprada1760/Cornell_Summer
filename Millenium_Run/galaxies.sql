@@ -53,7 +53,10 @@ SET @intervL = ( @maxL - @minL ) / @nbins
 
 --Selects the histogram logarithmic scale for masses
 SELECT @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM AS logM,
-       COUNT(*) AS NUM_M
+       COUNT(*) AS NUM_M,
+       @minM AS MIN_M,
+       @maxM AS MAX_M,
+       @nbins AS NBINS
 FROM DeLucia2006a D
 WHERE D.x > @posx AND D.x < @posx + @bsize  
       AND D.y > @posx AND D.y < @posy + @bsize  
@@ -65,12 +68,15 @@ ORDER BY logM
 
 /*
 --Selects the histogram logarithmic scale for luminosities
-SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL AS logL,
+SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@intervL)+@minL AS logL,
        COUNT(*) AS NUM_L
+       @minL AS MIN_L,
+       @maxL AS MAX_L,
+       @nbins AS NBINS
 FROM DeLucia2006a D
 WHERE D.x > @posx AND D.x < @posx + @bsize  
       AND D.y > @posx AND D.y < @posy + @bsize  
       AND D.z > @posx AND D.z < @posz + @bsize
       AND D.snapnum = @snapnum
-GROUP BY @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL
+GROUP BY @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@intervL)+@minL
 ORDER BY logL*/
