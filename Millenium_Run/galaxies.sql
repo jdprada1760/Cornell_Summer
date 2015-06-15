@@ -36,14 +36,22 @@ SELECT @posz = @l*RAND()
 
 --Selects the minimum and maximum masses
 SELECT @minM = MIN(LOG(@mp*D.mvir)),
-       @maxM = MAX(LOG(@mp*D.mvir)),
-       @minL = MIN((@sunmv - D.mag_v)/2.5),
+       @maxM = MAX(LOG(@mp*D.mvir))
+FROM DeLucia2006a D
+WHERE D.x > @posx AND D.x < @posx + @bsize  
+  AND D.y > @posx AND D.y < @posy + @bsize  
+  AND D.z > @posx AND D.z < @posz + @bsize
+  AND D.snapnum = @snapnum
+
+--Selects the minimum and maximum magnitudes
+SELECT @minL = MIN((@sunmv - D.mag_v)/2.5),
        @maxL = MAX((@sunmv - D.mag_v)/2.5)
 FROM DeLucia2006a D
 WHERE D.x > @posx AND D.x < @posx + @bsize  
   AND D.y > @posx AND D.y < @posy + @bsize  
   AND D.z > @posx AND D.z < @posz + @bsize
   AND D.snapnum = @snapnum
+  AND D.mag_v != 99.0
 
 --Defines the interval of the histogram for masses and luminosities
 DECLARE @intervm FLOAT
@@ -78,5 +86,6 @@ WHERE D.x > @posx AND D.x < @posx + @bsize
       AND D.y > @posx AND D.y < @posy + @bsize  
       AND D.z > @posx AND D.z < @posz + @bsize
       AND D.snapnum = @snapnum
+      AND D.mag_v != 99.0
 GROUP BY @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@intervL))+@minL
 ORDER BY logL
