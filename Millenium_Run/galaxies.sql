@@ -66,10 +66,10 @@ GROUP BY @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM
 ORDER BY logM
 
 
-/*
+
 --Selects the histogram logarithmic scale for luminosities
-SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@intervL)+@minL AS logL,
-       COUNT(*) AS NUM_L
+SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/intervL)+@minL AS logL,
+       COUNT(*) AS NUM_L,
        @minL AS MIN_L,
        @maxL AS MAX_L,
        @nbins AS NBINS
@@ -79,4 +79,4 @@ WHERE D.x > @posx AND D.x < @posx + @bsize
       AND D.z > @posx AND D.z < @posz + @bsize
       AND D.snapnum = @snapnum
 GROUP BY @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@intervL)+@minL
-ORDER BY logL*/
+ORDER BY logL
