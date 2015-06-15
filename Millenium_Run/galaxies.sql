@@ -20,12 +20,12 @@ DECLARE @mp FLOAT
 --Solar luminosity (erg/s)
 DECLARE @lsun FLOAT
 --Solar visual absolute magnitude
-DECLARE @sunvm FLOAT
+DECLARE @sunmv FLOAT
 
 --Assignment of values
-SET @sunvm = 4.80
+SET @sunmv = 4.80
 SET @lsun = 3.846E+33
-SET @mp = E+10
+SET @mp = 1E+10
 SET @snapnum = 63
 SET @nbins = 10
 SET @l = 0  
@@ -37,7 +37,7 @@ SELECT @posz = @l*RAND()
 --Selects the minimum and maximum masses
 SELECT @minM = MIN(LOG(@mp*D.mvir)),
        @maxM = MAX(LOG(@mp*D.mvir)),
-       @minL = MIN((@sunmv - D.mag_v)/2.5)
+       @minL = MIN((@sunmv - D.mag_v)/2.5),
        @maxL = MAX((@sunmv - D.mag_v)/2.5)
 FROM DeLucia2006a D
 WHERE D.x > @posx AND D.x < @posx + @bsize  
@@ -51,28 +51,26 @@ DECLARE @intervL FLOAT
 SET @intervm = ( @maxM - @minM ) / @nbins
 SET @intervL = ( @maxL - @minL ) / @nbins
 
-SELECT a.logM, a.NUM_M, b.logL, b.NUM_L
-FROM   --Selects the histogram logarithmic scale for masses
-       (SELECT @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM AS logM,
-       	       COUNT(*) AS NUM_M
-	       FROM DeLucia2006a D
-	       WHERE D.x > @posx AND D.x < @posx + @bsize  
-	         AND D.y > @posx AND D.y < @posy + @bsize  
-		 AND D.z > @posx AND D.z < @posz + @bsize
-		 AND D.snapnum = @snapnum
-	       GROUP BY @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM
-	       ORDER BY logM
-	) a,
+--Selects the histogram logarithmic scale for masses
+SELECT @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM AS logM,
+       COUNT(*) AS NUM_M
+FROM DeLucia2006a D
+WHERE D.x > @posx AND D.x < @posx + @bsize  
+      AND D.y > @posx AND D.y < @posy + @bsize  
+      AND D.z > @posx AND D.z < @posz + @bsize
+      AND D.snapnum = @snapnum
+GROUP BY @intervm*(FLOOR((LOG(D.mvir*@mp)-@minM)/@intervm))+@minM
+ORDER BY logM
 
 
-	--Selects the histogram logarithmic scale for luminosities
-	(SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL AS logL,
-	        COUNT(*) AS NUM_L
-	       FROM DeLucia2006a D
-	       WHERE D.x > @posx AND D.x < @posx + @bsize  
-	         AND D.y > @posx AND D.y < @posy + @bsize  
-		 AND D.z > @posx AND D.z < @posz + @bsize
-		 AND D.snapnum = @snapnum
-	       GROUP BY @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL
-	       ORDER BY logL
-	) b
+/*
+--Selects the histogram logarithmic scale for luminosities
+SELECT @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL AS logL,
+       COUNT(*) AS NUM_L
+FROM DeLucia2006a D
+WHERE D.x > @posx AND D.x < @posx + @bsize  
+      AND D.y > @posx AND D.y < @posy + @bsize  
+      AND D.z > @posx AND D.z < @posz + @bsize
+      AND D.snapnum = @snapnum
+GROUP BY @intervL*(FLOOR((((@sunmv - D.mag_v)/2.5)-@minL)/@interv))+@minL
+ORDER BY logL*/
