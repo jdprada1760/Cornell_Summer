@@ -20,10 +20,10 @@ DECLARE @snapnum INT
 DECLARE @H FLOAT
 
 --Asignment of variables
-SET @x = 0
-SET @y = 0
-SET @z = 0
-SET @H = 1
+SET @x = 250
+SET @y = 250
+SET @z = 250
+SET @H = 100
 SET @id = 1234
 SELECT @hx = M.x,
        @hy = M.y,
@@ -44,7 +44,7 @@ SET @dz = (@hz - @z)/SQRT( POWER(@hx - @x,2) + POWER(@hx - @x,2) + POWER(@hx - @
 SELECT SQRT(
        POWER(  ((D.x - @x)*@dx + (D.y - @y)*@dy + (D.z - @z)*@dz)*@dx - (D.x - @x)  , 2 )  +
        POWER(  ((D.x - @x)*@dx + (D.y - @y)*@dy + (D.z - @z)*@dz)*@dy - (D.y - @y)  , 2 )  +
-       POWER(  ((D.x - @x)*@dx + (D.y - @y)*@dy + (D.z - @z)*@dz)*@dz - (D.z - @z)  , 2 )  +
+       POWER(  ((D.x - @x)*@dx + (D.y - @y)*@dy + (D.z - @z)*@dz)*@dz - (D.z - @z)  , 2 )  
        ) AS DIST
 FROM DeLucia2006a D
 WHERE --Omits galaxies with r abs magnitude < -19
@@ -52,9 +52,9 @@ WHERE --Omits galaxies with r abs magnitude < -19
       --Only counts galxies with relative velocities to the halo < 500 Km/s
       AND ABS(  
       	       --Radial component of the total velocity of the galaxy
-	       @dx*(@H*D.x + @velX) + @dy*(@H*D.y + @velY) + @dz*(@H*D.z + @velZ)
+	       @dx*(@H*(D.x-@x) + D.velX) + @dy*(@H*(D.y-@y) + D.velY) + @dz*(@H*(D.z-@z) + D.velZ)
 	       --Radial component of the total velocity of the halo
-	       -@dx*(@H*@hx + @vx) + @dy*(@H*@hy + @vy) + @dz*(@H*@hz + @vz)
+	       -(@dx*(@H*(@hx-@x) + @vx) + @dy*(@H*(@hy-@y) + @vy) + @dz*(@H*(@hz-@z) + @vz))
 
 	     ) < 500
 ORDER BY DIST
