@@ -24,10 +24,10 @@ DECLARE @neigh INT
 --Asignment of variables
 SET @snapnum = 63
 SET @neigh = 4
-SET @x = 250
-SET @y = 250
-SET @z = 250
-SET @H = 70*0.7
+SET @x = 0
+SET @y = 0
+SET @z = 0
+SET @H = 100
 SET @id = 2494
 SELECT @hx = M.x,
        @hy = M.y,
@@ -44,9 +44,9 @@ SET @dy = (@hy - @y)/SQRT( POWER(@hx - @x,2) + POWER(@hy - @y,2) + POWER(@hz - @
 SET @dz = (@hz - @z)/SQRT( POWER(@hx - @x,2) + POWER(@hy - @y,2) + POWER(@hz - @z,2) )
 
 --Makes an ordered list distances to galaxies
-SELECT *, SQRT(POWER(b.vx,2) + POWER(b.vy,2)+ POWER(b.vz,2))
+SELECT *, SQRT(POWER(b.vx,2) + POWER(b.vy,2)+ POWER(b.vz,2))/0.7
 FROM
-	(SELECT TOP 10 ROW_NUMBER() OVER (ORDER BY a.DIST) AS NUM,
+	(SELECT TOP 10000000000 ROW_NUMBER() OVER (ORDER BY a.DIST) AS NUM,
 	a.DIST,
 	a.vx,
 	a.vy,

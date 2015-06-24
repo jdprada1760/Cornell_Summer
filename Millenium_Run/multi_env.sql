@@ -6,6 +6,8 @@ DECLARE @z FLOAT
 DECLARE @snapnum INT
 --Hubble constant
 DECLARE @H FLOAT
+-- Little h
+DECLARE @lh float
 --Neighbour
 DECLARE @neigh INT
 --Limits the box of halos
@@ -18,6 +20,7 @@ DECLARE @limMz FLOAT
 
 
 --Asignment of variables
+SET @lh = 0.7
 SET @snapnum = 63
 SET @neigh = 4
 SET @x = 0
@@ -36,7 +39,7 @@ DECLARE @n INT
 SET @hid = 1;
 SET @n = 1;
 
-SELECT g.haloID, g.DIST, g.RN
+SELECT g.haloID, g.DIST, 4/(POWER(g.DIST,2)*PI()) AS SIGMA
 FROM
     (SELECT f.DIST,
             f.haloID,
@@ -46,7 +49,7 @@ FROM
                 POWER(  ((c.gx - @x)*c.dx + (c.gy - @y)*c.dy + (c.gz - @z)*c.dz)*c.dx - (c.gx - @x)  , 2 )  +
                 POWER(  ((c.gx - @x)*c.dx + (c.gy - @y)*c.dy + (c.gz - @z)*c.dz)*c.dy - (c.gy - @y)  , 2 )  +
                 POWER(  ((c.gx - @x)*c.dx + (c.gy - @y)*c.dy + (c.gz - @z)*c.dz)*c.dz - (c.gz - @z)  , 2 )
-                    ) AS DIST,
+              )/@lh AS DIST,
                 c.haloID AS haloID
           FROM
               -- Selects the position, velocities and position, velocities of galaxies and haloes and the unit vectors to haloes
@@ -70,8 +73,8 @@ FROM
                      D.snapnum = @snapnum
                      AND M.snapNum = @snapnum
                      -- Limits the box of haloes
-                     AND D.x > @limx AND  D.y > @limy AND D.z > @limz
-                     AND D.x < @limMx AND  D.y < @limMy AND D.z < @limMz
+                     AND M.x > @limx AND  M.y > @limy AND M.z > @limz
+                     AND M.x < @limMx AND  M.y < @limMy AND M.z < @limMz
                      --Omits galaxies with r abs magnitude < -19
                      AND D.mag_r < -19
               ) c
@@ -86,3 +89,4 @@ FROM
          ) f
     ) g
 WHERE g.RN = @neigh
+ORDER BY SIGMA
