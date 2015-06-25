@@ -26,12 +26,12 @@ SET @neigh = 4
 SET @x = 0
 SET @y = 0
 SET @z = 0
-SET @limx = 40
-SET @limy = 40
-SET @limz = 40
-SET @limMx = 60
-SET @limMy = 60
-SET @limMz = 60
+SET @limx = 20
+SET @limy = 20
+SET @limz = 20
+SET @limMx = 40
+SET @limMy = 40
+SET @limMz = 40
 SET @H = 100
 
 DECLARE @hid INT
@@ -39,10 +39,10 @@ DECLARE @n INT
 SET @hid = 1;
 SET @n = 1;
 
-SELECT g.haloID, g.DIST, 4/(POWER(g.DIST,2)*PI()) AS SIGMA
+SELECT g.NP, g.DIST, 4/(POWER(g.DIST,2)*PI()) AS SIGMA
 FROM
     (SELECT f.DIST,
-            f.haloID,
+            f.NP,
             ROW_NUMBER() OVER ( PARTITION BY f.haloID ORDER BY f.DIST ) AS RN
     FROM
           (SELECT TOP 10000000 SQRT(
@@ -50,10 +50,12 @@ FROM
                 POWER(  ((c.gx - @x)*c.dx + (c.gy - @y)*c.dy + (c.gz - @z)*c.dz)*c.dy - (c.gy - @y)  , 2 )  +
                 POWER(  ((c.gx - @x)*c.dx + (c.gy - @y)*c.dy + (c.gz - @z)*c.dz)*c.dz - (c.gz - @z)  , 2 )
               )/@lh AS DIST,
-                c.haloID AS haloID
+                c.haloID AS haloID,
+                c.NP AS NP
           FROM
               -- Selects the position, velocities and position, velocities of galaxies and haloes and the unit vectors to haloes
               (SELECT M.haloID AS haloID,
+                      M.np AS NP,
                       D.x AS gx,
                       D.y AS gy,
                       D.z AS gz,
