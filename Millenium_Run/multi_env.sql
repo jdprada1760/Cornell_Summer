@@ -26,9 +26,9 @@ SET @neigh = 4
 SET @x = 0
 SET @y = 0
 SET @z = 0
-SET @limx = 20
-SET @limy = 20
-SET @limz = 20
+SET @limx = 16
+SET @limy = 16
+SET @limz = 16
 SET @limMx = 40
 SET @limMy = 40
 SET @limMz = 40
@@ -56,12 +56,12 @@ FROM
               -- Selects the position, velocities and position, velocities of galaxies and haloes and the unit vectors to haloes
               (SELECT M.haloID AS haloID,
                       M.np AS NP,
-                      D.x AS gx,
-                      D.y AS gy,
-                      D.z AS gz,
-                      M.x AS hx,
-                      M.y AS hy,
-                      M.z AS hz,
+                      D.x AS gx/@lh,
+                      D.y AS gy/@lh,
+                      D.z AS gz/@lh,
+                      M.x AS hx/@lh,
+                      M.y AS hy/@lh,
+                      M.z AS hz/@lh,
                       --Difference in peculiar velocities
                       D.velX - M.velX AS dvx,
                       D.velY - M.velY AS dvy,
@@ -85,7 +85,7 @@ FROM
                    -- Radial component of the difference in peculiar velocities
                    c.dvx*c.dx + c.dvy*c.dy + c.dvz*c.dz +
                    -- Radial component of the diference in velocities due to Hubbles law
-                   @H*((c.gx - c.hx)*dx + (c.gy - c.hy)*dy + (c.gy - c.hy)*dy)
+                   @H*((c.gx - c.hx)*dx + (c.gy - c.hy)*dy + (c.gz - c.hz)*dz)
 
                  )  < 500
          ) f
