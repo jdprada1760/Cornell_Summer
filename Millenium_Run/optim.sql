@@ -45,8 +45,7 @@ SELECT *
 FROM
       (SELECT *, ROW_NUMBER() OVER ( PARTITION BY f.haloID ORDER BY f.SIGMA ASC ) AS RN
       FROM
-             (SELECT ( PI()*(
-
+             (SELECT (
                         POWER(
                               (
                                  (D.x - @x)*(M.x - @x)
@@ -76,7 +75,6 @@ FROM
                              )*(M.z - @z)/( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
                                - (D.z - @z)
                                , 2 )
-                             )
 
                         ) AS SIGMA,
                         M.np AS NP,
