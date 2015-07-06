@@ -1,4 +1,3 @@
-
 --Position of the point of view
 DECLARE @x FLOAT
 DECLARE @y FLOAT
@@ -44,39 +43,40 @@ SET @n = 1;
 
 SELECT *
 FROM
-      (SELECT *, ROW_NUMBER() OVER ( PARTITION BY f.haloID ORDER BY f.SIGMA DESC ) AS RN
+      (SELECT *, ROW_NUMBER() OVER ( PARTITION BY f.haloID ORDER BY f.SIGMA ASC ) AS RN
       FROM
-             (SELECT 4/( PI()*
+             (SELECT ( PI()*(
 
                         POWER(
                               (
-                                 (D.x - @x)*(M.x - @x)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
-                               + (D.y - @y)*(M.y - @y)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
-                               + (D.z - @z)*(M.z - @z)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
+                                 (D.x - @x)*(M.x - @x)
+                               + (D.y - @y)*(M.y - @y)
+                               + (D.z - @z)*(M.z - @z)
 
-                             )*(M.x - @x)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
+                             )*(M.x - @x)/( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
                                - (D.x - @x)
                                , 2 )
                                +
                         POWER(
                               (
-                                 (D.x - @x)*(M.x - @x)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
-                               + (D.y - @y)*(M.y - @y)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
-                               + (D.z - @z)*(M.z - @z)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
+                                 (D.x - @x)*(M.x - @x)
+                               + (D.y - @y)*(M.y - @y)
+                               + (D.z - @z)*(M.z - @z)
 
-                             )*(M.y - @y)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
+                             )*(M.y - @y)/( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
                                - (D.y - @y)
                                , 2 )
                                +
                         POWER(
                               (
-                                 (D.x - @x)*(M.x - @x)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
-                               + (D.y - @y)*(M.y - @y)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
-                               + (D.z - @z)*(M.z - @z)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
+                                 (D.x - @x)*(M.x - @x)
+                               + (D.y - @y)*(M.y - @y)
+                               + (D.z - @z)*(M.z - @z)
 
-                             )*(M.z - @z)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
+                             )*(M.z - @z)/( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
                                - (D.z - @z)
                                , 2 )
+                             )
 
                         ) AS SIGMA,
                         M.np AS NP,
@@ -93,9 +93,9 @@ FROM
                     AND D.mag_r < -19
                     --Selects only galaxies that fulfill the velocity cut
                     AND ABS(
-                         (@H*(D.x - M.x)/@lh + D.velX - M.velX)*(M.x - @x)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) ) +
-                         (@H*(D.y - M.y)/@lh + D.velY - M.velY)*(M.y - @y)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) ) +
-                         (@H*(D.z - M.z)/@lh + D.velZ - M.velZ)*(M.z - @z)/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
+                         ((@H*(D.x - M.x)/@lh + D.velX - M.velX)*(M.x - @x)+
+                         (@H*(D.y - M.y)/@lh + D.velY - M.velY)*(M.y - @y) +
+                         (@H*(D.z - M.z)/@lh + D.velZ - M.velZ)*(M.z - @z))/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
 
                            )  < 500
               ) f

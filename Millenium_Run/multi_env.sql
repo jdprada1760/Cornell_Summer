@@ -41,16 +41,16 @@ SET @n = 1;
 
 SELECT *
 FROM
-      (SELECT f.DIST,
-             4/(POWER(f.DIST,2)*PI()) AS SIGMA,
-             f.NP,
-             ROW_NUMBER() OVER ( PARTITION BY f.haloID ORDER BY f.DIST DESC ) AS RN
+      (SELECT  f.DIST,
+               4.0/(DIST*PI()) AS SIGMA,
+               f.NP,
+               ROW_NUMBER() OVER ( PARTITION BY f.haloID ORDER BY f.DIST ASC ) AS RN
       FROM
-            (SELECT SQRT(
+            (SELECT
                   POWER(  ((c.gx - @x)*c.dx + (c.gy - @y)*c.dy + (c.gz - @z)*c.dz)*c.dx - (c.gx - @x)  , 2 )  +
                   POWER(  ((c.gx - @x)*c.dx + (c.gy - @y)*c.dy + (c.gz - @z)*c.dz)*c.dy - (c.gy - @y)  , 2 )  +
                   POWER(  ((c.gx - @x)*c.dx + (c.gy - @y)*c.dy + (c.gz - @z)*c.dz)*c.dz - (c.gz - @z)  , 2 )
-                )/@lh AS DIST,
+                  AS DIST,
                   c.haloID AS haloID,
                   c.NP AS NP
             FROM
