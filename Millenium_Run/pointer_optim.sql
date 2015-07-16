@@ -81,14 +81,14 @@ FROM    (
               WHERE --Selects snapshot
                     D.snapnum = @snapnum
                     AND M.snapNum = @snapnum
+                    --Omits galaxies with r abs magnitude < -19
+                    AND D.mag_r < -19
                     --Restricts the box of haloes
                     AND M.ix >= @limx AND M.iy >= @limy AND M.iz >= @limz
                     AND M.ix <= @limMx AND M.iy <= @limMy AND M.iz <= @limMz
                     --Restricts the box of galaxies for each halo
                     AND D.ix >= M.ix - @nb AND D.iy >= M.iy - @nb AND D.iz >= M.iz - @nb
                     AND D.ix <= M.ix + @nb AND D.iy <= M.iy + @nb AND D.iz <= M.iz + @nb
-                    --Omits galaxies with r abs magnitude < -19
-                    AND D.mag_r < -19
                     --Selects only galaxies that fulfill the velocity cut
                     AND ABS(
                          ((@H*(D.x - M.x)/@lh + D.velX - M.velX)*(M.x - @x)+
