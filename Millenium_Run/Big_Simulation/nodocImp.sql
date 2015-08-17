@@ -23,7 +23,7 @@ SET @limMyh = $y
 SET @limMzh = $z
 SET @lh = 0.7
 SET @snapnum = 63
-SET @neigh = 4
+SET @neigh = 3
 SET @x = 0
 SET @y = 0
 SET @z = 0
@@ -33,20 +33,22 @@ FROM    (
         SELECT *, ROW_NUMBER() OVER ( PARTITION BY f.haloID ORDER BY f.SIGMA ASC ) AS RN
         FROM  (SELECT   ((( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
                         *( POWER(D.x - @x,2) + POWER(D.y - @y,2) + POWER(D.z - @z,2) )
-                        /POWER((M.x - @x)*(M.D - @x) + (M.x - @x)*(M.D - @x) + (M.x - @x)*(M.D - @x), 2))
-                        +1)*( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) AS SIGMA
+                        /POWER((M.x - @x)*(D.x - @x) + (M.y - @y)*(D.y - @y) + (M.z - @z)*(D.z - @z), 2))
+                        -1)*( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2)) AS SIGMA,
                          M.np AS NP,
                          M.haloID AS haloID
               FROM (SELECT galax.*, MaH.x, MaH.y, MaH.z, MaH.velX, MaH.velY, MaH.velZ, MaH.np
                     FROM  (SELECT Ma.haloID, Ma.galaxyID
                           FROM MPAGalaxies..DeLucia2006a Ma
                           WHERE Ma.snapNum = @snapnum
-                                AND Ma.x >= @limxh AND Ma.y >= @limyh AND Ma.z >= @limzh
-                                AND Ma.x < @limMxh AND Ma.y < @limMyh AND Ma.z < @limMzh) M
+                                AND Ma.ix >= FLOOR(@limxh/10) AND Ma.iy >= FLOOR(@limyh/10) AND Ma.iz >= FLOOR(@limzh/10)
+                                AND Ma.ix < FLOOR(@limMxh/10) AND Ma.iy < FLOOR(@limMyh/10) AND Ma.iz < FLOOR(@limMzh/10)
                                 AND Ma.type = 0) galax
-                    LEFT JOIN (SELECT halo.haloID, halo.x, halo.y, halo.z, halo.velX, halo.velY, halo.velZ, halo.np,
+                    INNER JOIN (SELECT halo.haloID, halo.x, halo.y, halo.z, halo.velX, halo.velY, halo.velZ, halo.np
                                FROM MPAHaloTrees..MHalo halo
-                               WHERE halo.snapNum = @snapnum) MaH
+                               WHERE halo.snapNum = @snapnum
+                                      AND halo.x >= @limxh - 5 AND halo.y >= @limyh - 5 AND halo.z >= @limzh - 5
+                                      AND halo.x < @limMxh + 5 AND halo.y < @limMyh + 5 AND halo.z < @limMzh + 5 ) MaH
                     ON MaH.haloID = galax.haloID ) M,
                    (SELECT a.*
                      FROM (SELECT D.galaxyID, D.ix, D.iy, D.iz, D.x, D.y, D.z, D.velX, D.velY, D.velZ
@@ -59,7 +61,7 @@ FROM    (
                                 FROM MPAGalaxies..Delucia2006a_SDSS2MASS L
                                 WHERE L.snapNum = @snapnum AND L.r_sdss < -19) S
                      ON S.galaxyID = a.galaxyID ) D
-              WHERE   D.haloID != M.haloID AND
+              WHERE   D.galaxyID != M.galaxyID AND
                       ABS(((@H*(D.x - M.x)/@lh + D.velX - M.velX)*(M.x - @x)+
                          (@H*(D.y - M.y)/@lh + D.velY - M.velY)*(M.y - @y) +
                          (@H*(D.z - M.z)/@lh + D.velZ - M.velZ)*(M.z - @z))/SQRT( POWER(M.x - @x,2) + POWER(M.y - @y,2) + POWER(M.z - @z,2) )
