@@ -19,8 +19,8 @@
 // env.csv : the name of the file to write the environments
 #define man "./environment.x env.csv"
 // Define the name for the halo and galaxy files
-#define Hdata "Halo.csv"
-#define Gdata "Galaxy.csv"
+#define Hdata "../Data/Halo.csv"
+#define Gdata "../Data/Galaxy.csv"
 // Simulation constants
 #define Hubb 100.0       // Hubble constant
 #define lh 0.7           // Little h (confirm)
