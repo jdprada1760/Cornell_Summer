@@ -19,7 +19,7 @@
 // env.csv : the name of the file to write the environments
 #define man "./environment.x env.csv"
 // Define the name for the halo and galaxy files
-#define Gdata "../Data/Galaxy.csv"
+#define Gdata "../Data/Galaxy1.csv"
 // Simulation constants
 #define Hubb 100.0       // Hubble constant
 #define lh 0.7           // Little h (confirm)
@@ -27,8 +27,8 @@
 #define L_h 75000.0         // L/lh
 // Method parameters
 #define nn 3             // Nearest neighbor for environment definition
-#define ddd 1            // Defines the range in the grid to count neighbor candidates
-#define res 10.0         // The resolution of the 3d spatial grid
+#define ddd 2           // Defines the range in the grid to count neighbor candidates
+#define res 5.0       // The resolution of the 3d spatial grid
 
 
 
@@ -107,13 +107,13 @@ int main(int argc, char **argv){
   time_t start = time(NULL);
   printf("Getting Environments ...\n");
 
-/*
+
   int i,j,k;
   for( i = 0; i < res; i++){
     for( j = 0; j < res; j++){
       for( k = 0; k < res; k++){
 
-        List* actual = (gridH[i][j][k])->next;
+        List* actual = (gridG[i][j][k])->next;
 
         do{
 
@@ -127,8 +127,8 @@ int main(int argc, char **argv){
       }
     }
   }
-*/
 
+/*
   int i,j,k;
   for( i = 0; i < 1; i++){
     for( j = 0; j < 1; j++){
@@ -155,6 +155,7 @@ int main(int argc, char **argv){
       }
     }
   }
+  */
 
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
 
@@ -321,46 +322,47 @@ void get_Env(int j, int hx, int hy, int hz){
            // index i kept by the node
            //printf("G_%d\n",actual->index);
            i = actual->index;
+           if( i!= j ){
 
-           //printf("OK2\n");
+             //printf("OK2\n");
 
-           // Keeps te velocity difference between the halo and the galaxy
-           float* deltaV = malloc(3*sizeof(float));
-           deltaV[0] = (Gv[j][0] - Gv[i][0]) + Hubb*( deltaPBC(Gp[j][0] , Gp[i][0] ) );
-           deltaV[1] = (Gv[j][1] - Gv[i][1]) + Hubb*( deltaPBC(Gp[j][1] , Gp[i][1] ) );
-           deltaV[2] = (Gv[j][2] - Gv[i][2]) + Hubb*( deltaPBC(Gp[j][2] , Gp[i][2] ) );
+             // Keeps te velocity difference between the halo and the galaxy
+             float* deltaV = malloc(3*sizeof(float));
+             deltaV[0] = (Gv[j][0] - Gv[i][0]) + Hubb*( deltaPBC(Gp[j][0] , Gp[i][0] ) );
+             deltaV[1] = (Gv[j][1] - Gv[i][1]) + Hubb*( deltaPBC(Gp[j][1] , Gp[i][1] ) );
+             deltaV[2] = (Gv[j][2] - Gv[i][2]) + Hubb*( deltaPBC(Gp[j][2] , Gp[i][2] ) );
 
-           // Calculates the vector from the point p to the halo (and its norm)
-           float* uv = malloc(3*sizeof(float));
-           uv[0] = deltaPBC(Gp[j][0] , p[0]);
-           uv[1] = deltaPBC(Gp[j][1] , p[1]);
-           uv[2] = deltaPBC(Gp[j][2] , p[2]);
-           float uvnorm = sqrt( pow(uv[0],2) + pow(uv[1],2) + pow(uv[2],2) );
+             // Calculates the vector from the point p to the halo (and its norm)
+             float* uv = malloc(3*sizeof(float));
+             uv[0] = deltaPBC(Gp[j][0] , p[0]);
+             uv[1] = deltaPBC(Gp[j][1] , p[1]);
+             uv[2] = deltaPBC(Gp[j][2] , p[2]);
+             float uvnorm = sqrt( pow(uv[0],2) + pow(uv[1],2) + pow(uv[2],2) );
 
-           // Calculates the relative radial velocity
-           float rrv = abs(( uv[0]*deltaV[0] + uv[1]*deltaV[1] + uv[2]*deltaV[2] )/uvnorm );
-           free(deltaV);
+             // Calculates the relative radial velocity
+             float rrv = abs(( uv[0]*deltaV[0] + uv[1]*deltaV[1] + uv[2]*deltaV[2] )/uvnorm );
+             free(deltaV);
 
-           //printf("OK3\n");
+             //printf("OK3\n");
 
-           // If galaxy fulfill the condition, its environment is saved
-           if( rrv - 500 <= 0 ){
+             // If galaxy fulfill the condition, its environment is saved
+             if( rrv - 500 <= 0 ){
 
-             float tnorm = sqrt( pow(deltaPBC(Gp[i][0] , p[0]),2) + pow(deltaPBC(Gp[i][1] , p[1]),2) +
-             pow(deltaPBC(Gp[i][2] , p[2]),2) );
+               float tnorm = sqrt( pow(deltaPBC(Gp[i][0] , p[0]),2) + pow(deltaPBC(Gp[i][1] , p[1]),2) +
+               pow(deltaPBC(Gp[i][2] , p[2]),2) );
 
-             // Saves the distance to the galaxy projected in the sky
-             float x =  ( uv[0]*(deltaPBC(Gp[i][0],p[0])) + uv[1]*(deltaPBC(Gp[i][1],p[1])) +
-             uv[2]*(deltaPBC(Gp[i][2],p[2])) )/( uvnorm*tnorm );
-             Genv[num] = pow( uvnorm/x, 2 )*( 1 - pow(x,2) );
+               // Saves the distance to the galaxy projected in the sky
+               float x =  ( uv[0]*(deltaPBC(Gp[i][0],p[0])) + uv[1]*(deltaPBC(Gp[i][1],p[1])) +
+               uv[2]*(deltaPBC(Gp[i][2],p[2])) )/( uvnorm*tnorm );
+               Genv[num] = pow( uvnorm/x, 2 )*( 1 - pow(x,2) );
 
-             //printf("%f\n",Genv[num]);
-             num ++;
+               //printf("%f\n",Genv[num]);
+               num ++;
 
+             }
+
+             free(uv);
            }
-
-           free(uv);
-
            // Step
            actual = actual->next;
 
