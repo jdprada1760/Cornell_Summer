@@ -19,7 +19,6 @@
 // env.csv : the name of the file to write the environments
 #define man "./environment.x env.csv"
 // Define the name for the halo and galaxy files
-#define Hdata "../Data/Halo.csv"
 #define Gdata "../Data/Galaxy.csv"
 // Simulation constants
 #define Hubb 100.0       // Hubble constant
@@ -73,8 +72,6 @@ void add(List* lista, unsigned int index);
 //------------------------------------------------------------------------------
 
 // Vectors and matrices for halos and galaxies positions, velocities and masses
-float** Hp;
-float** Hv;
 float** Gp;
 float** Gv;
 
@@ -85,10 +82,9 @@ float* env;
 float* p;
 
 // The number of halos and galaxies
-unsigned int nH, nG = 0;
+unsigned int nG = 0;
 
 // The grid of indexes for galaxies and halos
-List**** gridH;
 List**** gridG;
 
 
@@ -138,7 +134,7 @@ int main(int argc, char **argv){
     for( j = 0; j < 1; j++){
       for( k = 1; k < 10; k++){
 
-        List* actual = (gridH[i][j][k])->next;
+        List* actual = (gridG[i][j][k])->next;
 
         int count = 0;
         printf("%d_%d_%d_\n",i,j,k);
@@ -149,6 +145,9 @@ int main(int argc, char **argv){
           get_Env( actual->index, i, j, k );
           //printf("HALO_%d__________________________\n",actual->index);
           actual = actual->next;
+          if( actual == 0 ){
+            break;
+          }
           count++;
 
         }while(actual!= 0);
@@ -179,44 +178,30 @@ void allocate_All(){
   printf("Allocating...\n");
   // Allocates the grid
   int l,m,n;
-  gridH = malloc(res*sizeof(List***));
   gridG = malloc(res*sizeof(List***));
   for( l = 0; l < res; l++){
-    gridH[l] = malloc(res*sizeof(List**));
     gridG[l] = malloc(res*sizeof(List**));
     for( m = 0; m < res; m++){
-      gridH[l][m] = malloc(res*sizeof(List*));
       gridG[l][m] = malloc(res*sizeof(List*));
       for( n = 0; n < res; n++){
         // Initialises the list with the index 0
-        gridH[l][m][n] = iniList(0);
         gridG[l][m][n] = iniList(0);
       }
     }
   }
 
 
-  // Halos and galaxies files to read
-  FILE *Halo;
+  // Galaxies files to read
   FILE *Galaxy;
 
   // Read the files Halo and Galaxy
-  Halo = fopen( Hdata, "r" );
   Galaxy = fopen( Gdata, "r" );
 
   // Read files to obtain number of halos and subhalos
-  int test, test2;
+  int test2;
   float tmp;
-
   do{
-    test = fscanf(Halo, "%f,%f,%f,%f,%f,%f\n", &tmp, &tmp, &tmp, &tmp, &tmp, &tmp );
-    nH ++;
-  }while( test!=EOF );
-
-  printf("Number of Halos: %d\n",nH);
-
-  do{
-    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f\n", &tmp, &tmp, &tmp, &tmp, &tmp, &tmp );
+    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &tmp, &tmp, &tmp, &tmp, &tmp, &tmp ,&tmp, &tmp);
     nG ++;
   }while( test2!=EOF );
 
@@ -229,19 +214,10 @@ void allocate_All(){
   p[2] = 0;
 
   // Environment
-  env = malloc(nH*sizeof(float));
-
-  // Allocate Halos
-  int i;
-  Hp = malloc(nH*sizeof(float*));
-  Hv = malloc(nH*sizeof(float*));
-
-  for( i = 0; i < nH; i++){
-    Hp[i] = malloc(3*sizeof(float));
-    Hv[i] = malloc(3*sizeof(float));
-  }
+  env = malloc(nG*sizeof(float));
 
   // Allocate galaxies
+  int i;
   Gp = malloc(nG*sizeof(float*));
   Gv = malloc(nG*sizeof(float*));
 
@@ -251,7 +227,6 @@ void allocate_All(){
   }
 
   // Close the files
-  fclose(Halo);
   fclose(Galaxy);
 
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
@@ -268,52 +243,20 @@ void read_File(){
   time_t start = time(NULL);
   printf("Reading data...\n");
 
-  // Halos and galaxies files to read
-  FILE *Halo;
+  // Galaxies files to read
   FILE *Galaxy;
 
   // Read the files Halo and Galaxy
-  Halo = fopen( Hdata, "r" );
   Galaxy = fopen( Gdata, "r" );
 
   // Temporal variables to read
-  int test,test2;
-  int numH = 0;
+  int test2,i,j,k;
   int numG = 0;
-  float x,y,z,vx,vy,vz;
-
-  // Reading
-  do{
-
-    test = fscanf(Halo, "%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz );
-    Hp[numH][0] = x/lh;
-    Hp[numH][1] = y/lh;
-    Hp[numH][2] = z/lh;
-    Hv[numH][0] = vx;
-    Hv[numH][1] = vy;
-    Hv[numH][2] = vz;
-    add(gridH[(int)floorf(x/(L_h/res))][(int)floorf(y/(L_h/res))][(int)floorf(z/(L_h/res))],numH);
-    //printf("%d_%d_%d_\n",(int)floorf(x/(L/res)),(int)floorf(y/(L/res)),(int)floorf(z/(L/res)));
-    numH ++;
-
-  }while( test!=EOF );
-
-  printf("Number of Halos read: %d\n",numH);
-
-  int i,j,k;
-  for( i = 0; i < res; i++){
-    for( j = 0; j < res; j++){
-      for( k = 0; k < res; k++){
-        if((gridH[i][j][k])->next == 0){
-          printf("HVoid__%d_%d_%d____\n",i,j,k);
-        }
-      }
-    }
-  }
+  float x,y,z,vx,vy,vz,tmp;
 
   do{
 
-    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz );
+    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &tmp, &tmp );
     Gp[numG][0] = x/lh;
     Gp[numG][1] = y/lh;
     Gp[numG][2] = z/lh;
@@ -337,9 +280,7 @@ void read_File(){
     }
   }
 
-
   // Close the files
-  fclose(Halo);
   fclose(Galaxy);
 
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
@@ -385,15 +326,15 @@ void get_Env(int j, int hx, int hy, int hz){
 
            // Keeps te velocity difference between the halo and the galaxy
            float* deltaV = malloc(3*sizeof(float));
-           deltaV[0] = (Hv[j][0] - Gv[i][0]) + Hubb*( deltaPBC(Hp[j][0] , Gp[i][0] ) );
-           deltaV[1] = (Hv[j][1] - Gv[i][1]) + Hubb*( deltaPBC(Hp[j][1] , Gp[i][1] ) );
-           deltaV[2] = (Hv[j][2] - Gv[i][2]) + Hubb*( deltaPBC(Hp[j][2] , Gp[i][2] ) );
+           deltaV[0] = (Gv[j][0] - Gv[i][0]) + Hubb*( deltaPBC(Gp[j][0] , Gp[i][0] ) );
+           deltaV[1] = (Gv[j][1] - Gv[i][1]) + Hubb*( deltaPBC(Gp[j][1] , Gp[i][1] ) );
+           deltaV[2] = (Gv[j][2] - Gv[i][2]) + Hubb*( deltaPBC(Gp[j][2] , Gp[i][2] ) );
 
            // Calculates the vector from the point p to the halo (and its norm)
            float* uv = malloc(3*sizeof(float));
-           uv[0] = deltaPBC(Hp[j][0] , p[0]);
-           uv[1] = deltaPBC(Hp[j][1] , p[1]);
-           uv[2] = deltaPBC(Hp[j][2] , p[2]);
+           uv[0] = deltaPBC(Gp[j][0] , p[0]);
+           uv[1] = deltaPBC(Gp[j][1] , p[1]);
+           uv[2] = deltaPBC(Gp[j][2] , p[2]);
            float uvnorm = sqrt( pow(uv[0],2) + pow(uv[1],2) + pow(uv[2],2) );
 
            // Calculates the relative radial velocity
@@ -466,7 +407,7 @@ void write_Env( char* nameW ){
   time_t start = time(NULL);
   printf("Writing Environments...\n");
   unsigned int i;
-  for( i = 0; i < nH; i++){
+  for( i = 0; i < nG; i++){
     fprintf(toWrite, "%f\n", env[i]);
   }
   fclose(toWrite);
