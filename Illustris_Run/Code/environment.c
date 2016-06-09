@@ -19,7 +19,7 @@
 // env.csv : the name of the file to write the environments
 #define man "./environment.x env.csv"
 // Define the name for the halo and galaxy files
-#define Gdata "Galaxy1.csv"
+//define Gdata "Galaxy3.csv"
 // Simulation constants
 #define Hubb 100.0*0.001      // Hubble constant (km/kpc)
 #define lh 0.7           // Little h (confirm)
@@ -27,10 +27,6 @@
 #define L_h 75000.0         // L/lh
 // Method parameters
 #define nn 3             // Nearest neighbor for environment definition
-#define ddd 1           // Defines the range in the grid to count neighbor candidates
-#define res 3.0       // The resolution of the 3d spatial grid
-
-
 
 
 //------------------------------------------------------------------------------
@@ -59,7 +55,7 @@ typedef struct List List;
 //------------------------------------------------------------------------------
 void allocate_All();
 void read_File();
-void get_Env(int j, int ix, int iy, int iz);
+void get_Env(int j);
 void write_Env( char* nameW );
 float deltaPBC(float x, float y);
 int dPBC(int x, int y);
@@ -75,6 +71,9 @@ void add(List* lista, unsigned int index);
 float** Gp;
 float** Gv;
 
+// File to read (Galaxies)
+char* Gdata;
+
 // The environment array
 float* env;
 
@@ -85,7 +84,7 @@ float* p;
 unsigned int nG = 0;
 
 // The grid of indexes for galaxies and halos
-List**** gridG;
+List* gridG;
 
 
 //------------------------------------------------------------------------------
@@ -95,7 +94,8 @@ List**** gridG;
 int main(int argc, char **argv){
 
   // The name of the file to write environments
-  char* nameW = argv[1];
+  char* nameW = argv[2];
+  Gdata = argv[1];
 
   // Allocates memory
   allocate_All();
@@ -106,93 +106,17 @@ int main(int argc, char **argv){
   // Gets the environment for all halos
   time_t start = time(NULL);
   printf("Getting Environments ...\n");
-  /*
-  int i,j,k;
-  float max1,max2,max3;
-  max1 = 0;
-  max2 = 0;
-  max3 = 0;
-  for( i = 0; i < res; i++){
-    for( j = 0; j < res; j++){
-      for( k = 0; k < res; k++){
 
-        List* actual = (gridG[i][j][k])->next;
-        printf("%d_%d_%d_\n",i,j,k);
+  List* actual = gridG->next;
 
-        do{
+  do{
 
-          //printf("Halo %d\n", i+1);
-          int ind = actual->index;
-          if(Gp[ind][0] >= max1){
-            max1 = Gp[ind][0];
+    printf("Halo %d\n", actual->index+1);
+    get_Env( actual->index);
 
-          }
-          if(Gp[ind][1] >= max2){
-            max2 = Gp[ind][1];
+    actual = actual->next;
 
-          }
-          if(Gp[ind][2] >= max3){
-            max3 = Gp[ind][2];
-
-          }
-          actual = actual->next;
-
-        }while(actual != 0);
-      }
-    }
-  }
-  float c = 3e+8;
-  printf("Los maximos son: %f ___%f ___%f___\n%f ___%f ___%f___\n%f ___%f ___%f___\n", max1, max2, max3, max1*lh, max2*lh, max3*lh, max1*c, max2*c, max3*c );
-  */
-  int i,j,k;
-  for( i = 0; i < res; i++){
-    for( j = 0; j < res; j++){
-      for( k = 0; k < res; k++){
-
-        List* actual = (gridG[i][j][k])->next;
-        printf("%d_%d_%d_\n",i,j,k);
-
-        do{
-
-          //printf("Halo %d\n", i+1);
-          get_Env( actual->index, i, j, k );
-
-          actual = actual->next;
-
-        }while(actual != 0);
-
-      }
-    }
-  }
-
-/*
-  int i,j,k;
-  for( i = 0; i < 1; i++){
-    for( j = 0; j < 1; j++){
-      for( k = 1; k < 10; k++){
-
-        List* actual = (gridG[i][j][k])->next;
-
-        int count = 0;
-        printf("%d_%d_%d_\n",i,j,k);
-
-        do{
-
-          //printf("Halo %d\n", i+1);
-          get_Env( actual->index, i, j, k );
-          //printf("HALO_%d__________________________\n",actual->index);
-          actual = actual->next;
-          if( actual == 0 ){
-            break;
-          }
-          count++;
-
-        }while(actual!= 0);
-
-      }
-    }
-  }
-  */
+  }while(actual != 0);
 
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
 
@@ -215,19 +139,7 @@ void allocate_All(){
   time_t start = time(NULL);
   printf("Allocating...\n");
   // Allocates the grid
-  int l,m,n;
-  gridG = malloc(res*sizeof(List***));
-  for( l = 0; l < res; l++){
-    gridG[l] = malloc(res*sizeof(List**));
-    for( m = 0; m < res; m++){
-      gridG[l][m] = malloc(res*sizeof(List*));
-      for( n = 0; n < res; n++){
-        // Initialises the list with the index 0
-        gridG[l][m][n] = iniList(0);
-      }
-    }
-  }
-
+  gridG = iniList(0);
 
   // Galaxies files to read
   FILE *Galaxy;
@@ -240,6 +152,9 @@ void allocate_All(){
   float tmp;
   do{
     test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &tmp, &tmp, &tmp, &tmp, &tmp, &tmp ,&tmp, &tmp);
+    if(test2 == EOF){
+      break;
+    }
     nG ++;
   }while( test2!=EOF );
 
@@ -288,35 +203,28 @@ void read_File(){
   Galaxy = fopen( Gdata, "r" );
 
   // Temporal variables to read
-  int test2,i,j,k;
+  int test2;
   int numG = 0;
   float x,y,z,vx,vy,vz,tmp;
 
   do{
 
     test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &tmp, &tmp );
+    if(test2 == EOF){
+      break;
+    }
     Gp[numG][0] = x/lh;
     Gp[numG][1] = y/lh;
     Gp[numG][2] = z/lh;
     Gv[numG][0] = vx;
     Gv[numG][1] = vy;
     Gv[numG][2] = vz;
-    add(gridG[(int)floorf(x/(L_h/res))][(int)floorf(y/(L_h/res))][(int)floorf(z/(L_h/res))],numG);
+    //printf("%d__%f\n", numG, x/lh);
+    add(gridG,numG);
     numG ++;
 
   }while( test2!=EOF );
   printf("Number of Galaxies read: %d\n",numG);
-
-  // Check how many grid cubes are out of galaxies
-  for( i = 0; i < res; i++){
-    for( j = 0; j < res; j++){
-      for( k = 0; k < res; k++){
-        if((gridG[i][j][k])->next == 0){
-          printf("GVoid__%d_%d_%d____\n",i,j,k);
-        }
-      }
-    }
-  }
 
   // Close the files
   fclose(Galaxy);
@@ -328,7 +236,7 @@ void read_File(){
 /*
  * Given an index, gets the environment of the corresponding halo and saves it to env
  */
-void get_Env(int j, int hx, int hy, int hz){
+void get_Env(int j){
 
    // Saves the environment of the candidate galaxies
    int num = 0;
@@ -336,84 +244,66 @@ void get_Env(int j, int hx, int hy, int hz){
 
    // Indexes for the loops
    int i,l;
-   int ix,iy,iz,cx,cy,cz;
-   // Loops in each dimension
-   ix = rPBC(hx-ddd);
-   for(cx = 0; cx <= 2*ddd; cx++){
-     iy = rPBC(hy-ddd);
-     for(cy = 0; cy <= 2*ddd; cy++){
-       iz = rPBC(hz-ddd);
-       for(cz = 0; cz <= 2*ddd; cz++){
 
+   // Actual node of the list
+   //printf("OK1.1\n");
 
-         // Actual node of the list
-         //printf("OK1.1\n");
+   List* actual = gridG->next;
 
-         List* actual = (gridG[ix][iy][iz])->next;
+   //printf("OK1.2_____%d\n",(gridG[ix][iy][iz])->next != 0);
 
-         //printf("OK1.2_____%d\n",(gridG[ix][iy][iz])->next != 0);
+   // Loop over the nodes
+   do{
 
-         // Loop over the nodes
-         do{
+     // index i kept by the node
+     //printf("G_%d\n",actual->index);
+     i = actual->index;
+     if( i!= j ){
 
-           // index i kept by the node
-           //printf("G_%d\n",actual->index);
-           i = actual->index;
-           if( i!= j ){
+       //printf("OK2\n");
 
-             //printf("OK2\n");
+       // Keeps te velocity difference between the halo and the galaxy
+       float* deltaV = malloc(3*sizeof(float));
+       deltaV[0] = -(Gv[j][0] - Gv[i][0]) - Hubb*( deltaPBC(Gp[j][0] , Gp[i][0] ) );
+       deltaV[1] = -(Gv[j][1] - Gv[i][1]) - Hubb*( deltaPBC(Gp[j][1] , Gp[i][1] ) );
+       deltaV[2] = -(Gv[j][2] - Gv[i][2]) - Hubb*( deltaPBC(Gp[j][2] , Gp[i][2] ) );
 
-             // Keeps te velocity difference between the halo and the galaxy
-             float* deltaV = malloc(3*sizeof(float));
-             deltaV[0] = -(Gv[j][0] - Gv[i][0]) - Hubb*( deltaPBC(Gp[j][0] , Gp[i][0] ) );
-             deltaV[1] = -(Gv[j][1] - Gv[i][1]) - Hubb*( deltaPBC(Gp[j][1] , Gp[i][1] ) );
-             deltaV[2] = -(Gv[j][2] - Gv[i][2]) - Hubb*( deltaPBC(Gp[j][2] , Gp[i][2] ) );
+       // Calculates the vector from the point p to the halo (and its norm)
+       float* ph = malloc(3*sizeof(float));
+       ph[0] = deltaPBC(Gp[j][0] , p[0]);
+       ph[1] = deltaPBC(Gp[j][1] , p[1]);
+       ph[2] = deltaPBC(Gp[j][2] , p[2]);
+       float phnorm = sqrt( pow(ph[0],2) + pow(ph[1],2) + pow(ph[2],2) );
 
-             // Calculates the vector from the point p to the halo (and its norm)
-             float* ph = malloc(3*sizeof(float));
-             ph[0] = deltaPBC(Gp[j][0] , p[0]);
-             ph[1] = deltaPBC(Gp[j][1] , p[1]);
-             ph[2] = deltaPBC(Gp[j][2] , p[2]);
-             float phnorm = sqrt( pow(ph[0],2) + pow(ph[1],2) + pow(ph[2],2) );
+       // Calculates the relative radial velocity
+       float rrv = abs(( ph[0]*deltaV[0] + ph[1]*deltaV[1] + ph[2]*deltaV[2] )/phnorm );
+       free(deltaV);
 
-             // Calculates the relative radial velocity
-             float rrv = abs(( ph[0]*deltaV[0] + ph[1]*deltaV[1] + ph[2]*deltaV[2] )/phnorm );
-             free(deltaV);
+       // If galaxy fulfill the condition, its environment is saved
+       if( rrv - 500 <= 0 ){
 
-             // If galaxy fulfill the condition, its environment is saved
-             if( rrv - 500 <= 0 ){
+         // Calculates the vector from the point p to the galaxy (from p to halo + form halo to galaxy)
+         float* pg = malloc(3*sizeof(float));
+         pg[0] = ph[0] + deltaPBC(Gp[i][0] , Gp[j][0] ); // checked
+         pg[1] = ph[1] + deltaPBC(Gp[i][1] , Gp[j][1] );
+         pg[2] = ph[2] + deltaPBC(Gp[i][2] , Gp[j][2] );
+         float pgnorm = sqrt( pow(pg[0],2) + pow(pg[1],2) + pow(pg[2],2) );
 
-               // Calculates the vector from the point p to the galaxy (from p to halo + form halo to galaxy)
-               float pg = malloc(3*sizeof(float));
-               pg[0] = ph[0] + deltaPBC(Gp[i][0] , Gp[j][0] ); // checked
-               pg[1] = ph[1] + deltaPBC(Gp[i][1] , Gp[j][1] );
-               pg[2] = ph[2] + deltaPBC(Gp[i][2] , Gp[j][2] );
-               float pgnorm = sqrt( pow(pg[0],2) + pow(pg[1],2) + pow(pg[2],2) );
-
-               // Saves the distance^2 to the galaxy projected in the sky
-               float x =  ( ph[0]*pg[0] + ph[1]*pg[1] +
-               ph[2]*pg[2] )/( phnorm*pgnorm );
-               Genv[num] = pow( phnorm/x, 2 )*( 1 - pow(x,2) );
-               //printf("%f\n",Genv[num]);
-               num ++;
-
-             }
-
-             free(ph);
-             free(pg);
-           }
-           // Step
-           actual = actual->next;
-
-         }while(actual != 0);
-
-         //printf("_%d_%d_%d_\n",ix,iy,iz);
-         iz = rPBC(iz+1);
+         // Saves the distance^2 to the galaxy projected in the sky
+         float x =  ( ph[0]*pg[0] + ph[1]*pg[1] +
+         ph[2]*pg[2] )/( phnorm*pgnorm );
+         Genv[num] = pow( phnorm/x, 2 )*( 1 - pow(x,2) );
+         //printf("%f\n",Genv[num]);
+         num ++;
+         free(pg);
        }
-       iy = rPBC(iy+1);
+       free(ph);
      }
-     ix = rPBC(ix+1);
-   }
+     // Step
+     actual = actual->next;
+
+   }while(actual != 0);
+
 
    //printf("%d___\n",num);
    // Gets the nnth nearest neighbor (nn)
@@ -430,7 +320,7 @@ void get_Env(int j, int hx, int hy, int hz){
      }
      // Sets a big number to delete the minimum and find the second one
      if( i != nn-1 ){
-       Genv[maxindx] = 9e+12;
+       Genv[maxindx] = 999999999999;
      }
    }
 
@@ -472,34 +362,6 @@ float deltaPBC(float x, float y){
   }
   return dx;
 }
-
-/*
- * Distance in periodic boundary conditions (integer version)
- */
-int dPBC(int x, int y){
-  int dx = x - y;
-  if(dx >  (res*0.5)){
-    dx = (int)(dx - res);
-  }
-  else if (dx <= -(res*0.5)){
-    dx = (int)(dx + res);
-  }
-  return dx;
-}
-
-/*
- * Integer position in periodic boundary conditions
- */
-int rPBC(int x){
-  if(x <  0){
-    x = (int)(x + res);
-  }
-  else if(x >=  res){
-    x = (int)(x - res);
-  }
-  return x;
-}
-
 
 //------------------------------------------------------------------------------
 // Struct methods for the list
