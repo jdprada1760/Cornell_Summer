@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------
 
 // env.csv : the name of the file to write the environments
-#define man "./environment.x env.csv"
+#define man "./environment.x Galaxyn.csv env.data"
 // Define the name for the halo and galaxy files
 //define Gdata "Galaxy3.csv"
 // Simulation constants
@@ -70,6 +70,10 @@ void add(List* lista, unsigned int index);
 // Vectors and matrices for halos and galaxies positions, velocities and masses
 float** Gp;
 float** Gv;
+
+// Vectors of masses of gas and dark matter
+float* Ggas;
+float* Gdm;
 
 // File to read (Galaxies)
 char* Gdata;
@@ -173,6 +177,8 @@ void allocate_All(){
   int i;
   Gp = malloc(nG*sizeof(float*));
   Gv = malloc(nG*sizeof(float*));
+  Ggas = malloc(nG*sizeof(float));
+  Gdm = malloc(nG*sizeof(float));
 
   for( i = 0; i < nG; i++){
     Gp[i] = malloc(3*sizeof(float));
@@ -205,11 +211,11 @@ void read_File(){
   // Temporal variables to read
   int test2;
   int numG = 0;
-  float x,y,z,vx,vy,vz,tmp;
+  float x,y,z,vx,vy,vz,mg,mdm;
 
   do{
 
-    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &tmp, &tmp );
+    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &mg, &mdm );
     if(test2 == EOF){
       break;
     }
@@ -219,6 +225,8 @@ void read_File(){
     Gv[numG][0] = vx;
     Gv[numG][1] = vy;
     Gv[numG][2] = vz;
+    Ggas[numG] = mg;
+    Gdm[numG] = mdm;
     //printf("%d__%f\n", numG, x/lh);
     add(gridG,numG);
     numG ++;
@@ -339,7 +347,7 @@ void write_Env( char* nameW ){
   printf("Writing Environments...\n");
   unsigned int i;
   for( i = 0; i < nG; i++){
-    fprintf(toWrite, "%f\n", env[i]);
+    fprintf(toWrite, "%f,%f,%f\n", env[i],Ggas[i],Gdm[i]);
   }
   fclose(toWrite);
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
