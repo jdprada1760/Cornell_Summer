@@ -284,24 +284,28 @@ void get_Env(int j){
        float phnorm = sqrt( pow(ph[0],2) + pow(ph[1],2) + pow(ph[2],2) );
 
        // Calculates the relative radial velocity
-       float rrv = abs(( ph[0]*deltaV[0] + ph[1]*deltaV[1] + ph[2]*deltaV[2] )/phnorm );
+       float rrv = fabs(( ph[0]*deltaV[0] + ph[1]*deltaV[1] + ph[2]*deltaV[2] )/phnorm );
        free(deltaV);
 
        // If galaxy fulfill the condition, its environment is saved
        if( rrv - 500 <= 0 ){
 
-         // Calculates the vector from the point p to the galaxy (from p to halo + form halo to galaxy)
+         // Calculates the vector from the point p to the galaxy
          float* pg = malloc(3*sizeof(float));
-         pg[0] = ph[0] + deltaPBC(Gp[i][0] , Gp[j][0] ); // checked
-         pg[1] = ph[1] + deltaPBC(Gp[i][1] , Gp[j][1] );
-         pg[2] = ph[2] + deltaPBC(Gp[i][2] , Gp[j][2] );
+         pg[0] = deltaPBC(Gp[i][0] , p[0]);
+         pg[1] = deltaPBC(Gp[i][1] , p[1]);
+         pg[2] = deltaPBC(Gp[i][2] , p[2]);
          float pgnorm = sqrt( pow(pg[0],2) + pow(pg[1],2) + pow(pg[2],2) );
 
          // Saves the distance^2 to the galaxy projected in the sky
-         float x =  ( ph[0]*pg[0] + ph[1]*pg[1] +
-         ph[2]*pg[2] )/( phnorm*pgnorm );
-         Genv[num] = pow( phnorm/x, 2 )*( 1 - pow(x,2) );
+         float x =  ( (ph[0]*pg[0]) + (ph[1]*pg[1]) + (ph[2]*pg[2]) )/( phnorm*pgnorm );
+         Genv[num] = pow( phnorm/x, 2 )*(fabs( 1.0 - pow(x,2) ));
          //printf("%f\n",Genv[num]);
+         /*
+         if(Genv[num]< 0){
+           printf("%f____%f____%f\n",(fabs( 1.0 - pow(x,2) )),pgnorm,phnorm);
+         }
+         */
          num ++;
          free(pg);
        }
@@ -315,8 +319,8 @@ void get_Env(int j){
 
    //printf("%d___\n",num);
    // Gets the nnth nearest neighbor (nn)
-   float maxdist;
-   int maxindx;
+   float maxdist = 9e+15;
+   int maxindx = 0;
    for( i = 0; i < nn; i++){
      maxdist = 9e+12;
      maxindx = 0;
@@ -327,9 +331,7 @@ void get_Env(int j){
        }
      }
      // Sets a big number to delete the minimum and find the second one
-     if( i != nn-1 ){
-       Genv[maxindx] = 999999999999;
-     }
+     Genv[maxindx] = 9e+15;
    }
 
    env[j] = maxdist;
@@ -346,6 +348,7 @@ void write_Env( char* nameW ){
   time_t start = time(NULL);
   printf("Writing Environments...\n");
   unsigned int i;
+  //printf("%d\n",nG);
   for( i = 0; i < nG; i++){
     fprintf(toWrite, "%f,%f,%f\n", env[i],Ggas[i],Gdm[i]);
   }
