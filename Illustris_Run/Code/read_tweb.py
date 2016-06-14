@@ -43,6 +43,8 @@ def read_CIC_scalar(filename):
     return {'eigenval':array_data, 'delta_x':dx}
 
 data = read_CIC_scalar("../data/tweb/snap_135.s1.00.eigen_2")
+print("delta_x", data['delta_x'])
+print("shape", np.shape(data['eigenval']))
 
 plt.imshow(data['eigenval'][:,:,10].T)
 plt.show()
