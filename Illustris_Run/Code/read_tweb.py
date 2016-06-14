@@ -1,5 +1,6 @@
 import struct
 import numpy as np
+import matplotlib.pyplot as plt
 def read_CIC_scalar(filename):
     f = open(filename, "rb")
     dumb = f.read(38)
@@ -41,4 +42,7 @@ def read_CIC_scalar(filename):
     array_data = array_data.transpose()
     return {'eigenval':array_data, 'delta_x':dx}
 
-#a = read_CIC_scalar("../data/tweb/snap_135.s1.00.eigen_1")
+data = read_CIC_scalar("../data/tweb/snap_135.s1.00.eigen_2")
+
+plt.imshow(data['eigenval'][:,:,10].T)
+plt.show()
