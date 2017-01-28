@@ -1,0 +1,36 @@
+\begin{thebibliography}{1}
+
+\bibitem{jones}
+M.~G. {Jones}, E.~{Papastergis}, M.~P. {Haynes}, and R.~{Giovanelli}.
+\newblock {Environmental dependence of the H I mass function in the ALFALFA
+  70\% catalogue}.
+\newblock {\em MNRAS}, 457:4393--4405, April 2016.
+
+\bibitem{environments}
+S.~I. {Muldrew}, D.~J. {Croton}, R.~A. {Skibba}, F.~R. {Pearce}, H.~B. {Ann},
+  I.~K. {Baldry}, S.~{Brough}, Y.-Y. {Choi}, C.~J. {Conselice}, N.~B. {Cowan},
+  A.~{Gallazzi}, M.~E. {Gray}, R.~{Gr{\"u}tzbauch}, I.-H. {Li}, C.~{Park},
+  S.~V. {Pilipenko}, B.~J. {Podgorzec}, A.~S.~G. {Robotham}, D.~J. {Wilman},
+  X.~{Yang}, Y.~{Zhang}, and S.~{Zibetti}.
+\newblock {Measures of galaxy environment - I. What is 'environment'?}
+\newblock {\em MNRAS}, 419:2670--2682, January 2012.
+
+\bibitem{forero}
+J.~E. {Forero-Romero}, Y.~{Hoffman}, S.~{Gottl{\"o}ber}, A.~{Klypin}, and
+  G.~{Yepes}.
+\newblock {A dynamical classification of the cosmic web}.
+\newblock {\em MNRAS}, 396:1815--1824, July 2009.
+
+\bibitem{contra1}
+C.~M. {Springob}, M.~P. {Haynes}, and R.~{Giovanelli}.
+\newblock {Morphology, Environment, and the H I Mass Function}.
+\newblock {\em APJ}, 621:215--226, March 2005.
+
+\bibitem{contra2}
+S.~{Stierwalt}, M.~P. {Haynes}, R.~{Giovanelli}, B.~R. {Kent}, A.~M. {Martin},
+  A.~{Saintonge}, I.~D. {Karachentsev}, and V.~E. {Karachentseva}.
+\newblock {The Arecibo Legacy Fast Alfa Survey. IX. The Leo Region H I Catalog,
+  Group Membership, and the H I Mass Function for the Leo I Group}.
+\newblock {\em AJ}, 138:338--361, August 2009.
+
+\end{thebibliography}

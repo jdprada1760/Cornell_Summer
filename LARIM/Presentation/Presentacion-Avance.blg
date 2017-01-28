@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: Presentacion-Avance.aux
+Case mismatch error between cite keys Jones and jones
+---line 39 of file Presentacion-Avance.aux
+ : \citation{Jones
+ :                }
+I'm skipping whatever remains of this command
+The style file: unsrt.bst
+Database file #1: Bibliography.bib
+You've used 5 entries,
+            1791 wiz_defined-function locations,
+            477 strings with 4862 characters,
+and the built_in function-call counts, 1625 in all, are:
+= -- 111
+> -- 136
+< -- 0
++ -- 47
+- -- 42
+* -- 162
+:= -- 291
+add.period$ -- 15
+call.type$ -- 5
+change.case$ -- 5
+chr.to.int$ -- 0
+cite$ -- 5
+duplicate$ -- 45
+empty$ -- 122
+format.name$ -- 42
+if$ -- 332
+int.to.chr$ -- 0
+int.to.str$ -- 5
+missing$ -- 5
+newline$ -- 28
+num.names$ -- 5
+pop$ -- 5
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 15
+stack$ -- 0
+substring$ -- 123
+swap$ -- 5
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 10
+width$ -- 6
+write$ -- 57
+(There was 1 error message)
