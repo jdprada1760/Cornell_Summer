@@ -116,26 +116,23 @@ and describes the problem the authors aim to solve \citep[e.g.][]{Author2012}.
 
 \section{Illustris Simulation}
 Illustris-1, also known simply as Illustris, is a highly resolved cosmological simulation which reproduces large-scale statistical features of the Universe, such as the galaxy population of massive clusters, as well as small-scale properties such as the morphology of galaxies and detailed values for their stellar and gas content. This was achieved by following the evolution of $1820^3$ DM particles with mass resolution $m_{\text{DM}} = 6.26\cdot 10^6\text{M}_{\odot}$, together with $1820^3$ baryonic particles with mass resolution $\overline{\text{m}_\text{b}}=1.26\cdot 10^6\text{M}_{\odot}$ from a glass-like configuration, in a periodic box of $106.5\text{Mpc}$, all of which is consistent with a standard $\Lambda \text{CDM}$ cosmology with $\Omega_\Lambda=0.7274$, $\Omega_\text{m}=0.2726$, $\Omega_\text{b}=0.0456$, $\sigma_\text{s}=0.0.809$, $\text{n}_\text{s}=0.963$ \& $\text{H}_0=70.4\text{kms}
-^{-1}\text{Mpc}^{-1}$. Illustris has a constant spatial resolution of $1.4\text{kpc}$ for DM particles in comoving units, and for baryonic particles it has the same spatial resolution of DM for $\text{z}\geq 1$, which is later modified to $0.7\text{kpc}$ in physical units for the rest of the simulation. The evolution in time was performed with the hydrodynamic algorithm AREPO \cite{arepo}, which combines an moving Voronoi tessellation with the finite volume approach. Included in the evolution algorithm, there are galaxy formation models which account for the evolution of stars and SMBHs. The level of detail in Illustris is advantageous and hard to find among other simulations, and is the reason why we chose it to perform our calculations.\\
+^{-1}\text{Mpc}^{-1}$. Illustris has a constant spatial resolution of $1.4\text{kpc}$ for DM particles in comoving units, and for baryonic particles it has the same spatial resolution of DM for $\text{z}\geq 1$, which is later modified to $0.7\text{kpc}$ in physical units for the rest of the simulation. The evolution in time was performed with the hydrodynamic algorithm AREPO \cite{arepo}, which combines a moving Voronoi tessellation with the finite volume approach. Included in the evolution algorithm, there are galaxy formation models which account for the evolution of stars and SMBHs. The level of detail in Illustris is advantageous and hard to find among other simulations, and is the reason why we chose it to perform our calculations.\\
 
 This simulation consists of 136 snapshots where 61 of them were taken at $z < 3$ spaced with a cosmological scale factor $\Delta a \approx 0.02$, while the remaining 75 were taken at $z > 3$ with spacing $\Delta a \approx 0.01$. Each snapshot was post-processed with modified versions of FOF and SUBFIND algorithms \cite{fof,subfind} to generate halo and subhalo catalogues with their respective characterization properties.  
 
+\section{The method}
+The principal purpose of this work is to verify if the results obtained observationally by Jones et al. \cite{jones1} are supported by a similar analysis in the cosmological simulation Illustris. For this purpose, we want to adaptate the observational method as closely as posible for it to work on computational data.\\
 
-\subsection{Maths}
-\label{sec:maths} % used for referring to this section from elsewhere
+The principal method used in Jones et al. \cite{jones1} for the analysis of the dependence of the Schechter parameters on the cosmological environment is as follows. To obtain a quantification of environment, they calculated for, each galaxy in the studied survey, the projected distance in the sky to the third nearest neighbor, filtrating candidate galaxies by its radial velocity relative to the galaxy studied. According to Hubble's law, this effectively restricts the candidate galaxies to a smaller radial range, reducing apparent closer galaxies arising from the projection method. The radial relative velocity cut was chosen to be $450km/s$. Furthermore, a photometrics preselection was performed, selecting galaxies whose r-filter magnitude was above $-19$ (VERIFY).\\
 
-Simple mathematics can be inserted into the flow of the text e.g. $2\times3=6$
-or $v=220$\,km\,s$^{-1}$, but more complicated expressions should be entered
-as a numbered equation:
+Once quantified the environment with the distance to the 3rd nearest neighbor definition for each galaxy in their post-selected survey they divided the group in four quartiles according this quantity. For each quartile, the respective HIMF was calculated, and with this, a Schechter fit was obtained. The analysis was specifically performed over the Schechter parameters of the Knee-mass and the faint-end slope.\\
 
-\begin{equation}
-    x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}.
-	\label{eq:quadratic}
-\end{equation}
+In dark matter cosmological simulations, acces to the information is istantaneous and at no cost. However, as we want to replicate as closely as possible the method effectuated by Jones et. al \cite{jones1}. We also calculate the projected distance in the simulation, according to a specified point of view, taking the same radial velocity cut having into account distance and peculiar velocities. Even when we could easily calculate the distance to the third nearest neighbor we take into account these observational simplifications, to make our study as comparable as possible to that of Jones et al. \cite{jones1}
 
-Refer back to them as e.g. equation~(\ref{eq:quadratic}).
+\section{Results}
+\subsection{Preliminaries}
 
-\subsection{Figures and tables}
+\subsection{Mass functions comparison}
 
 Figures and tables should be placed at logical positions in the text. Don't
 worry about the exact layout, which will be handled by the publishers.
@@ -143,16 +140,84 @@ worry about the exact layout, which will be handled by the publishers.
 Figures are referred to as e.g. Fig.~\ref{fig:example_figure}, and tables as
 e.g. Table~\ref{tab:example_table}.
 
-% Example figure
+% Quartiles gas
 \begin{figure}
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{example}
-    \caption{This is an example figure. Captions appear below each figure.
-	Give enough detail for the reader to understand what they're looking at,
-	but leave detailed discussion to the main body of the text.}
-    \label{fig:example_figure}
+	\includegraphics[width=\columnwidth]{./pics/quartilesGas.png}
+    \caption{\textbf{Upper side}: Schechter fits of each gas mass function for each environmental quartile using the 3rd nearest neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \label{fig:quartilesGas}
+\end{figure}
+
+% Tweb gas
+\begin{figure}
+	% To include a figure from a file named example.*
+	% Allowable file formats are eps or ps if compiling using latex
+	% or pdf, png, jpg if compiling using pdflatex
+	\includegraphics[width=\columnwidth]{./pics/T-Web_Gas.png}
+    \caption{\textbf{Upper side}: Schechter fits of each gas mass function for each morphological environment characterized by the T-Web algorithm proposed by Forero et al.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \label{fig:TwebGas}
+\end{figure}
+
+% Quartiles DM
+\begin{figure}
+	% To include a figure from a file named example.*
+	% Allowable file formats are eps or ps if compiling using latex
+	% or pdf, png, jpg if compiling using pdflatex
+	\includegraphics[width=\columnwidth]{./pics/quartilesDM.png}
+    \caption{\textbf{Upper side}: Schechter fits of each DM mass function for each environmental quartile using the 3rd nearest neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \label{fig:quartilesDM}
+\end{figure}
+
+% Tweb DM
+\begin{figure}
+	% To include a figure from a file named example.*
+	% Allowable file formats are eps or ps if compiling using latex
+	% or pdf, png, jpg if compiling using pdflatex
+	\includegraphics[width=\columnwidth]{./pics/T-Web_DM.png}
+    \caption{\textbf{Upper side}: Schechter fits of each DM mass function for each morphological environment characterized by the T-Web algorithm proposed by Forero et al.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \label{fig:TwebDM}
+\end{figure}
+
+% Quartiles Stellar
+\begin{figure}
+	% To include a figure from a file named example.*
+	% Allowable file formats are eps or ps if compiling using latex
+	% or pdf, png, jpg if compiling using pdflatex
+	\includegraphics[width=\columnwidth]{./pics/quartilesSellar.png}
+    \caption{\textbf{Upper side}: Schechter fits of each stellar mass function for each environmental quartile using the 3rd nearest neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \label{fig:quartilesStellar}
+\end{figure}
+
+% Tweb Stellar
+\begin{figure}
+	% To include a figure from a file named example.*
+	% Allowable file formats are eps or ps if compiling using latex
+	% or pdf, png, jpg if compiling using pdflatex
+	\includegraphics[width=\columnwidth]{./pics/T-Web_Stellar.png}
+    \caption{\textbf{Upper side}: Schechter fits of each stellar mass function for each morphological environment characterized by the T-Web algorithm proposed by Forero et al.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \label{fig:TwebStellar}
+\end{figure}
+
+% Quartiles BH
+\begin{figure}
+	% To include a figure from a file named example.*
+	% Allowable file formats are eps or ps if compiling using latex
+	% or pdf, png, jpg if compiling using pdflatex
+	\includegraphics[width=\columnwidth]{./pics/quartilesBH.png}
+    \caption{\textbf{Upper side}: Schechter fits of each BH mass function for each environmental quartile using the 3rd nearest neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \label{fig:quartilesBH}
+\end{figure}
+
+% Tweb BH
+\begin{figure}
+	% To include a figure from a file named example.*
+	% Allowable file formats are eps or ps if compiling using latex
+	% or pdf, png, jpg if compiling using pdflatex
+	\includegraphics[width=\columnwidth]{./pics/T-Web_BH.png}
+    \caption{\textbf{Upper side}: Schechter fits of each BH mass function for each morphological environment characterized by the T-Web algorithm proposed by Forero et al.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \label{fig:TwebBH}
 \end{figure}
 
 % Example table
