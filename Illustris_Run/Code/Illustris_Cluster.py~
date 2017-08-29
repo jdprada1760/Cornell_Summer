@@ -1,0 +1,9 @@
+import numpy as np
+from arepo import *
+
+# Path of the simulation
+path = "/hits/universe/GigaGalaxy/"+lvl+"/"+halo+"/output" 
+# Snapshot number 
+snapnum = 255
+# Loads groups to select the principal halo
+subSn = Subfind(path,snapnum)
