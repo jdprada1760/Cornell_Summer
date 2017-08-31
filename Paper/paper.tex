@@ -112,20 +112,53 @@ for a full user guide.
 \cite{Tweb}.
 
 \section{Illustris Simulation}
-Illustris-1, also known simply as Illustris, is a highly resolved cosmological simulation which reproduces large-scale statistical features of the Universe, such as the galaxy population of massive clusters, as well as small-scale properties such as the morphology of galaxies and detailed values for their stellar and gas content.\\
+Illustris-1, also known simply as Illustris, is a highly resolved
+cosmological simulation which reproduces large-scale statistical
+features of the Universe, such as the galaxy population of massive
+clusters, as well as small-scale properties such as the morphology of
+galaxies and detailed values for their stellar and gas content.\\ 
 
 This was achieved by following the evolution of $2 \times 1820^3$ elements with dark mass resolution of $m_{\text{DM}} = 6.26\cdot 10^6\text{M}_{\odot}$ and initial baryonic mass resolution of $\overline{\text{m}_\text{b}}=1.26\cdot 10^6\text{M}_{\odot}$ from a glass-like configuration in a periodic box of $106.5\text{Mpc}$. The $\Lambda \text{CDM}$ cosmology of this run follows: $\Omega_\Lambda=0.7274$, $\Omega_\text{m}=0.2726$, $\Omega_\text{b}=0.0456$, $\sigma_\text{s}=0.0809$, $\text{n}_\text{s}=0.963$ \& $\text{H}_0=70.4\text{kms}
-^{-1}\text{Mpc}^{-1}$ which is consistent with the (last) Anisotropy Probe (WMAP)-9 \cite{AnisotropyProbe}. Illustris has a constant spatial resolution of $1.4\text{kpc}$ for DM particles in comoving units, and for baryonic particles it has the same spatial resolution of DM for $\text{z}\geq 1$, which is later modified to $0.7\text{kpc}$ in physical units for the rest of the simulation. \\
+^{-1}\text{Mpc}^{-1}$ which is consistent with the (last) Anisotropy
+Probe (WMAP)-9 \cite{AnisotropyProbe}. Illustris has a constant
+spatial resolution of $1.4\text{kpc}$ for DM particles in comoving
+units, and for baryonic particles it has the same spatial resolution
+of DM for $\text{z}\geq 1$, which is later modified to $0.7\text{kpc}$
+in physical units for the rest of the simulation. \\ 
 
-The evolution in time was performed with the hydrodynamic code AREPO \cite{arepo}, which combines a moving Voronoi tessellation with the finite volume approach. Included in the evolution algorithm, there are galaxy formation models which account for the evolution of stars and SMBHs. Specifically, the physics followed by this model includes energetic feedback from supermassive black holes and supernovae, as well as stellar evolution and chemical enrichment. This level of detail in Illustris is advantageous for the analysis of the effect of the environment  in galactic barionic properties and is hard to find among other simulations, i.e. post-processed runs with semi-analytical models which do not directly simulate baryons.(Expand) Describe Arepo a little bit more\\
+The evolution in time was performed with the hydrodynamic code AREPO
+\cite{arepo}, which combines a moving Voronoi tessellation with the
+finite volume approach. Included in the evolution algorithm, there are
+galaxy formation models which account for the evolution of stars and
+SMBHs. Specifically, the physics followed by this model includes
+energetic feedback from supermassive black holes and supernovae, as
+well as stellar evolution and chemical enrichment. This level of
+detail in Illustris is advantageous for the analysis of the effect of
+the environment  in galactic barionic properties and is hard to find
+among other simulations, i.e. post-processed runs with semi-analytical
+models which do not directly simulate baryons.(Expand) Describe Arepo
+a little bit more\\ 
 
-The output of this simultaion consists of 136 snapshots where 61 of them were taken at $z < 3$ spaced with a cosmological scale factor $\Delta a \approx 0.02$, while the remaining 75 were taken at $z > 3$ with spacing $\Delta a \approx 0.01$. Each snapshot was post-processed with a modified version of FOF \cite{FOF} to identify DM haloes with more than 32 particles using a linking length of 0.2 times the mean particle separation each of which is analyzed with the SUBFIND algorithm \cite{subfind} to generate, at z=0, 7,713,601 halos (FOF) and 4,366,546 (sub)halo catalogues with their respective characterization properties. \\
+The output of this simultaion consists of 136 snapshots where 61 of
+them were taken at $z < 3$ spaced with a cosmological scale factor
+$\Delta a \approx 0.02$, while the remaining 75 were taken at $z > 3$
+with spacing $\Delta a \approx 0.01$. Each snapshot was post-processed
+with a modified version of FOF \cite{FOF} to identify DM haloes with
+more than 32 particles using a linking length of 0.2 times the mean
+particle separation each of which is analyzed with the SUBFIND
+algorithm \cite{subfind} to generate, at z=0, 7,713,601 halos (FOF)
+and 4,366,546 (sub)halo catalogues with their respective
+characterization properties. \\ 
 
 (HERE TALK ABOUT ILLUSTRIS-2,3 FOR RESOLUTION PURPOSES)
 
 \section{The method}
 
-The principal purpose of this work is to verify if the results obtained observationally by Jones et al. \cite{jones1} are supported by a similar analysis in the cosmological simulation Illustris. For this purpose, we want to adaptate the observational method as closely as posible for it to work on computational data.\\
+The principal purpose of this work is to verify if the results
+obtained observationally by Jones et al. \cite{jones1} are supported
+by a similar analysis in the cosmological simulation Illustris. For
+this purpose, we want to adaptate the observational method as closely
+as posible for it to work on computational data.\\ 
 
 \subsection{The $3^{rd}$ nearest neighbor method}
 
@@ -162,10 +195,23 @@ possible to that of Jones et al. \cite{jones1}.\\
 
 However, as Illustris is a cosmological simulation, it is subject to numerical resolution biases, being the most important, the mass resolution biases. Each mass considered here is subject directly or indirectly to a mass resolution, and the effect it causes is specially evident in the produced mass functions. We used Illustris-3, which is a less resoluted copy of Illustris-1, to verify that the effect on the mass functions is indeed caused by mass resolution. Taking this into account, mass functions are heavily affected for masses below a certain cut and for this reason, only galaxies above said cut are considered in this study. This mass cut has no aparent systematical way to be calculated and therefore, we performed the cut having into account the performance of the respective Schechter fit.\\
 
-Mass resolution reduces the size of the sample galaxies and this complicates the process of photometrics pre-selection. This selection significatively reduces the size of the galaxy set which is already smaller than normal due to the resolution cut. This made impossible a Schechter fit to the obtained mass functions given that the associated logarithmic errors became extremely large. For this reason, we omit the photometrics pre-selection which is the only feature that our analysis misses with respect to the one from \cite{jones1}.\\
+Mass resolution reduces the size of the sample galaxies and this
+complicates the process of photometrics pre-selection. This selection
+significatively reduces the size of the galaxy set which is already
+smaller than normal due to the resolution cut. This made impossible a
+Schechter fit to the obtained mass functions given that the associated
+logarithmic errors became extremely large. For this reason, we omit
+the photometrics pre-selection which is the only feature that our
+analysis misses with respect to the one from \cite{jones1}.\\ 
 
 \subsection{The cosmic web method}
-To complement the analysis performed with the third nearest neighbor method for the classification of environments, we chose a complementary method of completely different nature to verify even more the results from Jones et al.. The method chosen here was the one developed by Forero et al. \cite{forero1}, which uses the Hessian of the gravitational potential obtained from the DM field to classify galaxies into (conveniently) four morphological environments.\\ 
+To complement the analysis performed with the third nearest neighbor
+method for the classification of environments, we chose a
+complementary method of completely different nature to verify even
+more the results from Jones et al.. The method chosen here was the one
+developed by Forero et al. \cite{forero1}, which uses the Hessian of
+the gravitational potential obtained from the DM field to classify
+galaxies into (conveniently) four morphological environments.\\  
 
 \section{Results}
 \subsection{Preliminaries}
@@ -184,7 +230,11 @@ e.g. Table~\ref{tab:example_table}.
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/quartilesGas.png}
-    \caption{\textbf{Upper side}: Schechter fits of each gas mass function for each environmental quartile using the 3rd nearest neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \caption{\textbf{Upper side}: Schechter fits of each gas mass
+      function for each environmental quartile using the 3rd nearest
+      neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and
+      the faint end slope $\alpha$ values obtained from the Schechter
+      fits for each curve shown above.} 
     \label{fig:quartilesGas}
 \end{figure}
 
@@ -194,7 +244,11 @@ e.g. Table~\ref{tab:example_table}.
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/T-Web_Gas.png}
-    \caption{\textbf{Upper side}: Schechter fits of each gas mass function for each morphological environment characterized by the T-Web algorithm proposed by Forero et al.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \caption{\textbf{Upper side}: Schechter fits of each gas mass
+      function for each morphological environment characterized by the
+      T-Web algorithm proposed by Forero et al.\textbf{Down side}:
+      Knee-mass $m_\ast$ and the faint end slope $\alpha$ values
+      obtained from the Schechter fits for each curve shown above.} 
     \label{fig:TwebGas}
 \end{figure}
 
@@ -204,7 +258,11 @@ e.g. Table~\ref{tab:example_table}.
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/quartilesDM.png}
-    \caption{\textbf{Upper side}: Schechter fits of each DM mass function for each environmental quartile using the 3rd nearest neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \caption{\textbf{Upper side}: Schechter fits of each DM mass
+      function for each environmental quartile using the 3rd nearest
+      neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and
+      the faint end slope $\alpha$ values obtained from the Schechter
+      fits for each curve shown above.} 
     \label{fig:quartilesDM}
 \end{figure}
 
@@ -214,7 +272,11 @@ e.g. Table~\ref{tab:example_table}.
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/T-Web_DM.png}
-    \caption{\textbf{Upper side}: Schechter fits of each DM mass function for each morphological environment characterized by the T-Web algorithm proposed by Forero et al.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \caption{\textbf{Upper side}: Schechter fits of each DM mass
+      function for each morphological environment characterized by the
+      T-Web algorithm proposed by Forero et al.\textbf{Down side}:
+      Knee-mass $m_\ast$ and the faint end slope $\alpha$ values
+      obtained from the Schechter fits for each curve shown above.} 
     \label{fig:TwebDM}
 \end{figure}
 
@@ -224,7 +286,11 @@ e.g. Table~\ref{tab:example_table}.
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/quartilesSellar.png}
-    \caption{\textbf{Upper side}: Schechter fits of each stellar mass function for each environmental quartile using the 3rd nearest neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \caption{\textbf{Upper side}: Schechter fits of each stellar mass
+      function for each environmental quartile using the 3rd nearest
+      neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and
+      the faint end slope $\alpha$ values obtained from the Schechter
+      fits for each curve shown above.} 
     \label{fig:quartilesStellar}
 \end{figure}
 
@@ -234,7 +300,11 @@ e.g. Table~\ref{tab:example_table}.
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/T-Web_Stellar.png}
-    \caption{\textbf{Upper side}: Schechter fits of each stellar mass function for each morphological environment characterized by the T-Web algorithm proposed by Forero et al.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \caption{\textbf{Upper side}: Schechter fits of each stellar mass
+      function for each morphological environment characterized by the
+      T-Web algorithm proposed by Forero et al.\textbf{Down side}:
+      Knee-mass $m_\ast$ and the faint end slope $\alpha$ values
+      obtained from the Schechter fits for each curve shown above.} 
     \label{fig:TwebStellar}
 \end{figure}
 
@@ -244,7 +314,11 @@ e.g. Table~\ref{tab:example_table}.
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/quartilesBH.png}
-    \caption{\textbf{Upper side}: Schechter fits of each BH mass function for each environmental quartile using the 3rd nearest neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \caption{\textbf{Upper side}: Schechter fits of each BH mass
+      function for each environmental quartile using the 3rd nearest
+      neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and
+      the faint end slope $\alpha$ values obtained from the Schechter
+      fits for each curve shown above.} 
     \label{fig:quartilesBH}
 \end{figure}
 
@@ -254,7 +328,11 @@ e.g. Table~\ref{tab:example_table}.
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/T-Web_BH.png}
-    \caption{\textbf{Upper side}: Schechter fits of each BH mass function for each morphological environment characterized by the T-Web algorithm proposed by Forero et al.\textbf{Down side}: Knee-mass $m_\ast$ and the faint end slope $\alpha$ values obtained from the Schechter fits for each curve shown above.}
+    \caption{\textbf{Upper side}: Schechter fits of each BH mass
+      function for each morphological environment characterized by the
+      T-Web algorithm proposed by Forero et al.\textbf{Down side}:
+      Knee-mass $m_\ast$ and the faint end slope $\alpha$ values
+      obtained from the Schechter fits for each curve shown above.} 
     \label{fig:TwebBH}
 \end{figure}
 
@@ -308,9 +386,6 @@ If you want to present additional material which would interrupt the flow of the
 it can be placed in an Appendix which appears after the list of references.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 
 \bsp	% typesetting comment
 \label{lastpage}
