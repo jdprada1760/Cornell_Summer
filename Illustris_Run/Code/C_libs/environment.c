@@ -1,8 +1,8 @@
 /*
- * This program calculates the environment for each halo in Halo.csv
+ * This program calculates the environment for each halo in env{1..3}.csv
  * The environment is defined as the area projected for nth nearest galaxy
  * conditions for neighbouring galaxies:
- *          -rmag < -19 (already filtered in Galaxy.csv)
+ *          -rmag < -19 (already filtered or not in Illustris{1..3}.csv)
  *          -radial velocity relative to the halo < 500km/s
  */
 
@@ -11,6 +11,7 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
+#include "omp.h"
 
 //------------------------------------------------------------------------------
 //   Definitions
@@ -29,7 +30,8 @@
 #define nn 3             // Nearest neighbor for environment definition
 #define ddd 0           // Defines the range in the grid to count neighbor candidates
 #define res 3.0       // The resolution of the 3d spatial grid
-
+// Number of procs 
+#define nproc 8
 
 //------------------------------------------------------------------------------
 //  Structs
@@ -98,6 +100,9 @@ List**** gridG;
 
 int main(int argc, char **argv){
 
+  // Parallelization number of threads
+  omp_set_num_threads(nproc);
+
   // The name of the file to write environments
   char* nameW = argv[2];
   Gdata = argv[1];
@@ -113,23 +118,31 @@ int main(int argc, char **argv){
   printf("Getting Environments ...\n");
 
   int i,j,k;
-  for( i = 0; i < res; i++){
-    for( j = 0; j < res; j++){
-      for( k = 0; k < res; k++){
+  int numb;
 
+#pragma omp parallel for   
+  for( numb = 0; numb < (int) (res*res*res); numb++){
+  //for( i = 0; i < res; i++){
+    //for( j = 0; j < res; j++){
+      //for( k = 0; k < res; k++){
+         k = (numb%((int)res));
+         j = ((int)(numb/res))%((int)res);
+         i = (int)(((int)(numb/res))/res);
+         
          List* actual = (gridG[i][j][k])->next;
-+        printf("%d_%d_%d_\n",i,j,k);
+         printf("%d_%d_%d_\n",i,j,k);
 
         do{
 
-          printf("Halo %d\n", actual->index+1);
+          //printf("Halo %d\n", actual->index+1);
+	  
           get_Env( actual->index,i,j,k);
 
           actual = actual->next;
 
         }while(actual != 0);
-      }
-    }
+	// }
+	//}
   }
 
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
