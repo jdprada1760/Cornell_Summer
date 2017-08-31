@@ -26,7 +26,6 @@
 % MNRAS is set in Times font. If you don't have this installed (most LaTeX
 % installations will be fine) or prefer the old Computer Modern fonts, comment
 % out the following line
-\usepackage{newtxtext,newtxmath}
 % Depending on your LaTeX fonts installation, you might get better results with one of these:
 %\usepackage{mathptmx}
 %\usepackage{txfonts}
@@ -110,9 +109,7 @@ This is a simple template for authors to write new MNRAS papers.
 See \texttt{mnras\_sample.tex} for a more complex example, and \texttt{mnras\_guide.tex}
 for a full user guide.
 
-All papers should start with an Introduction section, which sets the work
-in context, cites relevant earlier studies in the field by \citet{Others2013},
-and describes the problem the authors aim to solve \citep[e.g.][]{Author2012}.
+\cite{Tweb}.
 
 \section{Illustris Simulation}
 Illustris-1, also known simply as Illustris, is a highly resolved cosmological simulation which reproduces large-scale statistical features of the Universe, such as the galaxy population of massive clusters, as well as small-scale properties such as the morphology of galaxies and detailed values for their stellar and gas content.\\
@@ -132,11 +129,36 @@ The principal purpose of this work is to verify if the results obtained observat
 
 \subsection{The $3^{rd}$ nearest neighbor method}
 
-The principal method used in Jones et al. \cite{jones1} analyses the dependence of the Schechter parameters on the cosmological environment. To obtain a quantification of said cosmological environment, they calculated for each galaxy in the studied survey the projected distance in the sky to the third nearest neighbor, filtrating candidate neighbors by its radial velocity relative to the reference galaxy. According to Hubble's law, this effectively restricts the candidate galaxies to a smaller radial range, reducing apparent closer galaxies arising from the projection method. The radial relative velocity cut was chosen to be $450km/s$. Furthermore, a photometrics pre-selection was performed, selecting galaxies whose r-filter magnitude was above $-19$ (VERIFY).\\
+The principal method used in Jones et al. \cite{jones1} analyses the
+dependence of the Schechter parameters on the cosmological
+environment. To obtain a quantification of said cosmological
+environment, they calculated for each galaxy in the studied survey the
+projected distance in the sky to the third nearest neighbor,
+filtrating candidate neighbors by its radial velocity relative to the
+reference galaxy. According to Hubble's law, this effectively
+restricts the candidate galaxies to a smaller radial range, reducing
+apparent closer galaxies arising from the projection method. The
+radial relative velocity cut was chosen to be $450km/s$. Furthermore,
+a photometrics pre-selection was performed, selecting galaxies whose
+r-filter magnitude was above $-19$ (VERIFY).\\  
 
-Once quantified the environment with the distance to the 3rd nearest neighbor definition for each galaxy in their post-selected survey they divided the group in four quartiles according this quantity. For each quartile, the respective HIMF was calculated, and with this, a Schechter fit was obtained. The analysis was specifically performed over the Schechter parameters of the Knee-mass and the faint-end slope. \\
-
-In dark matter cosmological simulations, access to the information is istantaneous and at no cost. However, as we want to replicate as closely as possible the method effectuated by Jones et. al \cite{jones1}, we also calculate the projected distance in the simulation and take the same projected velocity cut according to a specified point of view. Even when we could easily calculate the distance to the third nearest neighbor we take into account these observational simplifications, to make our study as comparable as possible to that of Jones et al. \cite{jones1}.\\
+Once quantified the environment with the distance to the 3rd nearest
+neighbor definition for each galaxy in their post-selected survey they
+divided the group in four quartiles according this quantity. For each
+quartile, the respective HIMF was calculated, and with this, a
+Schechter fit was obtained. The analysis was specifically performed
+over the Schechter parameters of the Knee-mass and the faint-end
+slope. \\ 
+ 
+In dark matter cosmological simulations, access to the information is
+istantaneous and at no cost. However, as we want to replicate as
+closely as possible the method effectuated by Jones et. al
+\cite{jones1}, we also calculate the projected distance in the
+simulation and take the same projected velocity cut according to a
+specified point of view. Even when we could easily calculate the
+distance to the third nearest neighbor we take into account these
+observational simplifications, to make our study as comparable as
+possible to that of Jones et al. \cite{jones1}.\\ 
 
 However, as Illustris is a cosmological simulation, it is subject to numerical resolution biases, being the most important, the mass resolution biases. Each mass considered here is subject directly or indirectly to a mass resolution, and the effect it causes is specially evident in the produced mass functions. We used Illustris-3, which is a less resoluted copy of Illustris-1, to verify that the effect on the mass functions is indeed caused by mass resolution. Taking this into account, mass functions are heavily affected for masses below a certain cut and for this reason, only galaxies above said cut are considered in this study. This mass cut has no aparent systematical way to be calculated and therefore, we performed the cut having into account the performance of the respective Schechter fit.\\
 
@@ -269,22 +291,12 @@ Try to keep it short.
 
 %%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
 
-% The best way to enter references is to use BibTeX:
+\bibliographystyle{mnras}
+\bibliography{references}
 
-%\bibliographystyle{mnras}
-%\bibliography{example} % if your bibtex file is called example.bib
-
-
-% Alternatively you could enter them by hand, like this:
-% This method is tedious and prone to error if you have lots of references
-\begin{thebibliography}{99}
-\bibitem[\protect\citeauthoryear{Author}{2012}]{Author2012}
-Author A.~N., 2013, Journal of Improbable Astronomy, 1, 1
-\bibitem[\protect\citeauthoryear{Others}{2013}]{Others2013}
-Others S., 2012, Journal of Interesting Stuff, 17, 198
-\end{thebibliography}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
 
@@ -298,9 +310,12 @@ it can be placed in an Appendix which appears after the list of references.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% Don't change these lines
+
+
 \bsp	% typesetting comment
 \label{lastpage}
+
+
 \end{document}
 
 % End of mnras_template.tex
