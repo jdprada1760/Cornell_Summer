@@ -1,22 +1,17 @@
-all: ../data/nnenv/env1.data ../data/nnenv/env2.data ../data/nnenv/env3.data
+all: ../data/nnEnv/env1.data ../data/nnEnv/env2.data ../data/nnEnv/env3.data
 
-../data/nnenv/env1.data: ../data/phaseSpace/Illustris1.txt ./C_libs/env.out
-	./C_libs/env.out ../data/nnenv/env1.data env1.data
+../data/nnEnv/env1.data: ../data/phaseSpace/Illustris1.csv ./C_libs/env.out
+	./C_libs/env.out ../data/phaseSpace/Illustris1.csv ../data/nnEnv/env1.data
 
-../data/nnenv/env2.data: ../data/phaseSpace/Illustris2.txt ./C_libs/env.out
-	./C_libs/env.out ../data/nnenv/env2.data env2.data
+../data/nnEnv/env2.data: ../data/phaseSpace/Illustris2.csv ./C_libs/env.out
+	./C_libs/env.out ../data/phaseSpace/Illustris2.csv ../data/nnEnv/env2.data
 
-../data/nnenv/env3.data: ../data/phaseSpace/Illustris3.txt ./C_libs/env.out
-	./C_libs/env.out ../data/nnenv/env3.data env3.data
+../data/nnEnv/env3.data: ../data/phaseSpace/Illustris3.csv ./C_libs/env.out
+	./C_libs/env.out ../data/phaseSpace/Illustris3.csv ../data/nnEnv/env3.data
 
-./C_libs/env.out: ./C_libs environment.c
-	gcc -Wall environment.c -o env.out -lm
+./C_libs/env.out:
+	gcc -Wall ./C_libs/environment.c -o ./C_libs/env.out -lm -fopenmp
 
-./data/phaseSpace/Illustris1.txt: ./Py_libs/Illustris_Cluster.py
-	python Illustris_Cluster.py
+../data/phaseSpace/Illustris1.csv ../data/phaseSpace/Illustris2.csv ../data/phaseSpace/Illustris3.csv:
+	python ./Py_libs/Illustris_Cluster.py
 
-./data/phaseSpace/Illustris2.txt: ./Py_libs/Illustris_Cluster.py
-	python Illustris_Cluster.py
-
-./data/phaseSpace/Illustris3.txt: ./Py_libs/Illustris_Cluster.py
-	python Illustris_Cluster.py
