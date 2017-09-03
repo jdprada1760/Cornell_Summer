@@ -120,7 +120,7 @@ int main(int argc, char **argv){
   int i,j,k;
   int numb;
 
-#pragma omp parallel for   
+#pragma omp parallel for private(i,j,k) 
   for( numb = 0; numb < (int) (res*res*res); numb++){
   //for( i = 0; i < res; i++){
     //for( j = 0; j < res; j++){
@@ -130,7 +130,7 @@ int main(int argc, char **argv){
          i = (int)(((int)(numb/res))/res);
          
          List* actual = (gridG[i][j][k])->next;
-         printf("%d_%d_%d_\n",i,j,k);
+         printf("%d_%d_%d_%d\n",i,j,k,(int)(res*res*i+res*j+k));
 
         do{
 
@@ -372,7 +372,6 @@ void get_Env(int j, int hx, int hy, int hz){
            actual = actual->next;
 
          }while(actual != 0);
-
 
          //printf("_%d_%d_%d_\n",ix,iy,iz);
          iz = rPBC(iz+1);

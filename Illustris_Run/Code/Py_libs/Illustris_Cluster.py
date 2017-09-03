@@ -25,9 +25,11 @@ for path,filename,massfn in zip([path1,path2,path3],filenames,massFilenames):
     pos  = subSn.SubhaloPos
     vel  = subSn.SubhaloVel
     mass = subSn.SubhaloMassType
-
+    sph  = subSn.SubhaloStellarPhotometrics[:,5]
     # Have into account only subhalos with mass
-    ind, = np.where(mass.T[0]>0)
+    #for mag in sph[np.where(sph.T>0)[0]]:
+    #    print(mag)
+    ind, = np.where((mass.T[0]>0) & (sph < 0))
     print(len(pos))
     pos  = pos[ind]
     vel  = vel[ind]

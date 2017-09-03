@@ -1,7 +1,7 @@
 import struct
 import numpy as np
-import matplotlib.pyplot as plt
-import illustris_python as il
+#import matplotlib.pyplot as plt
+#import illustris_python as il
 import time
 
 def read_CIC_scalar(filename):
@@ -77,47 +77,47 @@ def getEnv(x,y,z):
 def getGalaxies(basePath,cut):
     start_time = time.time()
     # Selects the fields to load for subhalos
-    fields = ['SubhaloCM','SubhaloStellarPhotometrics','SubhaloMassType']
+    #fields = ['SubhaloCM','SubhaloStellarPhotometrics','SubhaloMassType']
     # Loads subhalos to variable g
-    g = il.groupcat.loadSubhalos(basePath,135,fields=fields)
+    g = np.loadtxt(basePath,delimiter=',')
 
     # Counts the galaxies by magnitude and not null gas mass
     # filter the galaxies for its photometrics (only rband < -19)
-    print "Number of galaxies before: " + str(g['count'])
-    ngalaxies = len(np.where((g[fields[2]][:,0]!=0)*(g[fields[1]][:,5]<cut))[0])
-    print "Number of galaxies after: " + str(ngalaxies)
+    print "Number of galaxies: " + str(len(g))
+    ngalaxies = len(g)
+    #print "Number of galaxies after: " + str(ngalaxies)
 
     # Creates arrays for the candidate galaxies and fills it
     Galaxies = np.array([[0.0,0.0,0.0] for i in range(ngalaxies)])
     i = 0
     imax = 0
-    for j in range(g['count']):
-        if( (g['SubhaloMassType'][j][0] != 0) and ((g[fields[1]][j][5] < cut)) ):
+    for j in range(ngalaxies):
+        #if( (g['SubhaloMassType'][j][0] != 0) and ((g[fields[1]][j][5] < cut)) ):
         #if(True):
-            #print g['SubhaloMassType'][j][0]
-            ix = int(g['SubhaloCM'][j][0]/delx)
-            iy = int(g['SubhaloCM'][j][1]/delx)
-            iz = int(g['SubhaloCM'][j][2]/delx)
-            ex = eigen1[ix,iy,iz]
-            ey = eigen2[ix,iy,iz]
-            ez = eigen3[ix,iy,iz]
-            #print("ix+iy+iz", ex, ey, ez, int( int(ex > 0.2) + int(ey > 0.2) + int(ez > 0.2) ) )
-            #Galaxies[i][0] = getEnv(ix,iy,iz)
-            Galaxies[i][0] = getEnv(ex,ey,ez);
-            Galaxies[i][1] = g['SubhaloMassType'][j][1]
-            Galaxies[i][2] = g['SubhaloMassType'][j][0]
-            i+=1
+        #print g['SubhaloMassType'][j][0]
+        ix = int(g[j,0]/delx)
+        iy = int(g[j,1]/delx)
+        iz = int(g[j,2]/delx)
+        ex = eigen1[ix,iy,iz]
+        ey = eigen2[ix,iy,iz]
+        ez = eigen3[ix,iy,iz]
+        #print("ix+iy+iz", ex, ey, ez, int( int(ex > 0.2) + int(ey > 0.2) + int(ez > 0.2) ) )
+        #Galaxies[i][0] = getEnv(ix,iy,iz)
+        Galaxies[i][0] = getEnv(ex,ey,ez);
+        Galaxies[i][1] = g[j,0]
+        Galaxies[i][2] = g[j,1]
+        i+=1
     #print "Time elapsed: " + str(time.time() - start_time)
     #print imax
     return Galaxies
 
-basePath = "../Illustris-1"
+basePath = "../data/phaseSpace/Illustris1.csv"
 Galaxies = getGalaxies(basePath,0)
 np.savetxt('../data/twEnv/Tweb1.csv', Galaxies, delimiter = ',')
-basePath = "../Illustris-2"
+basePath = "../data/phaseSpace/Illustris2.csv"
 Galaxies = getGalaxies(basePath,0)
 np.savetxt('../data/twEnv/Tweb2.csv', Galaxies, delimiter = ',')
-basePath = "../Illustris-3"
+basePath = "../data/phaseSpace/Illustris3.csv"
 Galaxies = getGalaxies(basePath,0)
 np.savetxt('../data/twEnv/Tweb3.csv', Galaxies, delimiter = ',')
 #plt.imshow(data['eigenval'][:,:,10].T)
