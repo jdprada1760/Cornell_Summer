@@ -29,8 +29,9 @@ for path,filename,massfn in zip([path1,path2,path3],filenames,massFilenames):
     # Have into account only subhalos with mass
     #for mag in sph[np.where(sph.T>0)[0]]:
     #    print(mag)
-    ind, = np.where((mass.T[0]>0) & (sph < 0))
-    print(len(pos))
+    #ind, = np.where((mass.T[0]>0) & (sph < 0))
+    ind, = np.where((mass.T[0]>0) )
+    print(len(ind))
     pos  = pos[ind]
     vel  = vel[ind]
     mass = mass[ind]
