@@ -75,6 +75,9 @@ void add(List* lista, unsigned int index);
 float** Gp;
 float** Gv;
 
+// Vectors of masses for each galaxy
+float** Gmass;
+
 // Vectors of masses of gas and dark matter
 float* Ggas;
 float* Gdm;
@@ -84,6 +87,9 @@ char* Gdata;
 
 // The environment array
 float* env;
+
+// Specs for environments (total mass of three nearest neighbors, simulation radius and projected radius)
+float** env_specs;
 
 // The point of view
 float* p;
@@ -207,17 +213,21 @@ void allocate_All(){
 
   // Environment
   env = malloc(nG*sizeof(float));
+  env_specs = malloc(nG*sizeof(float*));
 
   // Allocate galaxies
   int i;
-  Gp = malloc(nG*sizeof(float*));
-  Gv = malloc(nG*sizeof(float*));
-  Ggas = malloc(nG*sizeof(float));
-  Gdm = malloc(nG*sizeof(float));
+  Gp    = malloc(nG*sizeof(float*));
+  Gv    = malloc(nG*sizeof(float*));
+  Ggas  = malloc(nG*sizeof(float));
+  Gdm   = malloc(nG*sizeof(float));
+  Gmass = malloc(nG*sizeof(float*));
 
   for( i = 0; i < nG; i++){
     Gp[i] = malloc(3*sizeof(float));
     Gv[i] = malloc(3*sizeof(float));
+    Gmass[i] = malloc(4*sizeof(float));
+    env_specs[i] = calloc(6*sizeof(float));
   }
 
   // Close the files
@@ -246,11 +256,11 @@ void read_File(){
   // Temporal variables to read
   int test2;
   int numG = 0;
-  float x,y,z,vx,vy,vz,mg,mdm;
+  float x,y,z,vx,vy,vz,mg,mdm,ms,mbh;
 
   do{
 
-    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &mg, &mdm );
+    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &mg, &mdm, &ms, &mbh );
     if(test2 == EOF){
       break;
     }
@@ -262,6 +272,10 @@ void read_File(){
     Gv[numG][2] = vz;
     Ggas[numG] = mg;
     Gdm[numG] = mdm;
+    Gmass[numG][0] = mg;
+    Gmass[numG][1] = mdm;
+    Gmass[numG][2] = ms;
+    Gmass[numG][3] = mbh;
     add(gridG[(int)floorf(x/(L_h/res))][(int)floorf(y/(L_h/res))][(int)floorf(z/(L_h/res))],numG);
     //printf("%d__%f\n", numG, x/lh);
     numG ++;
@@ -395,11 +409,22 @@ void get_Env(int j, int hx, int hy, int hz){
          maxindx = l;
        }
      }
+     // Cumulative mass of neighbouing galaxies
+     env_specs[j][0] += Gmass[maxindx][0];
+     env_specs[j][1] += Gmass[maxindx][1];
+     env_specs[j][2] += Gmass[maxindx][2];
+     env_specs[j][3] += Gmass[maxindx][3];
      // Sets a big number to delete the minimum and find the second one
      Genv[maxindx] = 9e+15;
    }
 
+   // Projected distance in sky
    env[j] = maxdist;
+   env_specs[j][4] = sqrt(maxdist);
+   env_specs[j][5] = sqrt(pow(deltaPBC(Gp[j][0] , Gp[maxindx][0] ),2)+
+			  pow(deltaPBC(Gp[j][1] , Gp[maxindx][1] ),2)+
+		    	  pow(deltaPBC(Gp[j][2] , Gp[maxindx][2] ),2));
+
    //printf("%f\n",maxdist);
    free(Genv);
 }
