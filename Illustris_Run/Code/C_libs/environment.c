@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------------
 
 // env.csv : the name of the file to write the environments
-#define man "./environment.x Galaxyn.csv env.data"
+#define man "./environment.x Galaxyn.csv env.data specs.data"
 // Define the name for the halo and galaxy files
 //define Gdata "Galaxy3.csv"
 // Simulation constants
@@ -28,7 +28,7 @@
 #define L_h 75000.0         // L/lh
 // Method parameters
 #define nn 3             // Nearest neighbor for environment definition
-#define ddd 0           // Defines the range in the grid to count neighbor candidates
+#define ddd 1         // Defines the range in the grid to count neighbor candidates
 #define res 3.0       // The resolution of the 3d spatial grid
 // Number of procs 
 #define nproc 8
@@ -60,7 +60,7 @@ typedef struct List List;
 void allocate_All();
 void read_File();
 void get_Env(int j, int hx, int hy, int hz);
-void write_Env( char* nameW );
+void write_Env( char* nameW , char* nameSpecs);
 float deltaPBC(float x, float y);
 int dPBC(int x, int y);
 int rPBC(int x);
@@ -111,6 +111,7 @@ int main(int argc, char **argv){
 
   // The name of the file to write environments
   char* nameW = argv[2];
+  char* nameSpecs = argv[3];
   Gdata = argv[1];
 
   // Allocates memory
@@ -154,7 +155,7 @@ int main(int argc, char **argv){
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
 
   // Writes the file of environments
-  write_Env(nameW);
+  write_Env(nameW,nameSpecs);
   return 0;
 }
 
@@ -196,7 +197,7 @@ void allocate_All(){
   int test2;
   float tmp;
   do{
-    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &tmp, &tmp, &tmp, &tmp, &tmp, &tmp ,&tmp, &tmp);
+    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n", &tmp, &tmp, &tmp, &tmp, &tmp, &tmp ,&tmp, &tmp, &tmp, &tmp);
     if(test2 == EOF){
       break;
     }
@@ -227,7 +228,7 @@ void allocate_All(){
     Gp[i] = malloc(3*sizeof(float));
     Gv[i] = malloc(3*sizeof(float));
     Gmass[i] = malloc(4*sizeof(float));
-    env_specs[i] = calloc(6*sizeof(float));
+    env_specs[i] = malloc(6*sizeof(float));
   }
 
   // Close the files
@@ -260,7 +261,7 @@ void read_File(){
 
   do{
 
-    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &mg, &mdm, &ms, &mbh );
+    test2 = fscanf(Galaxy, "%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &mg, &mdm, &ms, &mbh );
     if(test2 == EOF){
       break;
     }
@@ -276,6 +277,12 @@ void read_File(){
     Gmass[numG][1] = mdm;
     Gmass[numG][2] = ms;
     Gmass[numG][3] = mbh;
+    env_specs[numG][0] = 0.;
+    env_specs[numG][1] = 0.;
+    env_specs[numG][2] = 0.;
+    env_specs[numG][3] = 0.;
+    env_specs[numG][4] = 0.;
+    env_specs[numG][5] = 0.;
     add(gridG[(int)floorf(x/(L_h/res))][(int)floorf(y/(L_h/res))][(int)floorf(z/(L_h/res))],numG);
     //printf("%d__%f\n", numG, x/lh);
     numG ++;
@@ -433,14 +440,16 @@ void get_Env(int j, int hx, int hy, int hz){
  * Writes the file of environments
  */
 
-void write_Env( char* nameW ){
+void write_Env( char* nameW, char* nameSpecs ){
   FILE* toWrite = fopen( nameW, "w");
+  FILE* specs   = fopen( nameSpecs, "w");
   time_t start = time(NULL);
   printf("Writing Environments...\n");
   unsigned int i;
   //printf("%d\n",nG);
   for( i = 0; i < nG; i++){
     fprintf(toWrite, "%f,%f,%f\n", env[i],Ggas[i],Gdm[i]);
+    fprintf(specs, "%f,%f,%f,%f,%f,%f\n", env_specs[i][0], env_specs[i][1], env_specs[i][2], env_specs[i][3], env_specs[i][4], env_specs[i][5]);
   }
   fclose(toWrite);
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
