@@ -273,10 +273,10 @@ void read_File(){
     Gv[numG][2] = vz;
     Ggas[numG] = mg;
     Gdm[numG] = mdm;
-    Gmass[numG][0] = mg;
-    Gmass[numG][1] = mdm;
-    Gmass[numG][2] = ms;
-    Gmass[numG][3] = mbh;
+    Gmass[numG][0] = mg/lh;
+    Gmass[numG][1] = mdm/lh;
+    Gmass[numG][2] = ms/lh;
+    Gmass[numG][3] = mbh/lh;
     env_specs[numG][0] = 0.;
     env_specs[numG][1] = 0.;
     env_specs[numG][2] = 0.;
