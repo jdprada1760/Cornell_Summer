@@ -425,6 +425,12 @@ void get_Env(int j, int hx, int hy, int hz){
      Genv[maxindx] = 9e+15;
    }
 
+   // Cumulative mass of neighbouing galaxies
+   env_specs[j][0] += Gmass[j][0];
+   env_specs[j][1] += Gmass[j][1];
+   env_specs[j][2] += Gmass[j][2];
+   env_specs[j][3] += Gmass[j][3];
+
    // Projected distance in sky
    env[j] = maxdist;
    env_specs[j][4] = sqrt(maxdist);
