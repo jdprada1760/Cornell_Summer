@@ -20,6 +20,8 @@ M = (10.0**10)/0.7
 #vol of illustris run
 vol = (75.0/(0.7))**3
 print(75./0.7)
+# Folder to save
+fold = "Filter19/F19_"
 
 # Gives the x,y of the histogram for logmasses from the given array of mass
 def histog( mf, nbins ):
@@ -56,9 +58,13 @@ def loadHaloes(name, massname, neigh, j, minMass):
     print("number of haloes before: " + str(len(table.T)))
     
     # Only take the haloes with not null mass
-    lsigma = table[0][np.where((M*mtable[j])> minMass)]
-    mass = M*mtable[j][np.where(M*mtable[j]> minMass)]
-    
+    if j == 0:
+    	lsigma = table[0][np.where(((M*mtable[j]) > minMass)& ((M*mtable[j]) < 10**(11.5)))]
+    	mass = M*mtable[j][np.where((M*mtable[j] > minMass) & ((M*mtable[j]) < 10**(11.5)))]
+    else:
+	lsigma = table[0][np.where(((M*mtable[j]) > minMass))]
+    	mass = M*mtable[j][np.where(M*mtable[j] > minMass)]    
+
     print("number of haloes after: " + str(len(mass)))
 
     # Calculates the first quartile of logsigma
@@ -100,8 +106,12 @@ def loadTweb(name, massname, neigh, j, minMass):
     print("number of haloes before: " + str(len(table.T)))
     
     # Only take the haloes with not null mass
-    lsigma = table[0][np.where((M*mtable[j]) > minMass)]
-    mass = M*mtable[j][np.where(M*mtable[j] > minMass)]
+    if j == 0:
+    	lsigma = table[0][np.where(((M*mtable[j]) > minMass)& ((M*mtable[j]) < 10**(11.5)))]
+    	mass = M*mtable[j][np.where((M*mtable[j] > minMass) & ((M*mtable[j]) < 10**(11.5)))]
+    else:
+	lsigma = table[0][np.where(((M*mtable[j]) > minMass))]
+    	mass = M*mtable[j][np.where(M*mtable[j] > minMass)]
     
     print("number of haloes after: " + str(len(mass)))
 
@@ -115,9 +125,12 @@ def loadTweb(name, massname, neigh, j, minMass):
     q2 = mass[np.where(lsigma == 2)]
     q3 = mass[np.where(lsigma == 1)]
     q4 = mass[np.where(lsigma == 0)]
+    print "Number of Voids: " ,len(q4)
+    print "######################################################################"
+    q4 = -1
     q5 = mass
     # verify the length of each quartile
-    print(len(q1),len(q2),len(q3),len(q4), sum([len(q1),len(q2),len(q3),len(q4)]))
+    print(len(q1),len(q2),len(q3), sum([len(q1),len(q2),len(q3)]))
     
 def SchtrGraph2(bins,filename,title, boolean, indi):
     # indi is 0 if graphing quartiles, 1 if graphing Tweb
@@ -143,10 +156,16 @@ def SchtrGraph2(bins,filename,title, boolean, indi):
     '''
     
     # Callable lists
-    qs = [q1,q2,q3,q4]
-    indx = ['1st quartile','2nd quartile','3rd quartile','4th quartile']
-    cs = ['b','g','r','y']
-    fmts = ['o','>','<','s']
+    if indi:
+        qs = [q1,q2,q3,q4]
+    	indx = ['1st quartile','2nd quartile','3rd quartile','4th quartile']
+    	cs = ['b','g','r','y']
+    	fmts = ['o','>','<','s']
+    else: 
+        qs = [q1,q2,q3]
+    	indx = ['Cluster','Sheet','Fillament']
+    	cs = ['b','g','r']
+    	fmts = ['o','>','<']
     alph = []
     dalph = []
     ms = []
@@ -156,7 +175,7 @@ def SchtrGraph2(bins,filename,title, boolean, indi):
     miny = 100
     maxy = -100
     # Chooses normalization factor as first phi_s
-    tmp = histog(np.log10(q1),15)
+    tmp = histog(np.log10(q2),15)
     #print(tmp)
     tmp = [tmp[0][np.where(tmp[1]!=0)],tmp[1][np.where(tmp[1]!=0)]]
     phi = 1
@@ -229,10 +248,12 @@ def SchtrGraph2(bins,filename,title, boolean, indi):
     labs = []
     if indi:
         labs = ['4th', '3rd', '2nd','1st']
+	cs = ['b','g','r','y']
+    	fmts = ['o','>','<','s']
     else: 
-        labs = ['Cluster','Sheet','Fillament','Void']
-    cs = ['b','g','r','y']
-    fmts = ['o','>','<','s']
+        labs = ['Cluster','Sheet','Fillament']
+    	cs = ['b','g','r']
+    	fmts = ['o','>','<']
     for al,dal,ma,dma,fmtt,col,lab in zip(alph,dalph,ms,dms,fmts,cs,labs):
         print(al,dal,ma,dma,fmtt,col,lab)
         ax1.errorbar( np.array([al]), np.array([ma]),xerr=np.array([dal]).T, yerr = np.array([dma]).T
@@ -250,7 +271,7 @@ def SchtrGraph2(bins,filename,title, boolean, indi):
     ax1.tick_params(axis='y', labelsize=20)
     #ax.set_title(title, fontsize = 30)
     #plt.savefig("../../data/pics/Filter/"+filename)
-    plt.savefig("../../data/pics/noFilter/nF_"+filename)
+    plt.savefig("../../data/pics/" + fold+filename)
     return np.array(alph),np.array(dalph).T,np.array(ms),np.array(dms).T
 
     
@@ -267,7 +288,7 @@ def graph(x,dx,d,name,title,filename):
     ax.set_xlabel(r'$Environment$', fontsize = 30)
     ax.set_title(title, fontsize = 30)
     #plt.savefig("../../data/pics/Filter/"+filename)
-    plt.savefig("../../data/pics/noFilter/nF_"+filename)
+    plt.savefig("../../data/pics/"+fold+filename)
 
 
 # In[3]:
@@ -356,6 +377,11 @@ def fitMCMC(tmp):
     return np.array(list(fit)),samples
 
 
+
+# Number of bins
+nbins = 10
+
+
 # # GAS NEAREST NEIGHBOR
 
 # In[4]:
@@ -366,10 +392,12 @@ def fitMCMC(tmp):
 # 3) # nearest neighbor to calculate environment number desity
 # 4) index of mass related to Masses file
 # 5) Mass cut in solar masses
-loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,0,10**(8.7))
+#loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,0,10**(8.7))
+loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,0,10**(10.3))
 #loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,0,0)
 #histo(15)
-a = SchtrGraph2(15,"quartilesGas","Nearest Neighbor Gas Mass Functions",True,1)
+
+a = SchtrGraph2(nbins,"quartilesGas","Nearest Neighbor Gas Mass Functions",True,1)
 
 
 # In[5]:
@@ -381,44 +409,49 @@ print(dms.T)
 
 # In[8]:
 
-loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,0,10**(8.7))
+#loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,0,10**(8.7))
+loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,0,10**(10.3))
 #loadTweb("../data/twEnv/Tweb1.csv","../data/Masses1.csv",3.0,0,0)
 
-a = SchtrGraph2(15,"T-Web_Gas","T-Web Gas Mass Functions",True,0)
+a = SchtrGraph2(nbins,"T-Web_Gas","T-Web Gas Mass Functions",True,0)
 
 # In[7]:
 
-loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,1,10**(10))
+#loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,1,10**(10))
+loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,1,10**(11.2))
 #loadHaloes("../data/nnEnv/env1.data","../data/Masses1.csv",3.0,1,0)
 
 #histo(15)
-a = SchtrGraph2(15,"quartilesDM","Nearest Neighbor DM Mass Functions",True,1)
+a = SchtrGraph2(nbins,"quartilesDM","Nearest Neighbor DM Mass Functions",True,1)
 
 # In[16]:
 
-loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,1,10**(10))
+#loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,1,10**(10))
+loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,1,10**(11.2))
 #loadTweb("../data/twEnv/Tweb1.csv","../data/Masses1.csv",3.0,1,0)
 
-a = SchtrGraph2(15,"T-Web_DM","T-Web DM Mass Functions",True,0)
+a = SchtrGraph2(nbins,"T-Web_DM","T-Web DM Mass Functions",True,0)
 
 # In[10]:
-
-loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,4,10**(7.5))
+#loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,4,10**(7.5))
+loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,2,10**(9.4))
 #histo(15)
-a = SchtrGraph2(15,"quartilesSellar","Nearest Neighbor Stellar Mass Functions",True,1)
+a = SchtrGraph2(nbins,"quartilesSellar","Nearest Neighbor Stellar Mass Functions",True,1)
 
 # In[24]:
 
-loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,4,10**(7.5))
+#loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,4,10**(7.5))
+loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,2,10**(9.4))
 
-a = SchtrGraph2(15,"T-Web_Stellar","T-Web Stellar Mass Functions",True,0)
+a = SchtrGraph2(nbins,"T-Web_Stellar","T-Web Stellar Mass Functions",True,0)
 
 
 # # NEAREST NEIGHBOR BH MF
 
 # In[9]:
 
-loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,5,10**6.8)
+#loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,5,10**6.8)
+loadHaloes("../../data/nnEnv/env1.data","../../data/Galaxy1.csv",3.0,3,10**(6.8))
 #6.4
 #histo(15)
 a = SchtrGraph2(15,"quartilesBH","Nearest Neighbor BH Mass Functions",True,1)
@@ -427,7 +460,8 @@ a = SchtrGraph2(15,"quartilesBH","Nearest Neighbor BH Mass Functions",True,1)
 
 # In[28]:
 
-loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,5,10**6.8)
+#loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,5,10**6.8)
+loadTweb("../../data/twEnv/Tweb1.csv","../../data/Galaxy1.csv",3.0,3,10**(6.8))
 a = SchtrGraph2(15,"T-Web_BH","T-Web BH Mass Functions",True,0)
 
 
