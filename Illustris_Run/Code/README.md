@@ -1,3 +1,6 @@
+# All Masses are in 10^10 solar masses
+# All distances are in kpc
+
 Remove all data and start over:
 
 	rm ../data/*.csv
@@ -18,6 +21,7 @@ Format of ../data/phaseSpace files:
 -----------------------------------------------------------------------------------------------------------------------------
 
 Obtain files for ../data/nnEnv (nearest neighbor environment) from ../data/phaseSpace:
+
 	./C_libs/env.out ../data/phaseSpace/Illustris1.csv ../data/nnEnv/env1.data ../data/nnEnv/specs1.data
 	./C_libs/env.out ../data/phaseSpace/Illustris2.csv ../data/nnEnv/env2.data ../data/nnEnv/specs2.data
 	./C_libs/env.out ../data/phaseSpace/Illustris3.csv ../data/nnEnv/env3.data ../data/nnEnv/specs3.data
