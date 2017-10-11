@@ -62,8 +62,8 @@ def loadHaloes(name, massname, neigh, j, minMass):
     	lsigma = table[0][np.where(((M*mtable[j]) > minMass)& ((M*mtable[j]) < 10**(11.5)))]
     	mass = M*mtable[j][np.where((M*mtable[j] > minMass) & ((M*mtable[j]) < 10**(11.5)))]
     else:
-	lsigma = table[0][np.where(((M*mtable[j]) > minMass))]
-    	mass = M*mtable[j][np.where(M*mtable[j] > minMass)]    
+        lsigma = table[0][np.where(((M*mtable[j]) > minMass))]
+        mass = M*mtable[j][np.where(M*mtable[j] > minMass)]  
 
     print("number of haloes after: " + str(len(mass)))
 
@@ -110,8 +110,8 @@ def loadTweb(name, massname, neigh, j, minMass):
     	lsigma = table[0][np.where(((M*mtable[j]) > minMass)& ((M*mtable[j]) < 10**(11.5)))]
     	mass = M*mtable[j][np.where((M*mtable[j] > minMass) & ((M*mtable[j]) < 10**(11.5)))]
     else:
-	lsigma = table[0][np.where(((M*mtable[j]) > minMass))]
-    	mass = M*mtable[j][np.where(M*mtable[j] > minMass)]
+        lsigma = table[0][np.where(((M*mtable[j]) > minMass))]
+        mass = M*mtable[j][np.where(M*mtable[j] > minMass)]
     
     print("number of haloes after: " + str(len(mass)))
 
@@ -125,8 +125,8 @@ def loadTweb(name, massname, neigh, j, minMass):
     q2 = mass[np.where(lsigma == 2)]
     q3 = mass[np.where(lsigma == 1)]
     q4 = mass[np.where(lsigma == 0)]
-    print "Number of Voids: " ,len(q4)
-    print "######################################################################"
+    print("Number of Voids: " ,len(q4))
+    print("######################################################################")
     q4 = -1
     q5 = mass
     # verify the length of each quartile
@@ -158,14 +158,14 @@ def SchtrGraph2(bins,filename,title, boolean, indi):
     # Callable lists
     if indi:
         qs = [q1,q2,q3,q4]
-    	indx = ['1st quartile','2nd quartile','3rd quartile','4th quartile']
-    	cs = ['b','g','r','y']
-    	fmts = ['o','>','<','s']
+        indx = ['1st quartile','2nd quartile','3rd quartile','4th quartile']
+        cs = ['b','g','r','y']
+        fmts = ['o','>','<','s']
     else: 
         qs = [q1,q2,q3]
-    	indx = ['Cluster','Sheet','Fillament']
-    	cs = ['b','g','r']
-    	fmts = ['o','>','<']
+        indx = ['Cluster','Sheet','Fillament']
+        cs = ['b','g','r']
+        fmts = ['o','>','<']
     alph = []
     dalph = []
     ms = []
@@ -248,12 +248,12 @@ def SchtrGraph2(bins,filename,title, boolean, indi):
     labs = []
     if indi:
         labs = ['4th', '3rd', '2nd','1st']
-	cs = ['b','g','r','y']
-    	fmts = ['o','>','<','s']
+        cs = ['b','g','r','y']
+        fmts = ['o','>','<','s']
     else: 
         labs = ['Cluster','Sheet','Fillament']
-    	cs = ['b','g','r']
-    	fmts = ['o','>','<']
+        cs = ['b','g','r']
+        fmts = ['o','>','<']
     for al,dal,ma,dma,fmtt,col,lab in zip(alph,dalph,ms,dms,fmts,cs,labs):
         print(al,dal,ma,dma,fmtt,col,lab)
         ax1.errorbar( np.array([al]), np.array([ma]),xerr=np.array([dal]).T, yerr = np.array([dma]).T
