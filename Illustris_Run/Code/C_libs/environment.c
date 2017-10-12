@@ -316,6 +316,7 @@ void get_Env(int j, int hx, int hy, int hz){
    // Saves the environment of the candidate galaxies
    int num = 0;
    float* Genv = malloc((nG*0.25)*sizeof(float));
+   int* indices = malloc((nG*0.25)*sizeof(int));
 
    // Indexes for the loops
    int i,l;
@@ -378,6 +379,7 @@ void get_Env(int j, int hx, int hy, int hz){
                // Saves the distance^2 to the galaxy projected in the sky
                float x =  ( (ph[0]*pg[0]) + (ph[1]*pg[1]) + (ph[2]*pg[2]) )/( phnorm*pgnorm );
                Genv[num] = pow( phnorm/x, 2 )*(fabs( 1.0 - pow(x,2) ));
+	       indices[num] = i;
                //printf("%f\n",Genv[num]);
                /*
                if(Genv[num]< 0){
@@ -417,10 +419,10 @@ void get_Env(int j, int hx, int hy, int hz){
        }
      }
      // Cumulative mass of neighbouing galaxies
-     env_specs[j][0] += Gmass[maxindx][0];
-     env_specs[j][1] += Gmass[maxindx][1];
-     env_specs[j][2] += Gmass[maxindx][2];
-     env_specs[j][3] += Gmass[maxindx][3];
+     env_specs[j][0] += Gmass[indices[maxindx]][0];
+     env_specs[j][1] += Gmass[indices[maxindx]][1];
+     env_specs[j][2] += Gmass[indices[maxindx]][2];
+     env_specs[j][3] += Gmass[indices[maxindx]][3];
      // Sets a big number to delete the minimum and find the second one
      Genv[maxindx] = 9e+15;
    }
@@ -434,9 +436,9 @@ void get_Env(int j, int hx, int hy, int hz){
    // Projected distance in sky
    env[j] = maxdist;
    env_specs[j][4] = sqrt(maxdist);
-   env_specs[j][5] = sqrt(pow(deltaPBC(Gp[j][0] , Gp[maxindx][0] ),2)+
-			  pow(deltaPBC(Gp[j][1] , Gp[maxindx][1] ),2)+
-		    	  pow(deltaPBC(Gp[j][2] , Gp[maxindx][2] ),2));
+   env_specs[j][5] = sqrt(pow(deltaPBC(Gp[j][0] , Gp[indices[maxindx]][0] ),2)+
+			  pow(deltaPBC(Gp[j][1] , Gp[indices[maxindx]][1] ),2)+
+		    	  pow(deltaPBC(Gp[j][2] , Gp[indices[maxindx]][2] ),2));
 
    //printf("%f\n",maxdist);
    free(Genv);
