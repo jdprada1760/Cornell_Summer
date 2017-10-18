@@ -153,50 +153,54 @@ characterization properties. \\
 
 \section{The method}
 
-The principal purpose of this work is to verify if the results
-obtained observationally by Jones et al. \cite{jones1} are supported
-by a similar analysis in the cosmological simulation Illustris. Specifically, we focus on the (small-scale) environment definition of the $3^{rd}$ nearest neighbor, which we want to adapt as closely as possible to our computational application.\\ 
+The principal purpose of this work is to verify if the results obtained observationally by Jones et al. \cite{jones1} are supported by a similar analysis in the cosmological simulation Illustris. Specifically, we focus on the \textit{local} environment definition of the $3^{rd}$ nearest neighbor (NN), which we want to adapt as closely as possible to our computational application.\\ 
 
 \subsection{The $3^{rd}$ nearest neighbor definition of environment}
 
-Jones et al. \cite{jones1} analyses the
-dependence of the Schechter parameters on the cosmological
-environment. To obtain a quantification of said cosmological
-environment, they calculated for each galaxy in the studied survey the
-projected distance in the sky to the third nearest neighbor,
-filtrating candidate neighbors by their radial velocity relative to the
-reference galaxy. According to Hubble's law, this effectively
-restricts the candidate galaxies to a smaller radial range, reducing
-apparent closer galaxies arising from the projection method. The
-radial relative velocity cut was chosen to be $450km/s$. In addition to this,
-a photometrics pre-selection was performed, selecting galaxies whose
-r-filter magnitude was above $-19$ (VERIFY).\\  
+Jones et al. \cite{jones1} analyze the dependence of the HIMF's Schechter parameters on the cosmological environment.
 
-Once quantified the environment with the distance to the 3rd nearest
-neighbor definition they divided the group in four quartiles according this quantity. For each
-quartile, the respective HIMF was calculated, and with this, a
-Schechter fit was obtained. The analysis was specifically performed
-over the Schechter parameters of the Knee-mass and the faint-end
-slope. (Some observational adjustments for the Schechter functions were performed)  \\ 
+They used the SDSS \cite{SDSS} catalogue to define the environment of galaxies in the ALFALFA \cite{ALFALFA} survey.
+
+This SDSS catalogue was constituted of pre-selected galaxies brighter than $M_r = -18.9$.
+
+To obtain a quantification the environment, for each reference galaxy in ALFALFA they found the projected distance in the sky to the third NN belonging to the pre-selected SDSS catalogue.
+
+This projected distance in the sky defines a numeric-surface density for each reference galaxy.
+
+They filtrated candidate neighbors by their radial velocity relative to the reference galaxy which had to be within $450km/s$.
+
+According to Hubble's law, this effectively restricts the candidate galaxies to a smaller radial range, reducing apparent closer galaxies arising from the use of projected distances. \\
+
+Once quantified the environment for each ALFALFA galaxy with the distance to the 3rd NN definition, they divided the group in four quartiles according this quantity. 
+
+For each quartile, the respective HIMF was calculated, and with this, a Schechter fit was obtained. 
+
+The analysis was specifically performed over the Schechter parameters of the Knee-mass $M^*$ and the faint-end slope $\alpha$. \\ 
  
-As we want to replicate as closely as possible the method effectuated by Jones et. al
-\cite{jones1}, we use the same specifications to calculare the environment.
- We perform the analysis of the Schechter functions to gas, DM, stellar and BH mass functions.
- However, we do not perform it directly on HIMFs because this would require some extense calculations.
-  We take the gas mass function as a first approximation.
- As Illustris is a cosmological simulation, it is subject to resolution biases.
-The most important bias in this study is related to the minimum mass of discrete elements in the simulation. 
+As we want to replicate as closely as possible the method effectuated by Jones et. al \cite{jones1}, we use the same specifications to calculate the environment.
+
+We perform the analysis of the Schechter functions to gas, DM, stellar and BH mass functions.
+
+We do not perform the study directly on HIMFs because this would require some extense calculations although we take the gas mass function as a first approximation.\\
+
+As Illustris is a cosmological simulation, it is subject to resolution and numerical biases.
+
+The most important bias in this study is related to the minimum mass of discrete elements in the simulation.
+ 
 Each mass considered here is subject directly or indirectly this resolution restriction, and the effect it causes is specially evident in the produced mass functions. 
-We used Illustris-2,3, which are less resoluted copies of Illustris-1, to show this effect on the mass functions \fig{resolution effects}. 
-Taking this into account, mass functions are heavily affected for masses below a certain cut and for this reason, only galaxies above said cut are considered in this study. This mass cut has no aparent systematical way to be calculated and therefore, we performed the cut having into account the performance of the respective Schechter fit.\\
+
+We used Illustris-2,3, which are less resoluted copies of Illustris-1, to show this effect on the mass functions \ref{fig:resolution effects}. 
+
+Taking this into account, mass functions are heavily affected for masses below a certain cut and for this reason, only galaxies above said cut are considered in this study.
+
+This mass cut has no apparent systematical way to be calculated and therefore, we choose it having into account the performance of the respective Schechter fit.\\
 
 \subsection{The cosmic web method}
-To complement and verify the analysis performed with the third nearest neighbor
-method, we chose a complementary method of completely different nature. 
+To complement and verify the analysis performed with the third nearest neighbor method, we chose a complementary method of completely different nature. 
+
 The chosen method was developed by Forero et al. \cite{forero1}. 
-It uses the Hessian \ref{eq:hessian} of
-the gravitational potential obtained from the DM density field to classify
-galaxies into four morphological environments.\\  
+
+It uses the Hessian \ref{eq:hessian} of the gravitational potential obtained from the DM density field to classify galaxies into four morphological environments.\\  
 
 \begin{equation}
 E =  mc^2
@@ -204,9 +208,13 @@ E =  mc^2
 \end{equation}
 
 Specifically, we diagonalize the Hessian matrix obtaining three eigenvalues. 
+
 These eigenvalues determine the concavity of the gravitational potential on the principal axes, at each point. We use these eigenvalues to interpret the tendence of mass to cluster with reference with some given threshold $\lambda$. 
+
 Eigenvalues bigger than $\lambda$ are interpreted as a local tendence of mass to expand? in the respective eigenaxes, and viceversa. 
+
 With this characterization, clusters, sheets, fillaments and voids can be defined with the number of axes above $\lambda$.
+
 Forero et. al. found in \cite{forero1} that the critical value that better reproduces the correct morphological pulations was $\lambda = 0.2$. \\
 
 With these specifications, we could obtain mass functions for galaxies belonging to clusters, fillaments and sheets. The amount of galaxies belonging to voids was strongly affected by the mentioned mass cuts and could not produce reasonable mass functions to analyze.
@@ -228,7 +236,7 @@ e.g. Table~\ref{tab:example_table}.
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/quartilesGas.png}
+	\includegraphics[width=\columnwidth]{./pics/F19_quartilesGas.png}
     \caption{\textbf{Upper side}: Schechter fits of each gas mass
       function for each environmental quartile (tendence) using the 3rd nearest
       neighbor definition.\textbf{Down side}: Knee-mass $m_\ast$ and
@@ -242,7 +250,7 @@ e.g. Table~\ref{tab:example_table}.
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/T-Web_Gas.png}
+	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_Gas.png}
     \caption{\textbf{Upper side}: Schechter fits of each gas mass
       function for each morphological environment characterized by the
       T-Web algorithm proposed by Forero et al.\textbf{Down side}:
@@ -256,7 +264,7 @@ e.g. Table~\ref{tab:example_table}.
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/quartilesDM.png}
+	\includegraphics[width=\columnwidth]{./pics/F19_quartilesDM.png}
     \caption{Similar to figure \ref{fig:quartilesGas} using DM.} 
     \label{fig:quartilesDM}
 \end{figure}
@@ -266,7 +274,7 @@ e.g. Table~\ref{tab:example_table}.
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/T-Web_DM.png}
+	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_DM.png}
     \caption{Similar to figure \ref{fig:TwebGas} using DM.} 
     \label{fig:TwebDM}
 \end{figure}
@@ -276,7 +284,7 @@ e.g. Table~\ref{tab:example_table}.
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/quartilesSellar.png}
+	\includegraphics[width=\columnwidth]{./pics/F19_quartilesSellar.png}
     \caption{Similar to figure \ref{fig:quartilesGas} using stellar mass} 
     \label{fig:quartilesStellar}
 \end{figure}
@@ -286,7 +294,7 @@ e.g. Table~\ref{tab:example_table}.
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/T-Web_Stellar.png}
+	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_Stellar.png}
     \caption{Similar to figure \ref{fig:TwebGas} using stellar mass} 
     \label{fig:TwebStellar}
 \end{figure}
@@ -296,7 +304,7 @@ e.g. Table~\ref{tab:example_table}.
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/quartilesBH.png}
+	\includegraphics[width=\columnwidth]{./pics/F19_quartilesBH.png}
     \caption{Similar to figure \ref{fig:quartilesGas} using BHs mass.} 
     \label{fig:quartilesBH}
 \end{figure}
@@ -306,7 +314,7 @@ e.g. Table~\ref{tab:example_table}.
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/T-Web_BH.png}
+	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_BH.png}
     \caption{Similar to figure \ref{fig:TwebGas} using BHs mass.} 
     \label{fig:TwebBH}
 \end{figure}
