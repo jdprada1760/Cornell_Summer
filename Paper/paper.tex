@@ -112,7 +112,7 @@ for a full user guide.
 \cite{Tweb}.
 
 \section{Illustris Simulation}
-Illustris-1, also known simply as Illustris, is a highly resolved
+Illustris-1, also known as Illustris, is a highly resolved
 cosmological simulation. It reproduces large-scale statistical
 features of the Universe, such as the galaxy population of massive
 clusters, as well as small-scale properties such as the morphology of
@@ -151,11 +151,49 @@ characterization properties. \\
 
 (HERE TALK ABOUT ILLUSTRIS-2,3 FOR RESOLUTION PURPOSES)
 
-\section{The method}
+\section{The methodology}
+
+\subsection{ Characterizing Mass Functions}
+A mass function is the number density $n(M)$ of objects of determined mass $M$.
+Due to the large range of orders of magnitud in which these quantities span, the mass function is often represented in logarithmic scales on both sides. 
+The discretization of these mass functions is simply the histogram of the logarithmic masses of the studied group of objects. 
+In Illustris, as in all simulations, we have clear determination of volumes. This volume is constant over all the sample of galaxies studied and is to be taken the constant volume of the simulation $V = \left(106.5\text{Mpc}\right)^3$. 
+In this sense, the relation expressed by a mass function is 
+
+\begin{equation}
+n(M)Vd\log{(M)} =  dN
+\end{equation}
+
+To characterize specific properties of these mass functions, we use the Press-Schechter function \ref{eq:Schechter}. 
+It comes from an elaborated formalism of hierarchical formation of DM structures in an expanding Friedmann universe arriving to a self-similar state of "equilibrium" for its mass function \cite{Schechter1976}.
+Although its ansatz has been demonstrated to be inaccurate for our observable universe \cite{inaccurateSchechter}, the final expression is very well fitted to the mass functions of the local universe \cite{wellfitSchechter}.\\
+
+\begin{equation}
+n\left( M \right) = n_*\left( \frac{M}{M_*} \right)^{-\alpha+1}\exp^{-\left( \frac{M}{M_*}\right)}
+\label{eq:Schechter}
+\end{equation}
+
+The Schechter function \ref{eq:Schechter} is fully defined by the three parameters $(n_*,M_*,\alpha)$. 
+The number density factor $n_*$ is just a normalization factor which vary depending on the studied system. 
+The mass scale factor $M_*$ may be interpreted as the mass that separates the power-law regimen $M \ll M_*$ and the exponential regimen $M \gg M_*$. 
+This transition graphically resemnles a knee, which is the reason why $M_*$ is referred as the knee-mass.
+The faint-end slope $\alpha$ is directly related to the exponent of the power-law at the low-mass regime.
+In logarithmic scales, it is clearly interpreted as the slope of the low-mass regime.\\
+
+
+
+
+We characterize each mass function with a Schechter
+function \ref{eq:schechter}. It is . These parameters and their
+respective estimated errors are determined with a MCMC fit
+applied directly to the MF.\\
+
 
 The principal purpose of this work is to verify if the results obtained observationally by Jones et al. \cite{jones1} are supported by a similar analysis in the cosmological simulation Illustris. Specifically, we focus on the \textit{local} environment definition of the $3^{rd}$ nearest neighbor (NN), which we want to adapt as closely as possible to our computational application.\\ 
 
-\subsection{The $3^{rd}$ nearest neighbor definition of environment}
+\subsection{Defining the environment}
+
+\subsubsection{The $3^{rd}$ nearest neighbor definition of environment}
 
 Jones et al. \cite{jones1} analyze the dependence of the HIMF's Schechter parameters on the cosmological environment.
 
@@ -195,7 +233,7 @@ Taking this into account, mass functions are heavily affected for masses below a
 
 This mass cut has no apparent systematical way to be calculated and therefore, we choose it having into account the performance of the respective Schechter fit.\\
 
-\subsection{The cosmic web method}
+\subsubsection{The cosmic web method}
 To complement and verify the analysis performed with the third nearest neighbor method, we chose a complementary method of completely different nature. 
 
 The chosen method was developed by Forero et al. \cite{forero1}. 
