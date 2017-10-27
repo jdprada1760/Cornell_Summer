@@ -109,7 +109,7 @@ This is a simple template for authors to write new MNRAS papers.
 See \texttt{mnras\_sample.tex} for a more complex example, and \texttt{mnras\_guide.tex}
 for a full user guide.
 
-\cite{Tweb}.
+\cite{Forero2009}.
 
 \section{Illustris Simulation}
 Illustris-1, also known as Illustris, is a highly resolved
@@ -127,7 +127,7 @@ of DM for $\text{z}\geq 1$, which is later modified to $0.7\text{kpc}$
 in physical units for the rest of the simulation. \\ 
 
 The evolution in time was performed with the hydrodynamic code AREPO
-\cite{arepo}, which combines a moving Voronoi tessellation with the
+\cite{Arepo}, which combines a moving Voronoi tessellation with the
 finite volume approach. Included in the evolution algorithm, there are
 galaxy formation models which account for the evolution of stars and
 SMBHs. Specifically, the physics followed by this model includes
@@ -145,7 +145,7 @@ with spacing $\Delta a \approx 0.01$. Each snapshot was post-processed
 with a modified version of FOF \cite{FOF} to identify DM haloes with
 more than 32 particles using a linking length of 0.2 times the mean
 particle separation. Each output group from the 7,713,601 post-processed halos (FOF) is analyzed with the SUBFIND
-algorithm \cite{subfind} to generate, at z=0,
+algorithm \cite{SUBFIND} to generate, at z=0,
 and 4,366,546 (sub)halo catalogues with their respective
 characterization properties. \\ 
 
@@ -180,6 +180,27 @@ This transition graphically resemnles a knee, which is the reason why $M_*$ is r
 The faint-end slope $\alpha$ is directly related to the exponent of the power-law at the low-mass regime.
 In logarithmic scales, it is clearly interpreted as the slope of the low-mass regime.\\
 
+To obtain the Schechter parameters that characterize each numerical mass function, we used MCMC to obtain the fit with best likelihood. 
+With this, we could also ...\\
+
+As Illustris is a cosmological simulation, it is subject to resolution and numerical biases.
+The most important bias in this study is related to the minimum mass of discrete elements in the simulation.
+Each mass considered here is subject directly or indirectly this resolution restriction, and the effect it causes is specially evident in the produced mass functions. 
+We used Illustris-2,3, which are less resoluted copies of Illustris-1, to show this effect on the mass functions \ref{fig:resolution effects}. 
+Taking this into account, mass functions are heavily affected for masses below a certain cut and for this reason, only galaxies above said cut are considered in this study.
+This mass cut has no apparent systematical way to be calculated and therefore, we choose it having into account the performance of the respective Schechter fit.\\
+
+\begin{figure}
+	% To include a figure from a file named example.*
+	% Allowable file formats are eps or ps if compiling using latex
+	% or pdf, png, jpg if compiling using pdflatex
+	\includegraphics[width=\columnwidth]{./pics/MassResolution.png}
+    \caption{The effect on mass resolution on mass functions of Illustris-1,2,3. (Masses have units $10^{10}M_\odot$)} 
+    \label{fig:resolution effects}
+\end{figure}
+
+ 
+
 \subsection{Defining the environment}
 
 Given the current interest in the study of the dependence of observational HIMFs on the environment and the wide difference of the conclusions of these studies, the main scope of this work is to verify if the any results obtained observationally are supported by a similar analysis in the cosmological simulation Illustris.\\
@@ -190,9 +211,9 @@ On the other hand, to confirm our results, we use a computational and theoretica
 
 \subsubsection{The $3^{rd}$ nearest neighbor definition of environment}
 
-Jones et al. \cite{jones1} the SDSS \cite{SDSS2011} catalogue to define the environment of galaxies in the ALFALFA \cite{ALFALFA} survey.
+Jones et al. \cite{Jones2016} the SDSS \cite{SDSS2011} catalogue to define the environment of galaxies in the ALFALFA \cite{ALFALFA} survey.
 This SDSS catalogue was chosen to be optically-selected and volume-limited to account for apparent lonely galaxies in ALFALFA with increasinf distance. 
-For this reason, they pre-selected galaxies brighter than $M_r = -18.9$ in this survey.
+For this reason, they pre-selected galaxies brighter than $M_r = -18.9$ in this survey.\\
 
 To quantify the environment , for each reference galaxy in ALFALFA, they calculated the projected distance in the sky to the third nearest neighbor belonging to the pre-selected SDSS catalogue.
 This projected distance in the sky defines a numeric-surface density for each reference galaxy.
@@ -203,35 +224,29 @@ Once quantified the environment for each ALFALFA galaxy with the distance to the
 For each quartile, the respective HIMF was calculated, and with this, a Schechter fit was obtained. 
 %The analysis was specifically performed over the Schechter parameters of the Knee-mass $M^*$ and the faint-end slope $\alpha$. \\ 
  
-As we want to replicate as closely as possible the method effectuated by Jones et. al \cite{jones1}, we use the same specifications to calculate the environment.
+As we want to replicate as closely as possible the method effectuated by Jones et. al \cite{Jones2016}, we use the same specifications to calculate the environment.
 We perform the analysis of the Schechter functions to gas, DM, stellar and BH mass functions.
 We do not perform the study directly on HIMFs because this would require some extense calculations. We take the gas mass function as a first approximation.\\
 
-As Illustris is a cosmological simulation, it is subject to resolution and numerical biases.
-The most important bias in this study is related to the minimum mass of discrete elements in the simulation.
-Each mass considered here is subject directly or indirectly this resolution restriction, and the effect it causes is specially evident in the produced mass functions. 
-We used Illustris-2,3, which are less resoluted copies of Illustris-1, to show this effect on the mass functions \ref{fig:resolution effects}. 
-Taking this into account, mass functions are heavily affected for masses below a certain cut and for this reason, only galaxies above said cut are considered in this study.
-This mass cut has no apparent systematical way to be calculated and therefore, we choose it having into account the performance of the respective Schechter fit.\\
-
 \subsubsection{The cosmic web method}
 To complement and verify the analysis performed with the third nearest neighbor method, we chose a complementary method of completely different nature. 
-The chosen method was developed by Forero et al. \cite{forero1}. 
-It uses the Hessian \ref{eq:hessian} of the gravitational potential obtained from the DM density field to classify galaxies into four morphological environments.\\  
+The chosen method was developed by Forero et al. \cite{Forero2009}. 
+It uses the Hessian \ref{eq:hessian} of the gravitational potential obtained from the smoothened DM density field to classify galaxies into four morphological environments.\\  
 
 \begin{equation}
 E =  mc^2
 \label{eq:hessian}
 \end{equation}
 
-Specifically, we diagonalize the Hessian matrix obtaining three eigenvalues. 
-These eigenvalues determine the concavity of the gravitational potential on the principal axes, at each point. We use these eigenvalues to interpret the tendence of mass to cluster with reference with some given threshold $\lambda$. 
-Eigenvalues bigger than $\lambda$ are interpreted as a local tendence of mass to expand? in the respective eigenaxes, and viceversa. 
-With this characterization, clusters, sheets, fillaments and voids can be defined with the number of axes above $\lambda$.
-Forero et. al. found in \cite{forero2009} that the critical value that better reproduces the correct morphological pulations was $\lambda = 0.2$. \\
+Specifically, we diagonalize the Hessian matrix of the gravitational potential $\phi$ obtaining three eigenvalues. 
+This matrix encodes the local curvature of the gravitational potential. 
+Specifically, these eigenvalues determine the concavity of $\phi$ on the principal axes, at each point. 
+We use these eigenvalues to interpret the tendence of mass to cluster with reference with some given threshold $\lambda$. 
+Eigenvalues bigger than $\lambda$ are interpreted as a local tendence of mass to cluster in the respective eigenaxes, and viceversa. 
+With this characterization, clusters, sheets, fillaments and voids can be defined with the number of eigenvalues above $\lambda$.
+Forero et. al. found in \cite{forero2009} that the critical value that better reproduces the correct morphological populations was $\lambda = 0.2$. \\
 
 With these specifications, we could obtain mass functions for galaxies belonging to clusters, fillaments and sheets. The amount of galaxies belonging to voids was strongly affected by the mentioned mass cuts and could not produce reasonable mass functions to analyze.
-
 
 \section{Results}
 \subsection{Preliminaries}
@@ -331,22 +346,6 @@ e.g. Table~\ref{tab:example_table}.
     \label{fig:TwebBH}
 \end{figure}
 
-% Example table
-\begin{table}
-	\centering
-	\caption{This is an example table. Captions appear above each table.
-	Remember to define the quantities, symbols and units used.}
-	\label{tab:example_table}
-	\begin{tabular}{lccr} % four columns, alignment for each
-		\hline
-		A & B & C & D\\
-		\hline
-		1 & 2 & 3 & 4\\
-		2 & 4 & 6 & 8\\
-		3 & 5 & 7 & 9\\
-		\hline
-	\end{tabular}
-\end{table}
 
 
 \section{Conclusions}
