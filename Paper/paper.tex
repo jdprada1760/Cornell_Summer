@@ -174,7 +174,7 @@ n\left( M \right) = n_*\left( \frac{M}{M_*} \right)^{-\alpha+1}\exp^{-\left( \fr
 \end{equation}
 
 The Schechter function \ref{eq:Schechter} is fully defined by the three parameters $(n_*,M_*,\alpha)$. 
-The number density factor $n_*$ is just a normalization factor which vary depending on the studied system. 
+The number density factor $n_*$ is just a normalization factor which varies depending on the studied system. 
 The mass scale factor $M_*$ may be interpreted as the mass that separates the power-law regimen $M \ll M_*$ and the exponential regimen $M \gg M_*$. 
 This transition graphically resemnles a knee, which is the reason why $M_*$ is referred as the knee-mass.
 The faint-end slope $\alpha$ is directly related to the exponent of the power-law at the low-mass regime.
@@ -186,7 +186,7 @@ Given the current interest in the study of the dependence of observational HIMFs
 
 For this purpose, we take two approaches to analyze the dependence of mass functions on environment. 
 On one hand, to make our study observationally-comparable, we follow the 3rd nearest neighbor (3NN) definition of environment proposed by Jones et al. \cite{Jones2016}. 
-On the other hand, to confirm our results, we use a computational definition of environment (T-Web) of completely different nature proposed by Forero et al. \cite{Forero2009}. 
+On the other hand, to confirm our results, we use a computational and theoretical definition of environment (T-Web) of completely different nature proposed by Forero et al. \cite{Forero2009}. 
 
 \subsubsection{The $3^{rd}$ nearest neighbor definition of environment}
 
@@ -200,34 +200,23 @@ To do so, first, they filtrated candidate neighbors by their radial velocity rel
 According to Hubble's law, this effectively restricts the candidate galaxies to a smaller radial range, reducing apparent closer galaxies arising from the use of projected distances. \\
 
 Once quantified the environment for each ALFALFA galaxy with the distance to the 3rd NN definition, they divided the group in four quartiles according this quantity. 
-
 For each quartile, the respective HIMF was calculated, and with this, a Schechter fit was obtained. 
-
-The analysis was specifically performed over the Schechter parameters of the Knee-mass $M^*$ and the faint-end slope $\alpha$. \\ 
+%The analysis was specifically performed over the Schechter parameters of the Knee-mass $M^*$ and the faint-end slope $\alpha$. \\ 
  
 As we want to replicate as closely as possible the method effectuated by Jones et. al \cite{jones1}, we use the same specifications to calculate the environment.
-
 We perform the analysis of the Schechter functions to gas, DM, stellar and BH mass functions.
-
-We do not perform the study directly on HIMFs because this would require some extense calculations although we take the gas mass function as a first approximation.\\
+We do not perform the study directly on HIMFs because this would require some extense calculations. We take the gas mass function as a first approximation.\\
 
 As Illustris is a cosmological simulation, it is subject to resolution and numerical biases.
-
 The most important bias in this study is related to the minimum mass of discrete elements in the simulation.
- 
 Each mass considered here is subject directly or indirectly this resolution restriction, and the effect it causes is specially evident in the produced mass functions. 
-
 We used Illustris-2,3, which are less resoluted copies of Illustris-1, to show this effect on the mass functions \ref{fig:resolution effects}. 
-
 Taking this into account, mass functions are heavily affected for masses below a certain cut and for this reason, only galaxies above said cut are considered in this study.
-
 This mass cut has no apparent systematical way to be calculated and therefore, we choose it having into account the performance of the respective Schechter fit.\\
 
 \subsubsection{The cosmic web method}
 To complement and verify the analysis performed with the third nearest neighbor method, we chose a complementary method of completely different nature. 
-
 The chosen method was developed by Forero et al. \cite{forero1}. 
-
 It uses the Hessian \ref{eq:hessian} of the gravitational potential obtained from the DM density field to classify galaxies into four morphological environments.\\  
 
 \begin{equation}
@@ -236,14 +225,10 @@ E =  mc^2
 \end{equation}
 
 Specifically, we diagonalize the Hessian matrix obtaining three eigenvalues. 
-
 These eigenvalues determine the concavity of the gravitational potential on the principal axes, at each point. We use these eigenvalues to interpret the tendence of mass to cluster with reference with some given threshold $\lambda$. 
-
 Eigenvalues bigger than $\lambda$ are interpreted as a local tendence of mass to expand? in the respective eigenaxes, and viceversa. 
-
 With this characterization, clusters, sheets, fillaments and voids can be defined with the number of axes above $\lambda$.
-
-Forero et. al. found in \cite{forero1} that the critical value that better reproduces the correct morphological pulations was $\lambda = 0.2$. \\
+Forero et. al. found in \cite{forero2009} that the critical value that better reproduces the correct morphological pulations was $\lambda = 0.2$. \\
 
 With these specifications, we could obtain mass functions for galaxies belonging to clusters, fillaments and sheets. The amount of galaxies belonging to voids was strongly affected by the mentioned mass cuts and could not produce reasonable mass functions to analyze.
 
@@ -255,7 +240,6 @@ With these specifications, we could obtain mass functions for galaxies belonging
 
 Figures and tables should be placed at logical positions in the text. Don't
 worry about the exact layout, which will be handled by the publishers.
-
 Figures are referred to as e.g. Fig.~\ref{fig:example_figure}, and tables as
 e.g. Table~\ref{tab:example_table}.
 
