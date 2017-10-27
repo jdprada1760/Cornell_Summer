@@ -180,33 +180,23 @@ This transition graphically resemnles a knee, which is the reason why $M_*$ is r
 The faint-end slope $\alpha$ is directly related to the exponent of the power-law at the low-mass regime.
 In logarithmic scales, it is clearly interpreted as the slope of the low-mass regime.\\
 
-
-
-
-We characterize each mass function with a Schechter
-function \ref{eq:schechter}. It is . These parameters and their
-respective estimated errors are determined with a MCMC fit
-applied directly to the MF.\\
-
-
-The principal purpose of this work is to verify if the results obtained observationally by Jones et al. \cite{jones1} are supported by a similar analysis in the cosmological simulation Illustris. Specifically, we focus on the \textit{local} environment definition of the $3^{rd}$ nearest neighbor (NN), which we want to adapt as closely as possible to our computational application.\\ 
-
 \subsection{Defining the environment}
+
+Given the current interest in the study of the dependence of observational HIMFs on the environment and the wide difference of the conclusions of these studies, the main scope of this work is to verify if the any results obtained observationally are supported by a similar analysis in the cosmological simulation Illustris.\\
+
+For this purpose, we take two approaches to analyze the dependence of mass functions on environment. 
+On one hand, to make our study observationally-comparable, we follow the 3rd nearest neighbor (3NN) definition of environment proposed by Jones et al. \cite{Jones2016}. 
+On the other hand, to confirm our results, we use a computational definition of environment (T-Web) of completely different nature proposed by Forero et al. \cite{Forero2009}. 
 
 \subsubsection{The $3^{rd}$ nearest neighbor definition of environment}
 
-Jones et al. \cite{jones1} analyze the dependence of the HIMF's Schechter parameters on the cosmological environment.
+Jones et al. \cite{jones1} the SDSS \cite{SDSS2011} catalogue to define the environment of galaxies in the ALFALFA \cite{ALFALFA} survey.
+This SDSS catalogue was chosen to be optically-selected and volume-limited to account for apparent lonely galaxies in ALFALFA with increasinf distance. 
+For this reason, they pre-selected galaxies brighter than $M_r = -18.9$ in this survey.
 
-They used the SDSS \cite{SDSS} catalogue to define the environment of galaxies in the ALFALFA \cite{ALFALFA} survey.
-
-This SDSS catalogue was constituted of pre-selected galaxies brighter than $M_r = -18.9$.
-
-To obtain a quantification the environment, for each reference galaxy in ALFALFA they found the projected distance in the sky to the third NN belonging to the pre-selected SDSS catalogue.
-
+To quantify the environment , for each reference galaxy in ALFALFA, they calculated the projected distance in the sky to the third nearest neighbor belonging to the pre-selected SDSS catalogue.
 This projected distance in the sky defines a numeric-surface density for each reference galaxy.
-
-They filtrated candidate neighbors by their radial velocity relative to the reference galaxy which had to be within $450km/s$.
-
+To do so, first, they filtrated candidate neighbors by their radial velocity relative to the reference galaxy which had to be within $450km/s$.
 According to Hubble's law, this effectively restricts the candidate galaxies to a smaller radial range, reducing apparent closer galaxies arising from the use of projected distances. \\
 
 Once quantified the environment for each ALFALFA galaxy with the distance to the 3rd NN definition, they divided the group in four quartiles according this quantity. 
