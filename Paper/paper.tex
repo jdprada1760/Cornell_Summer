@@ -62,6 +62,18 @@ keyword1 -- keyword2 -- keyword3
 
 \section{Introduction}
 
+
+The first objective of this paper is to compare Illustris-1 against 
+the observational results obtained by \cite{Jones2016}.
+In that work the authors study a gas rich sample built with the
+ALFALFA survey to define the effects of different environments on the
+gas mass function.
+The second goal is to extend this environmental classification to 
+the stellar and black hole mass functions. 
+Finally, we study these environmental trends in the baryonica galaxy
+properties in terms of dark matter halo mass segregation and the dark
+matter cosmic web. 
+
 \section{The Illustris-1 Simulation}
 Illustris-1 is a highly resolved cosmological simulation. 
 It reproduces large-scale statistical features of the Universe, such
@@ -112,10 +124,10 @@ characterization properties. \\
 
 \section{The methodology}
 
-\subsection{ Characterizing Mass Functions}
+\subsection{Characterizing Mass Functions}
 
-To characterize specific properties of these mass functions, we use
-the Press-Schechter function
+To characterize the mass functions in Illustris data we use
+the Press-Schechter expression
 \begin{equation}
 n(M) = n_\star\left( \frac{M}{M_\star} \right)^{-\alpha+1}\exp^{-\left( \frac{M}{M_\star}\right)},
 \label{eq:Schechter}
@@ -124,55 +136,71 @@ n(M) = n_\star\left( \frac{M}{M_\star} \right)^{-\alpha+1}\exp^{-\left( \frac{M}
 where $n$ is the number of galaxies per unit volume per dex in mass.
 This function is fully described by the three parameters: $n_\star$,
 $M_\star$ and $\alpha$; $n_\star$ is a normalization factor, the mass
-scale factor $M_\star$ is that separates the power-law regimen at $M
-\ll M_*$ and the exponential regimen for $M \gg M_*$. 
+scale factor $M_\star$ is that separates the power-law regimen at
+$M\ll M_*$ and the exponential regimen for $M \gg M_*$. 
 This transition graphically resembles a knee, which is the reason why
 we refer in this paper $M_*$ as the knee-mass.
-The faint-end slope $\alpha$ is directly related to the exponent of the power-law at the low-mass regime.
-In logarithmic scales, it is clearly interpreted as the slope of the low-mass regime.\\
-
-and the scalars $n_{\star}$, $M_{\star}$ and $\alpha$ are 
-$M$.
+The faint-end slope $\alpha$ is directly related to the exponent of
+the power-law at the low-mass regime. 
 
 
+This expression comes from a formalism describing the hierarchical
+formation of gravitationally bound structures in an expanding
+Friedmann universe arriving to a self-similar state of "equilibrium"
+for its mass function \cite{Schechter1976}. 
+Although its ansatz is not correct \cite{inaccurateSchechter}, the
+final expression in Eq. (\ref{eq:Schechter}) provides a good
+description of galaxy mass and luminostiy functions
+\cite{wellfitSchechter}. 
 
-It comes from an elaborated formalism of hierarchical formation of DM structures in an expanding Friedmann universe arriving to a self-similar state of "equilibrium" for its mass function \cite{Schechter1976}.
-Although its ansatz has been demonstrated to be inaccurate for our
-observable universe \cite{inaccurateSchechter}, the final expression
-is very well fitted to the mass functions of the local universe
-\cite{wellfitSchechter}.\\ 
+We also impose a magnitude cut in the $r$ band of $M_r<-19$ to keep
+a galaxy sample that resembles the one used in previous observational
+studies. 
+To obtain the Schechter parameters that characterize each numerical
+mass function, we used MCMC to obtain the fit with best likelihood. 
 
 
+\subsection{Resolution Effects}
+
+As every simulation, Illustris is subject to limitations due to its
+numerical finite resolution.
+The most important limitation in this study is related to its
+resolution as it puts a constraint on the minimum mass that can be 
+confidently resolved.
+We use Illustris-2, and Illustris-3, lower resolution versions of
+Illustris-1 to quantify this effect.
 
 
-To obtain the Schechter parameters that characterize each numerical mass function, we used MCMC to obtain the fit with best likelihood. 
-With this, we could also ...\\
-
-As Illustris is a cosmological simulation, it is subject to resolution and numerical biases.
-The most important bias in this study is related to the minimum mass of discrete elements in the simulation.
-Each mass considered here is subject directly or indirectly this resolution restriction, and the effect it causes is specially evident in the produced mass functions. 
-We used Illustris-2,3, which are less resoluted copies of Illustris-1, to show this effect on the mass functions \ref{fig:resolution effects}. 
-Taking this into account, mass functions are heavily affected for masses below a certain cut and for this reason, only galaxies above said cut are considered in this study.
-This mass cut has no apparent systematical way to be calculated and therefore, we choose it having into account the performance of the respective Schechter fit.\\
+Figure \ref{fig:resolution_effects} shows the cumulative gas mass
+function for the three simulations after making the magnitude cut
+$M_r<-19$. 
 
 \begin{figure}
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/MassResolution.png}
-    \caption{The effect on mass resolution on mass functions of Illustris-1,2,3. (Masses have units $10^{10}M_\odot$)} 
-    \label{fig:resolution effects}
+    \caption{Gas mass functions in the simulations Illustris-1,2,3. (Masses have units $10^{10}M_\odot$)}  
+    \label{fig:resolution_effects}
 \end{figure}
 
  
 
-\subsection{Defining the environment}
+\subsection{Environment definitions}
 
-Given the current interest in the study of the dependence of observational HIMFs on the environment and the wide difference of the conclusions of these studies, the main scope of this work is to verify if the any results obtained observationally are supported by a similar analysis in the cosmological simulation Illustris.\\
+
+
+In this paper we extend that 
+study observationally-comparable, we follow the 3rd nearest neighbor
+(3NN) definition of environment proposed by Jones et
+al. 
+
+
+obtained observationally are supported by a similar analysis in the
+cosmological simulation Illustris.\\  
 
 For this purpose, we take two approaches to analyze the dependence of mass functions on environment. 
-On one hand, to make our study observationally-comparable, we follow the 3rd nearest neighbor (3NN) definition of environment proposed by Jones et al. \cite{Jones2016}. 
-On the other hand, to confirm our results, we use a computational and theoretical definition of environment (T-Web) of completely different nature proposed by Forero et al. \cite{Forero2009}. 
+On one hand, to On the other hand, to confirm our results, we use a computational and theoretical definition of environment (T-Web) of completely different nature proposed by Forero et al. \cite{Forero2009}. 
 
 \subsubsection{The $3^{rd}$ nearest neighbor definition of environment}
 
