@@ -171,24 +171,7 @@ We use Illustris-2, and Illustris-3, lower resolution versions of
 Illustris-1 to quantify this effect.
 
 
-Figure \ref{fig:resolution_effects} shows the cumulative gas mass
-function for the three simulations after making the magnitude cut
-$M_r<-19$. 
-
-\begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/MassResolution.png}
-    \caption{Gas mass functions in the simulations Illustris-1,2,3. (Masses have units $10^{10}M_\odot$)}  
-    \label{fig:resolution_effects}
-\end{figure}
-
- 
-
 \subsection{Environment definitions}
-
-
 
 In this paper we extend that 
 study observationally-comparable, we follow the 3rd nearest neighbor
@@ -284,9 +267,6 @@ e.g. Table~\ref{tab:example_table}.
 
 % Quartiles gas
 \begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/F19_quartilesGas.png}
     \caption{\textbf{Upper side}: Schechter fits of each gas mass
       function for each environmental quartile (tendence) using the 3rd nearest
@@ -296,11 +276,33 @@ e.g. Table~\ref{tab:example_table}.
     \label{fig:quartilesGas}
 \end{figure}
 
+
+% Quartiles Stellar
+\begin{figure}
+	\includegraphics[width=\columnwidth]{./pics/F19_quartilesSellar.png}
+    \caption{Similar to figure \ref{fig:quartilesGas} using stellar mass} 
+    \label{fig:quartilesStellar}
+\end{figure}
+
+
+% Quartiles BH
+\begin{figure}
+	\includegraphics[width=\columnwidth]{./pics/F19_quartilesBH.png}
+    \caption{Similar to figure \ref{fig:quartilesGas} using BHs mass.} 
+    \label{fig:quartilesBH}
+\end{figure}
+
+% Quartiles DM
+\begin{figure}
+	\includegraphics[width=\columnwidth]{./pics/F19_quartilesDM.png}
+    \caption{Similar to figure \ref{fig:quartilesGas} using DM.} 
+    \label{fig:quartilesDM}
+\end{figure}
+
+
+
 % Tweb gas
 \begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_Gas.png}
     \caption{\textbf{Upper side}: Schechter fits of each gas mass
       function for each morphological environment characterized by the
@@ -310,65 +312,32 @@ e.g. Table~\ref{tab:example_table}.
     \label{fig:TwebGas}
 \end{figure}
 
-% Quartiles DM
-\begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/F19_quartilesDM.png}
-    \caption{Similar to figure \ref{fig:quartilesGas} using DM.} 
-    \label{fig:quartilesDM}
-\end{figure}
-
-% Tweb DM
-\begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_DM.png}
-    \caption{Similar to figure \ref{fig:TwebGas} using DM.} 
-    \label{fig:TwebDM}
-\end{figure}
-
-% Quartiles Stellar
-\begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/F19_quartilesSellar.png}
-    \caption{Similar to figure \ref{fig:quartilesGas} using stellar mass} 
-    \label{fig:quartilesStellar}
-\end{figure}
 
 % Tweb Stellar
 \begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_Stellar.png}
     \caption{Similar to figure \ref{fig:TwebGas} using stellar mass} 
     \label{fig:TwebStellar}
 \end{figure}
 
-% Quartiles BH
-\begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{./pics/F19_quartilesBH.png}
-    \caption{Similar to figure \ref{fig:quartilesGas} using BHs mass.} 
-    \label{fig:quartilesBH}
-\end{figure}
 
 % Tweb BH
 \begin{figure}
-	% To include a figure from a file named example.*
-	% Allowable file formats are eps or ps if compiling using latex
-	% or pdf, png, jpg if compiling using pdflatex
 	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_BH.png}
     \caption{Similar to figure \ref{fig:TwebGas} using BHs mass.} 
     \label{fig:TwebBH}
 \end{figure}
+
+
+
+% Tweb DM
+\begin{figure}
+	\includegraphics[width=\columnwidth]{./pics/F19_T-Web_DM.png}
+    \caption{Similar to figure \ref{fig:TwebGas} using DM.} 
+    \label{fig:TwebDM}
+\end{figure}
+
+
 
 
 
