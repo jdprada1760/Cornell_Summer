@@ -1,44 +1,7 @@
-% mnras_template.tex
-%
-% LaTeX template for creating an MNRAS paper
-%
-% v3.0 released 14 May 2015
-% (version numbers match those of mnras.cls)
-%
-% Copyright (C) Royal Astronomical Society 2015
-% Authors:
-% Keith T. Smith (Royal Astronomical Society)
-
-% Change log
-%
-% v3.0 May 2015
-%    Renamed to match the new package name
-%    Version number matches mnras.cls
-%    A few minor tweaks to wording
-% v1.0 September 2013
-%    Beta testing only - never publicly released
-%    First version: a simple (ish) template for creating an MNRAS paper
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Basic setup. Most papers should leave these options alone.
 \documentclass[a4paper,fleqn,usenatbib]{mnras}
-
-% MNRAS is set in Times font. If you don't have this installed (most LaTeX
-% installations will be fine) or prefer the old Computer Modern fonts, comment
-% out the following line
-% Depending on your LaTeX fonts installation, you might get better results with one of these:
-%\usepackage{mathptmx}
-%\usepackage{txfonts}
-
-% Use vector fonts, so it zooms properly in on-screen viewing software
-% Don't change these lines unless you know what you are doing
 \usepackage[T1]{fontenc}
 \usepackage{ae,aecompl}
 
-
-%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
-
-% Only include extra packages if you really need them. Common packages are:
 \usepackage{graphicx}	% Including figure files
 \usepackage{amsmath}	% Advanced maths commands
 \usepackage{amssymb}	% Extra maths symbols
@@ -84,10 +47,7 @@ $^{1}$No affiliation\\
 
 % Abstract of the paper
 \begin{abstract}
-This is a simple template for authors to write new MNRAS papers.
-The abstract should briefly describe the aims, methods, and main results of the paper.
-It should be a single paragraph not more than 250 words (200 words for Letters).
-No references should appear in the abstract.
+No abstract.
 \end{abstract}
 
 % Select between one and six entries from the list of approved keywords.
@@ -102,20 +62,22 @@ keyword1 -- keyword2 -- keyword3
 
 \section{Introduction}
 
-This is a simple template for authors to write new MNRAS papers.
-See \texttt{mnras\_sample.tex} for a more complex example, and \texttt{mnras\_guide.tex}
-for a full user guide.
+\section{The Illustris-1 Simulation}
+Illustris-1 is a highly resolved cosmological simulation. 
+It reproduces large-scale statistical features of the Universe, such
+as the galaxy population of massive clusters, as well as small-scale
+properties such as the morphology of galaxies and detailed values for
+their stellar and gas content.  
 
-\cite{Forero2009}.
-
-\section{Illustris Simulation}
-Illustris-1, also known as Illustris, is a highly resolved
-cosmological simulation. It reproduces large-scale statistical
-features of the Universe, such as the galaxy population of massive
-clusters, as well as small-scale properties such as the morphology of
-galaxies and detailed values for their stellar and gas content.\\ 
-
-This was achieved by following the evolution of $2 \times 1820^3$ elements with dark mass resolution of $m_{\text{DM}} = 6.26\cdot 10^6\text{M}_{\odot}$ and initial baryonic mass resolution of $\overline{\text{m}_\text{b}}=1.26\cdot 10^6\text{M}_{\odot}$ from a glass-like configuration in a periodic box of $106.5\text{Mpc}$. The $\Lambda \text{CDM}$ cosmology of this run follows: $\Omega_\Lambda=0.7274$, $\Omega_\text{m}=0.2726$, $\Omega_\text{b}=0.0456$, $\sigma_\text{s}=0.0809$, $\text{n}_\text{s}=0.963$ \& $\text{H}_0=70.4\text{kms}
+The Illustris-1 simulation followed  the evolution of $2 \times 1820^3$
+elements with dark mass resolution of $m_{\text{DM}} = 6.26\cdot
+10^6\text{M}_{\odot}$ and initial baryonic mass resolution of
+$\overline{\text{m}_\text{b}}=1.26\cdot 10^6\text{M}_{\odot}$ from a
+glass-like configuration in a periodic box of $106.5\text{Mpc}$. The
+$\Lambda \text{CDM}$ cosmology of this run follows:
+$\Omega_\Lambda=0.7274$, $\Omega_\text{m}=0.2726$,
+$\Omega_\text{b}=0.0456$, $\sigma_\text{s}=0.0809$,
+$\text{n}_\text{s}=0.963$ \& $\text{H}_0=70.4\text{kms} 
 ^{-1}\text{Mpc}^{-1}$ which is consistent with the (last) Anisotropy
 Probe (WMAP)-9 \cite{AnisotropyProbe}. Illustris has a constant
 spatial resolution of $1.4\text{kpc}$ for DM particles in comoving
@@ -123,7 +85,7 @@ units, and for baryonic particles it has the same spatial resolution
 of DM for $\text{z}\geq 1$, which is later modified to $0.7\text{kpc}$
 in physical units for the rest of the simulation. \\ 
 
-The evolution in time was performed with the hydrodynamic code AREPO
+This work was  performed using the hydrodynamic code AREPO
 \cite{Arepo}, which combines a moving Voronoi tessellation with the
 finite volume approach. Included in the evolution algorithm, there are
 galaxy formation models which account for the evolution of stars and
@@ -151,31 +113,37 @@ characterization properties. \\
 \section{The methodology}
 
 \subsection{ Characterizing Mass Functions}
-A mass function is the number density $n(M)$ of objects of determined mass $M$.
-Due to the large range of orders of magnitud in which these quantities span, the mass function is often represented in logarithmic scales on both sides. 
-The discretization of these mass functions is simply the histogram of the logarithmic masses of the studied group of objects. 
-In Illustris, as in all simulations, we have clear determination of volumes. This volume is constant over all the sample of galaxies studied and is to be taken the constant volume of the simulation $V = \left(106.5\text{Mpc}\right)^3$. 
-In this sense, the relation expressed by a mass function is 
 
+To characterize specific properties of these mass functions, we use
+the Press-Schechter function
 \begin{equation}
-n(M)Vd\log{(M)} =  dN
-\end{equation}
-
-To characterize specific properties of these mass functions, we use the Press-Schechter function \ref{eq:Schechter}. 
-It comes from an elaborated formalism of hierarchical formation of DM structures in an expanding Friedmann universe arriving to a self-similar state of "equilibrium" for its mass function \cite{Schechter1976}.
-Although its ansatz has been demonstrated to be inaccurate for our observable universe \cite{inaccurateSchechter}, the final expression is very well fitted to the mass functions of the local universe \cite{wellfitSchechter}.\\
-
-\begin{equation}
-n\left( M \right) = n_*\left( \frac{M}{M_*} \right)^{-\alpha+1}\exp^{-\left( \frac{M}{M_*}\right)}
+n(M) = n_\star\left( \frac{M}{M_\star} \right)^{-\alpha+1}\exp^{-\left( \frac{M}{M_\star}\right)},
 \label{eq:Schechter}
 \end{equation}
-
-The Schechter function \ref{eq:Schechter} is fully defined by the three parameters $(n_*,M_*,\alpha)$. 
-The number density factor $n_*$ is just a normalization factor which varies depending on the studied system. 
-The mass scale factor $M_*$ may be interpreted as the mass that separates the power-law regimen $M \ll M_*$ and the exponential regimen $M \gg M_*$. 
-This transition graphically resemnles a knee, which is the reason why $M_*$ is referred as the knee-mass.
+%
+where $n$ is the number of galaxies per unit volume per dex in mass.
+This function is fully described by the three parameters: $n_\star$,
+$M_\star$ and $\alpha$; $n_\star$ is a normalization factor, the mass
+scale factor $M_\star$ is that separates the power-law regimen at $M
+\ll M_*$ and the exponential regimen for $M \gg M_*$. 
+This transition graphically resembles a knee, which is the reason why
+we refer in this paper $M_*$ as the knee-mass.
 The faint-end slope $\alpha$ is directly related to the exponent of the power-law at the low-mass regime.
 In logarithmic scales, it is clearly interpreted as the slope of the low-mass regime.\\
+
+and the scalars $n_{\star}$, $M_{\star}$ and $\alpha$ are 
+$M$.
+
+
+
+It comes from an elaborated formalism of hierarchical formation of DM structures in an expanding Friedmann universe arriving to a self-similar state of "equilibrium" for its mass function \cite{Schechter1976}.
+Although its ansatz has been demonstrated to be inaccurate for our
+observable universe \cite{inaccurateSchechter}, the final expression
+is very well fitted to the mass functions of the local universe
+\cite{wellfitSchechter}.\\ 
+
+
+
 
 To obtain the Schechter parameters that characterize each numerical mass function, we used MCMC to obtain the fit with best likelihood. 
 With this, we could also ...\\
