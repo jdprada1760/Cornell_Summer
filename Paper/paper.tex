@@ -129,7 +129,7 @@ characterization properties. \\
 To characterize the mass functions in Illustris data we use
 the Press-Schechter expression
 \begin{equation}
-n(M) = n_\star\left( \frac{M}{M_\star} \right)^{-\alpha+1}\exp^{-\left( \frac{M}{M_\star}\right)},
+n(M) = n_\star\left( \frac{M}{M_\star} \right)^{-\alpha+1}\exp \left( -\frac{M}{M_\star}\right),
 \label{eq:Schechter}
 \end{equation}
 %
@@ -204,42 +204,73 @@ On one hand, to On the other hand, to confirm our results, we use a computationa
 
 \subsubsection{The $3^{rd}$ nearest neighbor definition of environment}
 
-Jones et al. \cite{Jones2016} the SDSS \cite{SDSS2011} catalogue to define the environment of galaxies in the ALFALFA \cite{ALFALFA} survey.
-This SDSS catalogue was chosen to be optically-selected and volume-limited to account for apparent lonely galaxies in ALFALFA with increasinf distance. 
-For this reason, they pre-selected galaxies brighter than $M_r = -18.9$ in this survey.\\
+Jones et al. \cite{Jones2016} the SDSS \cite{SDSS2011} catalogue to
+define the environment of galaxies in the ALFALFA \cite{ALFALFA}
+survey. 
+This SDSS catalogue was chosen to be optically-selected and
+volume-limited to account for apparent lonely galaxies in ALFALFA with
+increasinf distance.  
+For this reason, they pre-selected galaxies brighter than $M_r =
+-18.9$ in this survey.
 
-To quantify the environment , for each reference galaxy in ALFALFA, they calculated the projected distance in the sky to the third nearest neighbor belonging to the pre-selected SDSS catalogue.
+To quantify the environment , for each reference galaxy in ALFALFA,
+they calculated the projected distance in the sky to the third nearest
+neighbor belonging to the pre-selected SDSS catalogue. 
 This projected distance in the sky defines a numeric-surface density for each reference galaxy.
-To do so, first, they filtrated candidate neighbors by their radial velocity relative to the reference galaxy which had to be within $450km/s$.
-According to Hubble's law, this effectively restricts the candidate galaxies to a smaller radial range, reducing apparent closer galaxies arising from the use of projected distances. \\
+To do so, first, they filtrated candidate neighbors by their radial
+velocity relative to the reference galaxy which had to be within
+$450km/s$. 
+According to Hubble's law, this effectively restricts the candidate
+galaxies to a smaller radial range, reducing apparent closer galaxies
+arising from the use of projected distances.  
 
 Once quantified the environment for each ALFALFA galaxy with the distance to the 3rd NN definition, they divided the group in four quartiles according this quantity. 
 For each quartile, the respective HIMF was calculated, and with this, a Schechter fit was obtained. 
-%The analysis was specifically performed over the Schechter parameters of the Knee-mass $M^*$ and the faint-end slope $\alpha$. \\ 
+%The analysis was specifically performed over the Schechter parameters
+%of the Knee-mass $M^*$ and the faint-end slope $\alpha$. \\  
  
-As we want to replicate as closely as possible the method effectuated by Jones et. al \cite{Jones2016}, we use the same specifications to calculate the environment.
+As we want to replicate as closely as possible the method effectuated
+by Jones et. al \cite{Jones2016}, we use the same specifications to
+calculate the environment. 
 We perform the analysis of the Schechter functions to gas, DM, stellar and BH mass functions.
-We do not perform the study directly on HIMFs because this would require some extense calculations. We take the gas mass function as a first approximation.\\
+We do not perform the study directly on HIMFs because this would
+require some extense calculations. We take the gas mass function as a
+first approximation. 
 
 \subsubsection{The cosmic web method}
-To complement and verify the analysis performed with the third nearest neighbor method, we chose a complementary method of completely different nature. 
+To complement and verify the analysis performed with the third nearest
+neighbor method, we chose a complementary method of completely
+different nature.  
 The chosen method was developed by Forero et al. \cite{Forero2009}. 
-It uses the Hessian \ref{eq:hessian} of the gravitational potential obtained from the smoothened DM density field to classify galaxies into four morphological environments.\\  
+It uses the Hessian \ref{eq:hessian} of the gravitational potential
+obtained from the smoothened DM density field to classify galaxies
+into four morphological environments.
 
 \begin{equation}
 E =  mc^2
 \label{eq:hessian}
 \end{equation}
 
-Specifically, we diagonalize the Hessian matrix of the gravitational potential $\phi$ obtaining three eigenvalues. 
-This matrix encodes the local curvature of the gravitational potential. 
-Specifically, these eigenvalues determine the concavity of $\phi$ on the principal axes, at each point. 
-We use these eigenvalues to interpret the tendence of mass to cluster with reference with some given threshold $\lambda$. 
-Eigenvalues bigger than $\lambda$ are interpreted as a local tendence of mass to cluster in the respective eigenaxes, and viceversa. 
-With this characterization, clusters, sheets, fillaments and voids can be defined with the number of eigenvalues above $\lambda$.
-Forero et. al. found in \cite{Forero2009} that the critical value that better reproduces the correct morphological populations was $\lambda = 0.2$. \\
+Specifically, we diagonalize the Hessian matrix of the gravitational
+potential $\phi$ obtaining three eigenvalues.  
+This matrix encodes the local curvature of the gravitational
+potential.  
+Specifically, these eigenvalues determine the concavity of $\phi$ on
+the principal axes, at each point.  
+We use these eigenvalues to interpret the tendence of mass to cluster
+with reference with some given threshold $\lambda$.  
+Eigenvalues bigger than $\lambda$ are interpreted as a local tendence
+of mass to cluster in the respective eigenaxes, and viceversa.  
+With this characterization, clusters, sheets, fillaments and voids can
+be defined with the number of eigenvalues above $\lambda$. 
+Forero et. al. found in \cite{Forero2009} that the critical value that
+better reproduces the correct morphological populations was $\lambda =
+0.2$. 
 
-With these specifications, we could obtain mass functions for galaxies belonging to clusters, fillaments and sheets. The amount of galaxies belonging to voids was strongly affected by the mentioned mass cuts and could not produce reasonable mass functions to analyze.
+With these specifications, we could obtain mass functions for galaxies
+belonging to clusters, fillaments and sheets. The amount of galaxies
+belonging to voids was strongly affected by the mentioned mass cuts
+and could not produce reasonable mass functions to analyze. 
 
 \section{Results}
 \subsection{Preliminaries}
@@ -368,9 +399,6 @@ Try to keep it short.
 \appendix
 
 \section{Some extra material}
-
-If you want to present additional material which would interrupt the flow of the main paper,
-it can be placed in an Appendix which appears after the list of references.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
