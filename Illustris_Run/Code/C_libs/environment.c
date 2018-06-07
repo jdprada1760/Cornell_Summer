@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------------
 
 // env.csv : the name of the file to write the environments
-#define man "./environment.x Galaxyn.csv env.data specs.data"
+#define man "./environment.x ALFALFA.csv SDSS.csv env.data specs.data"
 // Define the name for the halo and galaxy files
 //define Gdata "Galaxy3.csv"
 // Simulation constants
@@ -71,19 +71,25 @@ void add(List* lista, unsigned int index);
 //   General Variables
 //------------------------------------------------------------------------------
 
-// Vectors and matrices for halos and galaxies positions, velocities and masses
-float** Gp;
+// Vectors and matrices for galaxies positions, velocities and masses
+float** Gp;// ALFALFA
+float** Hp;// SDSS
 float** Gv;
+float** Hv;
 
 // Vectors of masses for each galaxy
-float** Gmass;
+float** Gmass; 
+float** Hmass;
 
 // Vectors of masses of gas and dark matter
 float* Ggas;
 float* Gdm;
+float* Hgas;
+float* Hdm;
 
 // File to read (Galaxies)
 char* Gdata;
+char* Hdata;
 
 // The environment array
 float* env;
@@ -96,9 +102,13 @@ float* p;
 
 // The number of halos and galaxies
 unsigned int nG = 0;
+unsigned int nH = 0;
 
-// The grid of indexes for galaxies and halos
+
+// The grid of indexes for galaxies (ALFALFA) and halos (SDSS)
 List**** gridG;
+List**** gridH;
+
 
 //------------------------------------------------------------------------------
 //   Main
@@ -110,9 +120,10 @@ int main(int argc, char **argv){
   omp_set_num_threads(nproc);
 
   // The name of the file to write environments
-  char* nameW = argv[2];
-  char* nameSpecs = argv[3];
+  char* nameW = argv[3];
+  char* nameSpecs = argv[4];
   Gdata = argv[1];
+  Hdata = argv[2];
 
   // Allocates memory
   allocate_All();
@@ -186,12 +197,25 @@ void allocate_All(){
       }
     }
   }
+    gridH = malloc(res*sizeof(List***));
+    for( l = 0; l < res; l++){
+      gridH[l] = malloc(res*sizeof(List**));
+      for( m = 0; m < res; m++){
+        gridH[l][m] = malloc(res*sizeof(List*));
+        for( n = 0; n < res; n++){
+          // Initialises the list with the index 0
+          gridH[l][m][n] = iniList(0);
+        }
+      }
+    }
 
   // Galaxies files to read
   FILE *Galaxy;
+  FILE *Halo;
 
   // Read the files Halo and Galaxy
   Galaxy = fopen( Gdata, "r" );
+  Halo = fopen( Hdata, "r" );
 
   // Read files to obtain number of halos and subhalos
   int test2;
@@ -203,8 +227,18 @@ void allocate_All(){
     }
     nG ++;
   }while( test2!=EOF );
+  
+  do{
+    test2 = fscanf(Halo, "%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n", &tmp, &tmp, &tmp, &tmp, &tmp, &tmp ,&tmp, &tmp, &tmp, &tmp);
+    if(test2 == EOF){
+      break;
+    }
+    nH ++;
+  }while( test2!=EOF );
 
-  printf("Number of Galaxies: %d\n",nG);
+  printf("Number of ALFALFA Galaxies: %d\n",nG);
+  printf("Number of SDSS Galaxies: %d\n",nH);
+
 
   // Initialises the point of view
   p = malloc(3*sizeof(float));
@@ -230,9 +264,23 @@ void allocate_All(){
     Gmass[i] = malloc(4*sizeof(float));
     env_specs[i] = malloc(6*sizeof(float));
   }
+  
+  // Allocate Halos
+  Hp    = malloc(nH*sizeof(float*));
+  Hv    = malloc(nH*sizeof(float*));
+  Hgas  = malloc(nH*sizeof(float));
+  Hdm   = malloc(nH*sizeof(float));
+  Hmass = malloc(nH*sizeof(float*));
+
+  for( i = 0; i < nH; i++){
+    Hp[i] = malloc(3*sizeof(float));
+    Hv[i] = malloc(3*sizeof(float));
+    Hmass[i] = malloc(4*sizeof(float));
+  }
 
   // Close the files
   fclose(Galaxy);
+  fclose(Halo);
 
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
 }
@@ -250,9 +298,11 @@ void read_File(){
 
   // Galaxies files to read
   FILE *Galaxy;
+  FILE *Halo;
 
   // Read the files Halo and Galaxy
   Galaxy = fopen( Gdata, "r" );
+  Halo = fopen( Hdata, "r" );
 
   // Temporal variables to read
   int test2;
@@ -288,7 +338,7 @@ void read_File(){
     numG ++;
 
   }while( test2!=EOF );
-  printf("Number of Galaxies read: %d\n",numG);
+  printf("Number of ALFALFA Galaxies read: %d\n",numG);
   int i,j,k;
   // Check how many grid cubes are out of galaxies
   for( i = 0; i < res; i++){
@@ -300,9 +350,46 @@ void read_File(){
       }
     }
   }
+  
+  int numH = 0;
+  do{
+
+    test2 = fscanf(Halo, "%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n", &x, &y, &z, &vx, &vy, &vz, &mg, &mdm, &ms, &mbh );
+    if(test2 == EOF){
+      break;
+    }
+    Hp[numH][0] = x/lh;
+    Hp[numH][1] = y/lh;
+    Hp[numH][2] = z/lh;
+    Hp[numH][0] = vx;
+    Hp[numH][1] = vy;
+    Hp[numH][2] = vz;
+    Hgas[numH] = mg;
+    Hdm[numH] = mdm;
+    Hmass[numH][0] = mg/lh;
+    Hmass[numH][1] = mdm/lh;
+    Hmass[numH][2] = ms/lh;
+    Hmass[numH][3] = mbh/lh;
+    add(gridH[(int)floorf(x/(L_h/res))][(int)floorf(y/(L_h/res))][(int)floorf(z/(L_h/res))],numH);
+    //printf("%d__%f\n", numG, x/lh);
+    numH ++;
+
+  }while( test2!=EOF );
+  printf("Number of SDSSGalaxies read: %d\n",numH);
+  // Check how many grid cubes are out of galaxies
+  for( i = 0; i < res; i++){
+    for( j = 0; j < res; j++){
+      for( k = 0; k < res; k++){
+        if((gridH[i][j][k])->next == 0){
+          printf("HVoid__%d_%d_%d____\n",i,j,k);
+        }
+      }
+    }
+  }
 
   // Close the files
   fclose(Galaxy);
+  fclose(Halo);
 
   printf("Time elapsed: %f\n", (float)(time(NULL) - start));
 
@@ -310,13 +397,15 @@ void read_File(){
 
 /*
  * Given an index, gets the environment of the corresponding halo and saves it to env
+ * j is the index of the ALFALFA galaxy
+ * i will be the index for the SDSS halo
  */
 void get_Env(int j, int hx, int hy, int hz){
 
    // Saves the environment of the candidate galaxies
    int num = 0;
    float* Genv = malloc((nG*0.25)*sizeof(float));
-   int* indices = malloc((nG*0.25)*sizeof(int));
+   int* indices = malloc((nG*0.25)*sizeof(int)); // keeps the universal indices
 
    // Indexes for the loops
    int i,l;
@@ -345,17 +434,17 @@ void get_Env(int j, int hx, int hy, int hz){
            // index i kept by the node
            //printf("G_%d\n",actual->index);
            i = actual->index;
-           if( i!= j ){
+           if( (Hp[i][0]-Gp[j][0] == 0) && (Hp[i][1]-Gp[j][1] == 0) && (Hp[i][2]-Gp[j][2] == 0) ){
 
              //printf("OK2\n");
 
              // Keeps te velocity difference between the halo and the galaxy
              float* deltaV = malloc(3*sizeof(float));
-             deltaV[0] = -(Gv[j][0] - Gv[i][0]) - Hubb*( deltaPBC(Gp[j][0] , Gp[i][0] ) );
-             deltaV[1] = -(Gv[j][1] - Gv[i][1]) - Hubb*( deltaPBC(Gp[j][1] , Gp[i][1] ) );
-             deltaV[2] = -(Gv[j][2] - Gv[i][2]) - Hubb*( deltaPBC(Gp[j][2] , Gp[i][2] ) );
+             deltaV[0] = -(Gv[j][0] - Hv[i][0]) - Hubb*( deltaPBC(Gp[j][0] , Hp[i][0] ) );
+             deltaV[1] = -(Gv[j][1] - Hv[i][1]) - Hubb*( deltaPBC(Gp[j][1] , Hp[i][1] ) );
+             deltaV[2] = -(Gv[j][2] - Hv[i][2]) - Hubb*( deltaPBC(Gp[j][2] , Hp[i][2] ) );
 
-             // Calculates the vector from the point p to the halo (and its norm)
+             // Calculates the vector from the point p to the ALFALFA galaxy (and its norm)
              float* ph = malloc(3*sizeof(float));
              ph[0] = deltaPBC(Gp[j][0] , p[0]);
              ph[1] = deltaPBC(Gp[j][1] , p[1]);
@@ -371,9 +460,9 @@ void get_Env(int j, int hx, int hy, int hz){
 
                // Calculates the vector from the point p to the galaxy
                float* pg = malloc(3*sizeof(float));
-               pg[0] = ph[0] + deltaPBC(Gp[i][0] , Gp[j][0] ); // checked
-               pg[1] = ph[1] + deltaPBC(Gp[i][1] , Gp[j][1] );
-               pg[2] = ph[2] + deltaPBC(Gp[i][2] , Gp[j][2] );
+               pg[0] = ph[0] + deltaPBC(Hp[i][0] , Gp[j][0] ); // checked
+               pg[1] = ph[1] + deltaPBC(Hp[i][1] , Gp[j][1] );
+               pg[2] = ph[2] + deltaPBC(Hp[i][2] , Gp[j][2] );
                float pgnorm = sqrt( pow(pg[0],2) + pow(pg[1],2) + pow(pg[2],2) );
 
                // Saves the distance^2 to the galaxy projected in the sky
@@ -415,30 +504,30 @@ void get_Env(int j, int hx, int hy, int hz){
      for( l = 0; l < num; l++){
        if( Genv[l] <= maxdist ){
          maxdist = Genv[l];
-         maxindx = l;
+         maxindx = l; // MAXINDX is relative to the array Genv
        }
      }
      // Cumulative mass of neighbouing galaxies
-     env_specs[j][0] += Gmass[indices[maxindx]][0];
-     env_specs[j][1] += Gmass[indices[maxindx]][1];
-     env_specs[j][2] += Gmass[indices[maxindx]][2];
-     env_specs[j][3] += Gmass[indices[maxindx]][3];
+     env_specs[j][0] += Hmass[indices[maxindx]][0];
+     env_specs[j][1] += Hmass[indices[maxindx]][1];
+     env_specs[j][2] += Hmass[indices[maxindx]][2];
+     env_specs[j][3] += Hmass[indices[maxindx]][3];
      // Sets a big number to delete the minimum and find the second one
      Genv[maxindx] = 9e+15;
    }
 
    // Cumulative mass of neighbouing galaxies
-   env_specs[j][0] += Gmass[j][0];
-   env_specs[j][1] += Gmass[j][1];
-   env_specs[j][2] += Gmass[j][2];
-   env_specs[j][3] += Gmass[j][3];
+   env_specs[j][0] += Hmass[j][0];
+   env_specs[j][1] += Hmass[j][1];
+   env_specs[j][2] += Hmass[j][2];
+   env_specs[j][3] += Hmass[j][3];
 
    // Projected distance in sky
    env[j] = maxdist;
    env_specs[j][4] = sqrt(maxdist);
-   env_specs[j][5] = sqrt(pow(deltaPBC(Gp[j][0] , Gp[indices[maxindx]][0] ),2)+
-			  pow(deltaPBC(Gp[j][1] , Gp[indices[maxindx]][1] ),2)+
-		    	  pow(deltaPBC(Gp[j][2] , Gp[indices[maxindx]][2] ),2));
+   env_specs[j][5] = sqrt(pow(deltaPBC(Gp[j][0] , Hp[indices[maxindx]][0] ),2)+
+			  pow(deltaPBC(Gp[j][1] , Hp[indices[maxindx]][1] ),2)+
+		    	  pow(deltaPBC(Gp[j][2] , Hp[indices[maxindx]][2] ),2));
 
    //printf("%f\n",maxdist);
    free(Genv);

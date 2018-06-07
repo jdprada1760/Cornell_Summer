@@ -17,11 +17,16 @@ path1 = "/hits/universe/Illustris/L75n1820C/"
 path2 = "/hits/universe/Illustris/L75n910FP/" 
 path3 = "/hits/universe/Illustris/L75n455FP/"
 # Filenames for phaseSpace
-filenames = ['Illustris1','Illustris2','Illustris3']
-massFilenames = ['Galaxy1','Galaxy2','Galaxy3']
+filenamesALFALFA = ['Illustris1G','Illustris2G','Illustris3G']
+massFilenamesALFALFA = ['Galaxy1','Galaxy2','Galaxy3']
+filenamesSDSS = ['Illustris1H','Illustris2H','Illustris3H']
+massFilenamesSDSS = ['Halo1','Halo2','Halo3']
+
+
 # Snapshot number
 snapnum = 135
-for path,filename,massfn in zip([path1,path2,path3],filenames,massFilenames): 
+for path,filenameG,massfnG,filenameH,massfnH 
+in zip([path1,path2,path3],filenamesALFALFA,massFilenamesALFALFA, filenamesSDSS,massFilenamesSDSS): 
  
     # Loads groups to select the principal halo
     subSn = Subfind(path,snapnum,combineFiles=True, verbose = True)
@@ -34,13 +39,18 @@ for path,filename,massfn in zip([path1,path2,path3],filenames,massFilenames):
     # Have into account only subhalos with mass
     #for mag in sph[np.where(sph.T>0)[0]]:
     #    print(mag)
-    ind, = np.where((mass.T[0]>0) & (sph < -19))
+    indSDSS, = np.where((mass.T[0]>0) & (sph < -19)) # Index for SDSS galaxies
+    indALFALFA, = np.where((mass.T[0]>0) )) # Index for ALFALFA galaxies
     #ind, = np.where((mass.T[0]>0) )
     print(len(ind))
-    pos  = pos[ind]
-    vel  = vel[ind]
-    mass = mass[ind]
-    sph  = sph[ind]
+    posALFALFA  = pos[indALFALFA]
+    velALFALFA  = vel[indALFALFA]
+    massALFALFA = mass[indALFALFA]
+    sphALFALFA  = sph[indALFALFA]
+    posSDSS  = pos[indSDSS]
+    velSDSS  = vel[indSDSS]
+    massSDSS = mass[indSDSS]
+    sphSDSS  = sph[indSDSS]
 	 
     # Histogram of luminosity band r
     sph[np.where(abs(sph) > 1e10)[0]] = 10
@@ -56,12 +66,18 @@ for path,filename,massfn in zip([path1,path2,path3],filenames,massFilenames):
     	
 
     # Creates and fills the numpy array to save
-    arr = np.zeros((len(pos),10),dtype = np.float)
-    arr[:,:3]  = pos
-    arr[:,3:6] = vel
-    arr[:,6:]  = mass[:,:4]
-    np.savetxt("../data/phaseSpace/"+filename+".csv",arr,delimiter = ',')
-    np.savetxt("../data/"+massfn+".csv",mass,delimiter = ',')
+    arrALFALFA = np.zeros((len(posALFALFA),10),dtype = np.float)
+    arrSDSS = np.zeros((len(posSDSS),10),dtype = np.float)
+    arrALFALFA[:,:3]  = posALFALFA
+    arrALFALFA[:,3:6] = velALFALFA
+    arrALFALFA[:,6:]  = massALFALFA[:,:4]
+    arrSDSS[:,:3]  = posSDSS
+    arrSDSS[:,3:6] = velSDSS
+    arrSDSS[:,6:]  = massSDSS[:,:4]
+    np.savetxt("../data/phaseSpace/"+filenameG+".csv",arrALFALFA,delimiter = ',')
+    np.savetxt("../data/"+massfnG+".csv",massALFALFA,delimiter = ',')
+    np.savetxt("../data/phaseSpace/"+filenameH+".csv",arrSDSS,delimiter = ',')
+    np.savetxt("../data/"+massfnH+".csv",massSDSS,delimiter = ',')
     
 plt.legend()
 plt.savefig("../data/pics/Rband_lumFunc.png")
