@@ -28,8 +28,8 @@
 #define L_h 75000.0         // L/lh
 // Method parameters
 #define nn 3             // Nearest neighbor for environment definition
-#define ddd 1         // Defines the range in the grid to count neighbor candidates
-#define res 3.0       // The resolution of the 3d spatial grid
+#define ddd 0         // Defines the range in the grid to count neighbor candidates
+#define res 1.0       // The resolution of the 3d spatial grid
 // Number of procs 
 #define nproc 8
 
